@@ -41,7 +41,7 @@ namespace PinballApi
             foreach (var node in htmlNodes)
             {
                 DateTime dateManufactured;
-                MachineType machineType;
+                PinballMachineType machineType;
                 int players = 0;
 
                 var tds = node.CssSelect("td").ToArray();

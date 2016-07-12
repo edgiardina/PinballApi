@@ -9,7 +9,7 @@ namespace PinballApi.Models
         public PinballManufacturer Manufacturer { get; set; }
         public DateTime DateManufactured { get; set; }
         public int Players { get; set; }
-        public MachineType MachineType { get; set; }
+        public PinballMachineType MachineType { get; set; }
         public string Theme { get; set; }
         public string Abbreviation { get; set; }
 

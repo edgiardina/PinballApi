@@ -60,8 +60,8 @@
   <ItemGroup>
     <Compile Include="Models\PinballDatabaseAttribute.cs" />
     <Compile Include="PinballApi.cs" />
-    <Compile Include="Models\MachineType.cs" />
-    <Compile Include="Models\Manufacturer.cs" />
+    <Compile Include="Models\PinballMachineType.cs" />
+    <Compile Include="Models\PinballManufacturer.cs" />
     <Compile Include="Models\PinballMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
