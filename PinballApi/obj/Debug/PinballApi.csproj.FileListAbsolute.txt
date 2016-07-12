@@ -1,0 +1,12 @@
+C:\dev\PinballApi\PinballApi\obj\Debug\PinballApi.csprojResolveAssemblyReference.cache
+C:\dev\PinballApi\PinballApi\bin\Debug\PinballApi.dll
+C:\dev\PinballApi\PinballApi\bin\Debug\PinballApi.pdb
+C:\dev\PinballApi\PinballApi\bin\Debug\FSharp.Core.dll
+C:\dev\PinballApi\PinballApi\bin\Debug\HtmlAgilityPack.dll
+C:\dev\PinballApi\PinballApi\bin\Debug\ScrapySharp.Core.dll
+C:\dev\PinballApi\PinballApi\bin\Debug\ScrapySharpAsync.dll
+C:\dev\PinballApi\PinballApi\bin\Debug\FSharp.Core.xml
+C:\dev\PinballApi\PinballApi\bin\Debug\HtmlAgilityPack.pdb
+C:\dev\PinballApi\PinballApi\bin\Debug\HtmlAgilityPack.xml
+C:\dev\PinballApi\PinballApi\obj\Debug\PinballApi.dll
+C:\dev\PinballApi\PinballApi\obj\Debug\PinballApi.pdb

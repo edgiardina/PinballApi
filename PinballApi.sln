@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinballApi", "PinballApi\PinballApi.csproj", "{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinballApi.Tests", "PinballApi.Tests\PinballApi.Tests.csproj", "{9950319E-D99C-444F-9093-C8CF572559F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD3F1434-12D1-40D5-98BF-407DFC4EC5FC}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9950319E-D99C-444F-9093-C8CF572559F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9950319E-D99C-444F-9093-C8CF572559F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9950319E-D99C-444F-9093-C8CF572559F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9950319E-D99C-444F-9093-C8CF572559F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
