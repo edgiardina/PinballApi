@@ -5,7 +5,7 @@ namespace PinballApi.Tests
     [TestFixture]
     public class PinballApiTestFixture
     {
-        PinballApi api = new PinballApi();
+        PinballMachineApi api = new PinballMachineApi();
 
         [Test]
         public void PinballMachines_ShouldReturnAllPinballMachines()

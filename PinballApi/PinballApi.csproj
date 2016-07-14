@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\PinballDatabaseAttribute.cs" />
-    <Compile Include="PinballApi.cs" />
+    <Compile Include="PinballMachineApi.cs" />
     <Compile Include="Models\PinballMachineType.cs" />
     <Compile Include="Models\PinballManufacturer.cs" />
     <Compile Include="Models\PinballMachine.cs" />

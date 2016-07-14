@@ -10,7 +10,7 @@ namespace PinballApi
     /// <summary>
     /// Wrapper around ipdb.org pinball machine data
     /// </summary>
-    public class PinballApi
+    public class PinballMachineApi
     {
         private const string ipdbBaseUrl = "http://ipdb.org/lists.cgi?anonymously=true&list=";
 
