@@ -38,6 +38,10 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ScrapySharp.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ScrapySharp.2.6.2\lib\net45\ScrapySharp.Core.dll</HintPath>
       <Private>True</Private>
@@ -58,11 +62,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\PinballDatabaseAttribute.cs" />
+    <Compile Include="Models\Machine\PinballDatabaseAttribute.cs" />
+    <Compile Include="Models\Player\ChampionshipSeries.cs" />
+    <Compile Include="Models\Player\Event.cs" />
+    <Compile Include="Models\Player\Player.cs" />
+    <Compile Include="Models\Player\PlayerComparison.cs" />
+    <Compile Include="Models\Player\PlayerRecord.cs" />
+    <Compile Include="Models\Player\PlayerSearch.cs" />
+    <Compile Include="Models\Player\PlayerStats.cs" />
+    <Compile Include="Models\Player\Pvp.cs" />
+    <Compile Include="Models\Player\Result.cs" />
+    <Compile Include="Models\Player\Search.cs" />
+    <Compile Include="Models\Player\TournamentResult.cs" />
     <Compile Include="PinballMachineApi.cs" />
-    <Compile Include="Models\PinballMachineType.cs" />
-    <Compile Include="Models\PinballManufacturer.cs" />
-    <Compile Include="Models\PinballMachine.cs" />
+    <Compile Include="Models\Machine\PinballMachineType.cs" />
+    <Compile Include="Models\Machine\PinballManufacturer.cs" />
+    <Compile Include="Models\Machine\PinballMachine.cs" />
+    <Compile Include="PinballRankingApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
