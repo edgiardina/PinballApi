@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace PinballApi.Models.Player
+namespace PinballApi.Models.Ranking
 {
     public class Result
     {

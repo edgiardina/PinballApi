@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace PinballApi.Models.Player
+namespace PinballApi.Models.Ranking
 {
     public class PlayerStats
     {
