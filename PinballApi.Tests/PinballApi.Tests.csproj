@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PinballApiTestFixture.cs" />
+    <Compile Include="IPDBTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPPRTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PinballApi\PinballApi.csproj">
@@ -54,6 +55,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

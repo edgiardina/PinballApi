@@ -3,7 +3,7 @@
 namespace PinballApi.Tests
 {
     [TestFixture]
-    public class PinballApiTestFixture
+    public class IPDBTestFixture
     {
         PinballMachineApi api = new PinballMachineApi();
 
