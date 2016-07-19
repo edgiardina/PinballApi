@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PinballApi.Models;
 using HtmlAgilityPack;
 using ScrapySharp.Extensions;
+using PinballApi.Models.IPDB;
 
 namespace PinballApi
 {
