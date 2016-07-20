@@ -101,6 +101,8 @@
     <Compile Include="Models\IPDB\PinballMachine.cs" />
     <Compile Include="PinballRankingApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\IJsonSerializer.cs" />
+    <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,6 +1,9 @@
 ﻿using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Players;
+using PinballApi.Serialization;
 using RestSharp;
+using RestSharp.Deserializers;
+using RestSharp.Serializers;
 using System;
 using System.Threading.Tasks;
 
@@ -19,6 +22,9 @@ namespace PinballApi
                 throw new ArgumentOutOfRangeException("apiKey", "apiKey cannot be null or empty.");
 
             ApiKey = apiKey;
+            // Override with Newtonsoft JSON Handler
+            //pretty bummed this isn't returning application/json or text/json. 
+            restClient.AddHandler("text/html", NewtonsoftJsonSerializer.Default);
         }
 
         public async Task<PlayerRecord> GetPlayerRecord(int playerId)

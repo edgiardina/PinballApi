@@ -22,7 +22,7 @@ namespace PinballApi.Tests
             int playerId = 6;
             var player = await rankingApi.GetPlayerRecord(playerId);
 
-            Assert.That(player.Player.FirstName == "Josh");
+            Assert.That(player.Player.FirstName == "Jim");
         }
 
     }
