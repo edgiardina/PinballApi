@@ -38,7 +38,7 @@ namespace PinballApi
             return response2.Data;
         }
 
-        public async Task<TournamentResults> GetPlayerResult(int playerId)
+        public async Task<TournamentResults> GetPlayerResults(int playerId)
         {
             var restRequest = GenerateDefaultRestRequest();
             restRequest.Resource += "/{id}/results";

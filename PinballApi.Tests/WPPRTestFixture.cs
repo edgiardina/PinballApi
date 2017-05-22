@@ -19,10 +19,10 @@ namespace PinballApi.Tests
         [Test]
         public async Task Wppr_GetPlayer_ShouldReturnCorrectPlayer()
         {
-            int playerId = 6;
+            int playerId = 16927;
             var player = await rankingApi.GetPlayerRecord(playerId);
 
-            Assert.That(player.Player.FirstName == "Jim");
+            Assert.That(player.Player.FirstName == "Ed");
         }
 
     }
