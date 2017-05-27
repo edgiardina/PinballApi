@@ -1,59 +1,60 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace PinballApi.Models.WPPR.Players
 {
     public class PlayerStats
     {
         [JsonProperty("current_wppr_rank")]
-        public string CurrentWpprRank { get; set; }
+        public int CurrentWpprRank { get; set; }
 
         [JsonProperty("last_month_rank")]
-        public string LastMonthRank { get; set; }
+        public int LastMonthRank { get; set; }
 
         [JsonProperty("last_year_rank")]
-        public string LastYearRank { get; set; }
+        public int LastYearRank { get; set; }
 
         [JsonProperty("highest_rank")]
-        public string HighestRank { get; set; }
+        public int HighestRank { get; set; }
 
         [JsonProperty("highest_rank_date")]
-        public string HighestRankDate { get; set; }
+        public DateTime HighestRankDate { get; set; }
 
         [JsonProperty("current_wppr_value")]
-        public string CurrentWpprValue { get; set; }
+        public double CurrentWpprValue { get; set; }
 
         [JsonProperty("wppr_points_all_time")]
-        public string WpprPointsAllTime { get; set; }
+        public double WpprPointsAllTime { get; set; }
 
         [JsonProperty("best_finish")]
-        public string BestFinish { get; set; }
+        public int BestFinish { get; set; }
 
         [JsonProperty("best_finish_count")]
-        public string BestFinishCount { get; set; }
+        public int BestFinishCount { get; set; }
 
         [JsonProperty("average_finish")]
-        public string AverageFinish { get; set; }
+        public int AverageFinish { get; set; }
 
         [JsonProperty("average_finish_last_year")]
-        public string AverageFinishLastYear { get; set; }
+        public int AverageFinishLastYear { get; set; }
 
         [JsonProperty("total_events_all_time")]
-        public string TotalEventsAllTime { get; set; }
+        public int TotalEventsAllTime { get; set; }
 
         [JsonProperty("total_active_events")]
-        public string TotalActiveEvents { get; set; }
+        public int TotalActiveEvents { get; set; }
 
         [JsonProperty("total_events_away")]
-        public string TotalEventsAway { get; set; }
+        public int TotalEventsAway { get; set; }
 
         [JsonProperty("ratings_rank")]
-        public string RatingsRank { get; set; }
+        public int RatingsRank { get; set; }
 
         [JsonProperty("ratings_value")]
-        public string RatingsValue { get; set; }
+        public double RatingsValue { get; set; }
 
         [JsonProperty("efficiency_rank")]
-        public string EfficiencyRank { get; set; }
+        public int EfficiencyRank { get; set; }
 
         [JsonProperty("efficiency_value")]
         public double EfficiencyValue { get; set; }
