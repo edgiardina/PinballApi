@@ -24,7 +24,7 @@ namespace PinballApi
             ApiKey = apiKey;
             // Override with Newtonsoft JSON Handler
             //pretty bummed this isn't returning application/json or text/json. 
-            restClient.AddHandler("text/html", NewtonsoftJsonSerializer.Default);
+            restClient.AddHandler("text/html", new JsonDeserializer());
         }
 
         public async Task<PlayerRecord> GetPlayerRecord(int playerId)

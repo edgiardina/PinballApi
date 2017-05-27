@@ -29,7 +29,7 @@ namespace PinballApi.Models.WPPR.Players
         public string Initials { get; set; }
 
         [JsonProperty("age")]
-        public int Age { get; set; }
+        public string Age { get; set; }
 
         [JsonProperty("excluded_flag")]
         public string ExcludedFlag { get; set; }

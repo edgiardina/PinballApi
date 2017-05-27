@@ -12,6 +12,6 @@ namespace PinballApi.Models.WPPR.Players
         public PlayerStats PlayerStats { get; set; }
 
         [JsonProperty("championshipSeries")]
-        public IList<ChampionshipSeries> ChampionshipSeries { get; set; }
+        public List<ChampionshipSeries> ChampionshipSeries { get; set; }
     }
 }
