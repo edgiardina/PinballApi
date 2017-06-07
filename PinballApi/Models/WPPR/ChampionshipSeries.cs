@@ -5,7 +5,7 @@ namespace PinballApi.Models.WPPR
     public class ChampionshipSeries
     {
         [JsonProperty("view_id")]
-        public string ViewId { get; set; }
+        public int ViewId { get; set; }
 
         [JsonProperty("group_code")]
         public string GroupCode { get; set; }
@@ -14,7 +14,7 @@ namespace PinballApi.Models.WPPR
         public string GroupName { get; set; }
 
         [JsonProperty("rank")]
-        public string Rank { get; set; }
+        public int Rank { get; set; }
 
         [JsonProperty("country_name")]
         public string CountryName { get; set; }
