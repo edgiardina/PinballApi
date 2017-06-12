@@ -47,6 +47,7 @@ namespace PinballApi.Models.WPPR.Players
         [JsonProperty("total_events_away")]
         public int TotalEventsAway { get; set; }
 
+        //TODO: These four properties fail to load if you view a suppressed player. 
         [JsonProperty("ratings_rank")]
         public int RatingsRank { get; set; }
 

@@ -9,6 +9,6 @@ namespace PinballApi.Models.WPPR.Players
         public string Query { get; set; }
 
         [JsonProperty("search")]
-        public IList<Search> Search { get; set; }
+        public List<Search> Search { get; set; }
     }
 }

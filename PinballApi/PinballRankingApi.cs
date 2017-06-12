@@ -49,6 +49,28 @@ namespace PinballApi
             return response2.Data;
         }
 
+        public async Task<PlayerSearch> SearchForPlayerByName(string name)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/search";
+            restRequest.AddUrlSegment("route", "player");
+            restRequest.AddQueryParameter("q", name);
+
+            var response2 = await restClient.ExecuteTaskAsync<PlayerSearch>(restRequest);
+            return response2.Data;
+        }
+
+        public async Task<PlayerSearch> SearchForPlayerByEmail(string email)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/search";
+            restRequest.AddUrlSegment("route", "player");
+            restRequest.AddQueryParameter("email", email);
+
+            var response2 = await restClient.ExecuteTaskAsync<PlayerSearch>(restRequest);
+            return response2.Data;
+        }
+
 
 
         private RestRequest GenerateDefaultRestRequest()
