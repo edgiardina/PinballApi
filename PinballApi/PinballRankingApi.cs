@@ -1,9 +1,7 @@
 ﻿using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Players;
-using PinballApi.Serialization;
 using RestSharp;
 using RestSharp.Deserializers;
-using RestSharp.Serializers;
 using System;
 using System.Threading.Tasks;
 

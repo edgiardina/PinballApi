@@ -28,6 +28,15 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task Wppr_GetPlayer_ShouldRespectInvalidPlayerId()
+        {
+            int playerId = 999999;
+            var player = await rankingApi.GetPlayerRecord(playerId);
+
+            Assert.That(player == null);
+        }
+
+        [Test]
         public async Task Wppr_GetPlayer_ShouldHandleSuppressedPlayer()
         {
             PlayerRecord player = null;
