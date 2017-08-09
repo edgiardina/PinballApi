@@ -75,5 +75,16 @@ namespace PinballApi.Tests
             Assert.That(search.Search.First().CountryName == "Australia");
         }
 
+        [Test]
+        public async Task Wppr_GetPlayer_ShouldReturnPlayerHistory()
+        {
+            int playerId = 16927;
+            var player = await rankingApi.GetPlayerHistory(playerId);
+
+            Assert.That(player.Player.FirstName == "Ed");
+            Assert.That(player.RankHistory.Count > 0);
+            Assert.That(player.RatingHistory.Count > 0);
+        }
+
     }
 }

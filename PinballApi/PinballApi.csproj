@@ -71,9 +71,12 @@
     <Compile Include="Models\WPPR\Event.cs" />
     <Compile Include="Models\WPPR\Players\Player.cs" />
     <Compile Include="Models\WPPR\Players\PlayerComparison.cs" />
+    <Compile Include="Models\WPPR\Players\PlayerHistory.cs" />
     <Compile Include="Models\WPPR\Players\PlayerRecord.cs" />
     <Compile Include="Models\WPPR\Players\PlayerSearch.cs" />
     <Compile Include="Models\WPPR\Players\PlayerStats.cs" />
+    <Compile Include="Models\WPPR\Players\RankHistory.cs" />
+    <Compile Include="Models\WPPR\Players\RatingHistory.cs" />
     <Compile Include="Models\WPPR\Pvp.cs" />
     <Compile Include="Models\WPPR\Ranking.cs" />
     <Compile Include="Models\WPPR\RankingList.cs" />
