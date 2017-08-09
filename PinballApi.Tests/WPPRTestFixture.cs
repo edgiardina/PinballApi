@@ -67,5 +67,13 @@ namespace PinballApi.Tests
             Assert.That(search.Search.Single().FirstName == "Ed");
         }
 
+        [Test]
+        public async Task Wppr_GetCountryDirectors()
+        {
+            var search = await rankingApi.GetCountryDirectors();
+
+            Assert.That(search.Search.First().CountryName == "Australia");
+        }
+
     }
 }

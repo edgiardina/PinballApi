@@ -69,6 +69,16 @@ namespace PinballApi
             return response2.Data;
         }
 
+        public async Task<PlayerSearch> GetCountryDirectors()
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/country_directors";
+            restRequest.AddUrlSegment("route", "player");
+
+            var response2 = await restClient.ExecuteTaskAsync<PlayerSearch>(restRequest);
+            return response2.Data;
+        }
+
 
 
         private RestRequest GenerateDefaultRestRequest()
