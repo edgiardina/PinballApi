@@ -49,6 +49,17 @@ namespace PinballApi
             return response2.Data;
         }
 
+        public async Task<PlayerComparisons> GetPlayerComparisons(int playerId)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/{id}/pvp";
+            restRequest.AddUrlSegment("route", "player");
+            restRequest.AddUrlSegment("id", playerId.ToString());
+
+            var response2 = await restClient.ExecuteTaskAsync<PlayerComparisons>(restRequest);
+            return response2.Data;
+        }
+
         public async Task<PlayerSearch> SearchForPlayerByName(string name)
         {
             var restRequest = GenerateDefaultRestRequest();
@@ -98,7 +109,7 @@ namespace PinballApi
         {
             RestRequest restRequest = new RestRequest(Method.GET);
             restRequest.RequestFormat = DataFormat.Json;
-            restRequest.Resource = "v1/{route}";
+            restRequest.Resource = "{version}/{route}";
             restRequest.AddUrlSegment("version", apiVersion);
             restRequest.AddQueryParameter("api_key", ApiKey);
             return restRequest;

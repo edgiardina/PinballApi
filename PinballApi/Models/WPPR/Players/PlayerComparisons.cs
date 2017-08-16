@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.Players
 {
-    public class PlayerComparison
+    public class PlayerComparisons
     {
         [JsonProperty("player_id")]
         public int PlayerId { get; set; }
@@ -12,6 +12,6 @@ namespace PinballApi.Models.WPPR.Players
         public int TotalCompetitors { get; set; }
 
         [JsonProperty("pvp")]
-        public IList<Pvp> Pvp { get; set; }
+        public List<PlayerVersusRecord> PlayerVersusRecord { get; set; }
     }
 }

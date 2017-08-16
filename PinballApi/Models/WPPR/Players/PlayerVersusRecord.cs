@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace PinballApi.Models.WPPR
+namespace PinballApi.Models.WPPR.Players
 {
-    public class Pvp
+    public class PlayerVersusRecord
     {
         [JsonProperty("player_id")]
         public string PlayerId { get; set; }

@@ -49,6 +49,16 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task Wppr_GetPlayerComparisons()
+        {
+            int playerId = 16927;
+            var comparisons = await rankingApi.GetPlayerComparisons(playerId);
+
+            Assert.That(comparisons.TotalCompetitors, Is.GreaterThan(0));
+            Assert.That(comparisons.TotalCompetitors, Is.EqualTo(comparisons.PlayerVersusRecord.Count()));
+        }
+
+        [Test]
         public async Task Wppr_SearchPlayer_ByName()
         {
             var name = "J Sharpe";
