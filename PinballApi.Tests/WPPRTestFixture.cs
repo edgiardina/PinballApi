@@ -96,5 +96,14 @@ namespace PinballApi.Tests
             Assert.That(player.RatingHistory.Count > 0);
         }
 
+        [Test]
+        public async Task Wppr_GetTournament_ShouldReturnTournament()
+        {
+            int tournamentId = 18411;
+            var tournament = await rankingApi.GetTournament(tournamentId);
+
+            Assert.That(tournament.TournamentName, Is.EqualTo("PAPA World Pinball Championships"));
+        }
+
     }
 }

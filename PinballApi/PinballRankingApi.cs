@@ -1,5 +1,6 @@
 ﻿using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Players;
+using PinballApi.Models.WPPR.Tournaments;
 using RestSharp;
 using RestSharp.Deserializers;
 using System;
@@ -101,6 +102,21 @@ namespace PinballApi
 
             var response2 = await restClient.ExecuteTaskAsync<PlayerHistory>(restRequest);
             return response2.Data;
+        }
+
+        #endregion
+
+        #region tournament
+
+        public async Task<Tournament> GetTournament(int tournamentId)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/{id}";
+            restRequest.AddUrlSegment("route", "tournament");
+            restRequest.AddUrlSegment("id", tournamentId.ToString());
+
+            var response2 = await restClient.ExecuteTaskAsync<TournamentRequest>(restRequest);
+            return response2.Data.Tournament;
         }
 
         #endregion

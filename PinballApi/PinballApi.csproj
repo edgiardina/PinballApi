@@ -95,7 +95,9 @@
     <Compile Include="Models\WPPR\Statistics\PointsThisYear.cs" />
     <Compile Include="Models\WPPR\Statistics\PointsThisYearStat.cs" />
     <Compile Include="Models\WPPR\Tournaments\Tournament.cs" />
+    <Compile Include="Models\WPPR\Tournaments\TournamentEvent.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentList.cs" />
+    <Compile Include="Models\WPPR\Tournaments\TournamentRequest.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentResult.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentSearch.cs" />
     <Compile Include="PinballMachineApi.cs" />

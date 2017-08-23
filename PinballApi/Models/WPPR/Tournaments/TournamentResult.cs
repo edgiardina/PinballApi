@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace PinballApi.Models.WPPR
+namespace PinballApi.Models.WPPR.Tournaments
 {
     public class TournamentResults
     {
