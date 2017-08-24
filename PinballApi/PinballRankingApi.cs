@@ -23,6 +23,7 @@ namespace PinballApi
             ApiKey = apiKey;
             // Override with Newtonsoft JSON Handler
             //pretty bummed this isn't returning application/json or text/json. 
+
             restClient.AddHandler("text/html", new JsonDeserializer());
         }
 
@@ -39,14 +40,14 @@ namespace PinballApi
             return response2.Data;
         }
 
-        public async Task<TournamentResults> GetPlayerResults(int playerId)
+        public async Task<PlayerResult> GetPlayerResults(int playerId)
         {
             var restRequest = GenerateDefaultRestRequest();
             restRequest.Resource += "/{id}/results";
             restRequest.AddUrlSegment("route", "player");
             restRequest.AddUrlSegment("id", playerId.ToString());
 
-            var response2 = await restClient.ExecuteTaskAsync<TournamentResults>(restRequest);
+            var response2 = await restClient.ExecuteTaskAsync<PlayerResult>(restRequest);
             return response2.Data;
         }
 
@@ -114,9 +115,22 @@ namespace PinballApi
             restRequest.Resource += "/{id}";
             restRequest.AddUrlSegment("route", "tournament");
             restRequest.AddUrlSegment("id", tournamentId.ToString());
+            restRequest.RootElement = "tournament";
 
-            var response2 = await restClient.ExecuteTaskAsync<TournamentRequest>(restRequest);
-            return response2.Data.Tournament;
+            var response2 = await restClient.ExecuteTaskAsync<Tournament>(restRequest);
+            return response2.Data;
+        }
+
+        public async Task<TournamentResult> GetTournamentResults(int eventId)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/{id}/results";
+            restRequest.AddUrlSegment("route", "tournament");
+            restRequest.AddUrlSegment("id", eventId.ToString());
+            restRequest.RootElement = "tournament";
+
+            var response2 = await restClient.ExecuteTaskAsync<TournamentResult>(restRequest);
+            return response2.Data;
         }
 
         #endregion

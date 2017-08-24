@@ -78,6 +78,7 @@
     <Compile Include="Models\WPPR\Players\RankHistory.cs" />
     <Compile Include="Models\WPPR\Players\RatingHistory.cs" />
     <Compile Include="Models\WPPR\Players\PlayerVersusRecord.cs" />
+    <Compile Include="Models\WPPR\Players\Result.cs" />
     <Compile Include="Models\WPPR\Ranking.cs" />
     <Compile Include="Models\WPPR\RankingList.cs" />
     <Compile Include="Models\WPPR\Tournaments\Result.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="Models\WPPR\Tournaments\Tournament.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentEvent.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentList.cs" />
-    <Compile Include="Models\WPPR\Tournaments\TournamentRequest.cs" />
+    <Compile Include="Models\WPPR\Players\PlayerResult.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentResult.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentSearch.cs" />
     <Compile Include="PinballMachineApi.cs" />
