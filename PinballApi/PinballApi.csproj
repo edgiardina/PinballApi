@@ -102,6 +102,7 @@
     <Compile Include="Models\WPPR\Tournaments\TournamentListItem.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentResult.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentSearch.cs" />
+    <Compile Include="Models\WPPR\Tournaments\TournamentSearchItem.cs" />
     <Compile Include="PinballMachineApi.cs" />
     <Compile Include="Models\IPDB\PinballMachineType.cs" />
     <Compile Include="Models\IPDB\PinballManufacturer.cs" />

@@ -115,11 +115,20 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wpp_GetTournamentList_ShouldReturnList()
+        public async Task Wppr_GetTournamentList_ShouldReturnList()
         {
             var tournamentList = await rankingApi.GetTournamentList();
 
             Assert.AreEqual(tournamentList.Tournament.Count, 50);
+        }
+
+        [Test]
+        public async Task Wppr_SearchForTournament_ShouldReturnTournament()
+        {
+            var searchStr = "PAPA";
+            var tournamentSearch = await rankingApi.TournamentSearch(searchStr);
+
+            Assert.That(tournamentSearch.Search, Is.EqualTo(searchStr));
         }
 
     }

@@ -162,6 +162,17 @@ namespace PinballApi
             return response2.Data;
         }
 
+        public async Task<TournamentSearch> TournamentSearch(string tournamentName)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/search";
+            restRequest.AddUrlSegment("route", "tournament");
+            restRequest.AddQueryParameter("q", tournamentName);
+
+            var response2 = await restClient.ExecuteTaskAsync<TournamentSearch>(restRequest);
+            return response2.Data;
+        }
+
         #endregion
 
         private RestRequest GenerateDefaultRestRequest()
