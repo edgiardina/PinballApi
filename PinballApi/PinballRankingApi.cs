@@ -121,15 +121,44 @@ namespace PinballApi
             return response2.Data;
         }
 
-        public async Task<TournamentResult> GetTournamentResults(int eventId)
+        public async Task<TournamentResult> GetTournamentResults(int tournamentId, int? eventId = null, DateTime? tournamentDate = null)
         {
             var restRequest = GenerateDefaultRestRequest();
             restRequest.Resource += "/{id}/results";
             restRequest.AddUrlSegment("route", "tournament");
-            restRequest.AddUrlSegment("id", eventId.ToString());
+            restRequest.AddUrlSegment("id", tournamentId.ToString());
+
+            if(eventId.HasValue)
+                restRequest.AddQueryParameter("event_id", eventId.Value.ToString());
+
+            if(tournamentDate.HasValue)
+                restRequest.AddQueryParameter("tour_date", tournamentDate.Value.ToString("yyyy-MM-dd"));
+
             restRequest.RootElement = "tournament";
 
             var response2 = await restClient.ExecuteTaskAsync<TournamentResult>(restRequest);
+            return response2.Data;
+        }
+
+        public async Task<TournamentList> GetTournamentList(int startPosition = 1, int count = 50)
+        {
+            if (count > 250 || count < 1)
+                throw new ArgumentException("Count must be less than or equal to 250", "count");
+
+            if(startPosition < 1)
+                throw new ArgumentException("Start Positon must be a positive integer", "startPosition");
+
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/list";
+            restRequest.AddUrlSegment("route", "tournament");
+
+            if (startPosition > 1)
+                restRequest.AddQueryParameter("start_pos", startPosition.ToString());
+
+            if (count != 50)
+                restRequest.AddQueryParameter("count", count.ToString());
+            
+            var response2 = await restClient.ExecuteTaskAsync<TournamentList>(restRequest);
             return response2.Data;
         }
 

@@ -7,9 +7,9 @@ namespace PinballApi.Models.WPPR
     public class TournamentList
     {
         [JsonProperty("tournament")]
-        public IList<Tournament> Tournament { get; set; }
+        public List<TournamentListItem> Tournament { get; set; }
 
         [JsonProperty("Total_Results")]
-        public string TotalResults { get; set; }
+        public int TotalResults { get; set; }
     }
 }

@@ -104,8 +104,7 @@ namespace PinballApi.Tests
 
             Assert.That(tournament.TournamentName, Is.EqualTo("PAPA World Pinball Championships"));
         }
-
-
+        
         [Test]
         public async Task Wppr_GetTournamentResults_ShouldReturnResults()
         {
@@ -113,6 +112,14 @@ namespace PinballApi.Tests
             var tournamentResults = await rankingApi.GetTournamentResults(tournamentId);
 
             Assert.That(tournamentResults.TournamentName, Is.EqualTo("PAPA World Pinball Championships"));
+        }
+
+        [Test]
+        public async Task Wpp_GetTournamentList_ShouldReturnList()
+        {
+            var tournamentList = await rankingApi.GetTournamentList();
+
+            Assert.AreEqual(tournamentList.Tournament.Count, 50);
         }
 
     }
