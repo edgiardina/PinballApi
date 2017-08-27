@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace PinballApi.Models.WPPR
+namespace PinballApi.Models.WPPR.Rankings
 {
     public class RankingList
     {
@@ -12,6 +12,6 @@ namespace PinballApi.Models.WPPR
         public string SubCategory { get; set; }
 
         [JsonProperty("rankings")]
-        public IList<Ranking> Rankings { get; set; }
+        public List<Ranking> Rankings { get; set; }
     }
 }

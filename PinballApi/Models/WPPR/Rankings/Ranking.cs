@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
 
-namespace PinballApi.Models.WPPR
+namespace PinballApi.Models.WPPR.Rankings
 {
     public class Ranking
     {
         [JsonProperty("player_id")]
-        public string PlayerId { get; set; }
+        public int PlayerId { get; set; }
 
         [JsonProperty("first_name")]
         public string FirstName { get; set; }
@@ -29,30 +29,30 @@ namespace PinballApi.Models.WPPR
         public string City { get; set; }
 
         [JsonProperty("wppr_points")]
-        public string WpprPoints { get; set; }
+        public double WpprPoints { get; set; }
 
         [JsonProperty("current_wppr_rank")]
-        public string CurrentWpprRank { get; set; }
+        public int CurrentWpprRank { get; set; }
 
         [JsonProperty("last_month_rank")]
-        public string LastMonthRank { get; set; }
+        public int LastMonthRank { get; set; }
 
         [JsonProperty("rating_value")]
-        public string RatingValue { get; set; }
+        public double RatingValue { get; set; }
 
         [JsonProperty("efficiency_percent")]
-        public string EfficiencyPercent { get; set; }
+        public double EfficiencyPercent { get; set; }
 
         [JsonProperty("event_count")]
-        public string EventCount { get; set; }
+        public int EventCount { get; set; }
 
         [JsonProperty("best_finish")]
         public string BestFinish { get; set; }
 
         [JsonProperty("best_finish_position")]
-        public string BestFinishPosition { get; set; }
+        public int BestFinishPosition { get; set; }
 
         [JsonProperty("best_tournament_id")]
-        public string BestTournamentId { get; set; }
+        public int BestTournamentId { get; set; }
     }
 }

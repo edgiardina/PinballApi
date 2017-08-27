@@ -131,5 +131,16 @@ namespace PinballApi.Tests
             Assert.That(tournamentSearch.Search, Is.EqualTo(searchStr));
         }
 
+        [Test]
+        public async Task Wppr_GetRankings_ShouldReturnRankings()
+        {
+            var totalrecords = 75;
+            var startpos = 5;
+
+            var rankings = await rankingApi.GetRankings(startpos, totalrecords);
+            Assert.That(rankings.Rankings.Count, Is.EqualTo(totalrecords));
+            Assert.That(rankings.Rankings.First().CurrentWpprRank, Is.EqualTo(startpos));
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Players;
+using PinballApi.Models.WPPR.Rankings;
 using PinballApi.Models.WPPR.Tournaments;
 using RestSharp;
 using RestSharp.Deserializers;
@@ -170,6 +171,23 @@ namespace PinballApi
             restRequest.AddQueryParameter("q", tournamentName);
 
             var response2 = await restClient.ExecuteTaskAsync<TournamentSearch>(restRequest);
+            return response2.Data;
+        }
+
+        #endregion
+
+        #region ranking
+
+        public async Task<RankingList> GetRankings(int startPosition = 1, int count = 50, RankingOrder order = RankingOrder.points)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            //restRequest.Resource += "/";
+            restRequest.AddUrlSegment("route", "rankings");
+            restRequest.AddQueryParameter("start_pos", startPosition.ToString());
+            restRequest.AddQueryParameter("count", count.ToString());
+            restRequest.AddQueryParameter("order", Enum.GetName(typeof(RankingOrder), order));
+
+            var response2 = await restClient.ExecuteTaskAsync<RankingList>(restRequest);
             return response2.Data;
         }
 
