@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using PinballApi.Models.WPPR.Players;
+using System;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
@@ -148,8 +149,19 @@ namespace PinballApi.Tests
             var country = "Sweden";
             var calendar = await rankingApi.GetActiveCalendar(country);
 
-            Assert.That(calendar.Calendar.All(n => n.CountryName == country));
 
+            Assert.That(calendar.Calendar.All(n => n.CountryName == country));
+            Assert.That(calendar.Calendar.All(n => n.EndDate >= DateTime.Now));
+        }
+
+        [Test]
+        public async Task Wpp_GetHistoryCalendar_ShouldReturnHistoryCalendar()
+        {
+            var country = "Sweden";
+            var calendar = await rankingApi.GetCalendarHistory(country);
+
+            Assert.That(calendar.Calendar.All(n => n.CountryName == country));
+            Assert.That(calendar.Calendar.All(n => n.EndDate < DateTime.Now));
         }
 
     }

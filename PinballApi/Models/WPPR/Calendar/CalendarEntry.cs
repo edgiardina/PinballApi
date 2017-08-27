@@ -39,6 +39,6 @@ namespace PinballApi.Models.WPPR.Calendar
         public DateTime StartDate { get; set; }
 
         [JsonProperty("end_date")]
-        public DateTime end_date { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

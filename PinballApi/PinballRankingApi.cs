@@ -209,6 +209,19 @@ namespace PinballApi
             return response2.Data;
         }
 
+        public async Task<CalendarList> GetCalendarHistory(string country = null)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/history";
+            restRequest.AddUrlSegment("route", "calendar");
+
+            if (!string.IsNullOrEmpty(country))
+                restRequest.AddQueryParameter("country", country);
+
+            var response2 = await restClient.ExecuteTaskAsync<CalendarList>(restRequest);
+            return response2.Data;
+        }
+
         #endregion
 
         private RestRequest GenerateDefaultRestRequest()
