@@ -1,10 +1,12 @@
 ﻿using PinballApi.Models.WPPR;
+using PinballApi.Models.WPPR.Calendar;
 using PinballApi.Models.WPPR.Players;
 using PinballApi.Models.WPPR.Rankings;
 using PinballApi.Models.WPPR.Tournaments;
 using RestSharp;
 using RestSharp.Deserializers;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PinballApi
@@ -181,13 +183,29 @@ namespace PinballApi
         public async Task<RankingList> GetRankings(int startPosition = 1, int count = 50, RankingOrder order = RankingOrder.points)
         {
             var restRequest = GenerateDefaultRestRequest();
-            //restRequest.Resource += "/";
             restRequest.AddUrlSegment("route", "rankings");
             restRequest.AddQueryParameter("start_pos", startPosition.ToString());
             restRequest.AddQueryParameter("count", count.ToString());
             restRequest.AddQueryParameter("order", Enum.GetName(typeof(RankingOrder), order));
 
             var response2 = await restClient.ExecuteTaskAsync<RankingList>(restRequest);
+            return response2.Data;
+        }
+
+        #endregion
+
+        #region calendar
+
+        public async Task<CalendarList> GetActiveCalendar(string country = null)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/active";
+            restRequest.AddUrlSegment("route", "calendar");
+
+            if (!string.IsNullOrEmpty(country))
+                restRequest.AddQueryParameter("country", country);
+
+            var response2 = await restClient.ExecuteTaskAsync<CalendarList>(restRequest);
             return response2.Data;
         }
 

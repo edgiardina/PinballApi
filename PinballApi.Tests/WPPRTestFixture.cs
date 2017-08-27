@@ -142,5 +142,15 @@ namespace PinballApi.Tests
             Assert.That(rankings.Rankings.First().CurrentWpprRank, Is.EqualTo(startpos));
         }
 
+        [Test]
+        public async Task Wpp_GetActiveCalendar_ShouldReturnActiveCalendar()
+        {
+            var country = "Sweden";
+            var calendar = await rankingApi.GetActiveCalendar(country);
+
+            Assert.That(calendar.Calendar.All(n => n.CountryName == country));
+
+        }
+
     }
 }
