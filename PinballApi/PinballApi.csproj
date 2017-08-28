@@ -67,9 +67,12 @@
   <ItemGroup>
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Models\IPDB\PinballDatabaseAttribute.cs" />
+    <Compile Include="Models\WPPR\Calendar\CalendarDetails.cs" />
     <Compile Include="Models\WPPR\Calendar\CalendarEntry.cs" />
+    <Compile Include="Models\WPPR\Calendar\CalenderItem.cs" />
     <Compile Include="Models\WPPR\Calendar\Country.cs" />
     <Compile Include="Models\WPPR\Calendar\CalendarList.cs" />
+    <Compile Include="Models\WPPR\Calendar\Date.cs" />
     <Compile Include="Models\WPPR\Calendar\Month.cs" />
     <Compile Include="Models\WPPR\ChampionshipSeries.cs" />
     <Compile Include="Models\WPPR\Event.cs" />

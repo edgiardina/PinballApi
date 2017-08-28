@@ -164,5 +164,14 @@ namespace PinballApi.Tests
             Assert.That(calendar.Calendar.All(n => n.EndDate < DateTime.Now));
         }
 
+        [Test]
+        public async Task Wpp_GetCalendarById_ShouldReturnCalendar()
+        {
+            var calendarId = 19551;
+            var calendar = await rankingApi.GetCalendarById(calendarId);
+
+            Assert.That(calendar.Calendar.First().CalendarId, Is.EqualTo(calendarId));
+            Assert.That(calendar.Calendar.First().TournamentName, Is.EqualTo("The Racket Fortnightly"));
+        }
     }
 }

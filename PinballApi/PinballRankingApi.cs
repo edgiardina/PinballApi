@@ -222,6 +222,17 @@ namespace PinballApi
             return response2.Data;
         }
 
+        public async Task<CalenderItem> GetCalendarById(int calendarId)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/{id}";
+            restRequest.AddUrlSegment("route", "calendar");
+            restRequest.AddUrlSegment("id", calendarId.ToString());
+
+            var response2 = await restClient.ExecuteTaskAsync<CalenderItem>(restRequest);
+            return response2.Data;
+        }
+
         #endregion
 
         private RestRequest GenerateDefaultRestRequest()
