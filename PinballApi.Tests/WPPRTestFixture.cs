@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using PinballApi.Models.WPPR.Calendar;
 using PinballApi.Models.WPPR.Players;
 using System;
 using System.Configuration;
@@ -173,5 +174,19 @@ namespace PinballApi.Tests
             Assert.That(calendar.Calendar.First().CalendarId, Is.EqualTo(calendarId));
             Assert.That(calendar.Calendar.First().TournamentName, Is.EqualTo("The Racket Fortnightly"));
         }
+
+        [Test]
+        public async Task Wppr_GetCalendarSearch_ShouldReturnCalendar()
+        {
+            var address = "Providence, RI";
+            var distance = 250;
+            var units = DistanceUnit.Miles;
+
+            var calendar = await rankingApi.GetCalendarSearch(address, distance, units);
+
+            Assert.That(calendar.TotalEntries, Is.GreaterThan(0));
+
+        }
+
     }
 }

@@ -233,6 +233,24 @@ namespace PinballApi
             return response2.Data;
         }
 
+
+        public async Task<CalendarSearch> GetCalendarSearch(string address, int distance, DistanceUnit units)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/search";
+            restRequest.AddUrlSegment("route", "calendar");
+            restRequest.AddQueryParameter("address", address);
+
+            if (units == DistanceUnit.Kilometers)
+                restRequest.AddQueryParameter("k", distance.ToString());
+            else
+                restRequest.AddQueryParameter("m", distance.ToString());
+
+            var response2 = await restClient.ExecuteTaskAsync<CalendarSearch>(restRequest);
+            return response2.Data;
+        }
+
+
         #endregion
 
         private RestRequest GenerateDefaultRestRequest()

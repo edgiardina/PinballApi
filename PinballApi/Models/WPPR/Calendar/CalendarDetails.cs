@@ -55,5 +55,14 @@ namespace PinballApi.Models.WPPR.Calendar
         
         [JsonProperty("private_flag")]
         public string PrivateFlag { get; set; }
+
+        [JsonProperty("distance")]
+        public int Distance { get; set; }
+
+        [JsonProperty("average_players")]
+        public string AveragePlayers { get; set; }
+
+        [JsonProperty("average_points")]
+        public string AveragePoints { get; set; }
     }
 }
