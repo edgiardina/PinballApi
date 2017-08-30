@@ -36,19 +36,19 @@ namespace PinballApi.Models.WPPR.Calendar
         public string Website { get; set; }
         
         [JsonProperty("start_date")]
-        public DateTime start_date { get; set; }
+        public DateTime StartDate { get; set; }
 
         [JsonProperty("end_date")]
-        public DateTime end_date { get; set; }
+        public DateTime EndDate { get; set; }
 
         [JsonProperty("director_name")]
         public string DirectorName { get; set; }
         
         [JsonProperty("latitude")]
-        public double latitude { get; set; }
+        public double Latitude { get; set; }
 
         [JsonProperty("longitude")]
-        public double longitude { get; set; }
+        public double Longitude { get; set; }
 
         [JsonProperty("details")]
         public string Details { get; set; }
