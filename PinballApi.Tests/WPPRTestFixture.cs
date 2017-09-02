@@ -200,5 +200,53 @@ namespace PinballApi.Tests
 
         }
 
+        [Test]
+        public async Task Wppr_GetPointsThisYearStat()
+        {
+            var stat = await rankingApi.GetPointsThisYearStats();
+
+            Assert.That(stat.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task Wppr_GetMostEventsStat()
+        {
+            var stat = await rankingApi.GetMostEventsStats();
+
+            Assert.That(stat.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task Wppr_GetPlayersByCountryStat()
+        {
+            var stat = await rankingApi.GetPlayersByCountryStat();
+
+            Assert.That(stat.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task Wppr_GetEventsPerYearStat()
+        {
+            var stat = await rankingApi.GetEventsPerYearStat();
+
+            Assert.That(stat.Count, Is.GreaterThan(0));
+        }
+        
+        [Test]
+        public async Task Wppr_GetPlayersPerYearStat()
+        {
+            var stat = await rankingApi.GetPlayersPerYearStat();
+
+            Assert.That(stat.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task Wppr_GetBiggestMoversStat()
+        {
+            var stat = await rankingApi.GetBiggestMoversStat();
+
+            Assert.That(stat.Count, Is.GreaterThan(0));
+        }
+
     }
 }

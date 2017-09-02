@@ -95,17 +95,11 @@
     <Compile Include="Models\WPPR\Rankings\RankingOrder.cs" />
     <Compile Include="Models\WPPR\Tournaments\Result.cs" />
     <Compile Include="Models\WPPR\Players\Search.cs" />
-    <Compile Include="Models\WPPR\Statistics\BiggestMovers.cs" />
     <Compile Include="Models\WPPR\Statistics\BiggestMoversStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\EventsByYear.cs" />
     <Compile Include="Models\WPPR\Statistics\EventsByYearStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\MostEvents.cs" />
     <Compile Include="Models\WPPR\Statistics\MostEventsStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\PlayersByCountry.cs" />
     <Compile Include="Models\WPPR\Statistics\PlayersByCountryStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\PlayersByYear.cs" />
     <Compile Include="Models\WPPR\Statistics\PlayersByYearStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\PointsThisYear.cs" />
     <Compile Include="Models\WPPR\Statistics\PointsThisYearStat.cs" />
     <Compile Include="Models\WPPR\Tournaments\Tournament.cs" />
     <Compile Include="Models\WPPR\Tournaments\TournamentEvent.cs" />

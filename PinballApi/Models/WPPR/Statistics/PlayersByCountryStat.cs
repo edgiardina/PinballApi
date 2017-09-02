@@ -11,7 +11,7 @@ namespace PinballApi.Models.WPPR.Statistics
         public string CountryCode { get; set; }
 
         [JsonProperty("count")]
-        public string Count { get; set; }
+        public int Count { get; set; }
 
         [JsonProperty("stats_rank")]
         public int StatsRank { get; set; }

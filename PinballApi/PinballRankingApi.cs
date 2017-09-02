@@ -3,6 +3,7 @@ using PinballApi.Models.WPPR.Calendar;
 using PinballApi.Models.WPPR.Players;
 using PinballApi.Models.WPPR.Pvp;
 using PinballApi.Models.WPPR.Rankings;
+using PinballApi.Models.WPPR.Statistics;
 using PinballApi.Models.WPPR.Tournaments;
 using RestSharp;
 using RestSharp.Deserializers;
@@ -264,6 +265,76 @@ namespace PinballApi
             restRequest.AddQueryParameter("p2", playerTwoId.ToString());
 
             var response2 = await restClient.ExecuteTaskAsync<PlayerComparison>(restRequest);
+            return response2.Data;
+        }
+
+        #endregion
+
+        #region stats
+
+        public async Task<List<PointsThisYearStat>> GetPointsThisYearStats()
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/points_this_year";
+            restRequest.AddUrlSegment("route", "stats");
+            restRequest.RootElement = "stats";
+
+            var response2 = await restClient.ExecuteTaskAsync<List<PointsThisYearStat>>(restRequest);
+            return response2.Data;
+        }
+
+        public async Task<List<MostEventsStat>> GetMostEventsStats()
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/most_events";
+            restRequest.AddUrlSegment("route", "stats");
+            restRequest.RootElement = "stats";
+
+            var response2 = await restClient.ExecuteTaskAsync<List<MostEventsStat>>(restRequest);
+            return response2.Data;
+        }
+
+        public async Task<List<PlayersByCountryStat>> GetPlayersByCountryStat()
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/country_players";
+            restRequest.AddUrlSegment("route", "stats");
+            restRequest.RootElement = "stats";
+
+            var response2 = await restClient.ExecuteTaskAsync<List<PlayersByCountryStat>>(restRequest);
+            return response2.Data;
+        }
+
+        public async Task<List<EventsByYearStat>> GetEventsPerYearStat()
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/events_by_year";
+            restRequest.AddUrlSegment("route", "stats");
+            restRequest.RootElement = "stats";
+
+            var response2 = await restClient.ExecuteTaskAsync<List<EventsByYearStat>>(restRequest);
+            return response2.Data;
+        }
+
+        public async Task<List<PlayersByYearStat>> GetPlayersPerYearStat()
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/players_by_year";
+            restRequest.AddUrlSegment("route", "stats");
+            restRequest.RootElement = "stats";
+
+            var response2 = await restClient.ExecuteTaskAsync<List<PlayersByYearStat>>(restRequest);
+            return response2.Data;
+        }
+        
+        public async Task<List<BiggestMoversStat>> GetBiggestMoversStat()
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.Resource += "/biggest_movers";
+            restRequest.AddUrlSegment("route", "stats");
+            restRequest.RootElement = "stats";
+
+            var response2 = await restClient.ExecuteTaskAsync<List<BiggestMoversStat>>(restRequest);
             return response2.Data;
         }
 
