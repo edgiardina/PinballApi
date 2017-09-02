@@ -1,6 +1,7 @@
 ﻿using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Calendar;
 using PinballApi.Models.WPPR.Players;
+using PinballApi.Models.WPPR.Pvp;
 using PinballApi.Models.WPPR.Rankings;
 using PinballApi.Models.WPPR.Tournaments;
 using RestSharp;
@@ -250,6 +251,21 @@ namespace PinballApi
             return response2.Data;
         }
 
+
+        #endregion
+
+        #region pvp
+
+        public async Task<PlayerComparison> GetPvp(int playerOneId, int playerTwoId)
+        {
+            var restRequest = GenerateDefaultRestRequest();
+            restRequest.AddUrlSegment("route", "pvp");
+            restRequest.AddQueryParameter("p1", playerOneId.ToString());
+            restRequest.AddQueryParameter("p2", playerTwoId.ToString());
+
+            var response2 = await restClient.ExecuteTaskAsync<PlayerComparison>(restRequest);
+            return response2.Data;
+        }
 
         #endregion
 

@@ -1,5 +1,4 @@
 # PinballApi - .NET API for pinball data  
-## Powered by the IPDB
+## Powered by the IPDB and IFPA
 www.ipdb.org
-## Soon to include IFPA data
-http://www.ifpapinball.com/api/documentation/
+www.ifpapinball.com/api/documentation/

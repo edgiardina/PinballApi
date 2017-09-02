@@ -188,5 +188,17 @@ namespace PinballApi.Tests
 
         }
 
+        [Test]
+        public async Task Wppr_GetPvp_ShouldReturnPvp()
+        {
+            var playerOneId = 16927;
+            var playerTwoId = 19611;
+
+            var pvp = await rankingApi.GetPvp(playerOneId, playerTwoId);
+
+            Assert.That(pvp.Pvp.Count > 0);
+
+        }
+
     }
 }

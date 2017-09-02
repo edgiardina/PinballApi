@@ -88,6 +88,8 @@
     <Compile Include="Models\WPPR\Players\RatingHistory.cs" />
     <Compile Include="Models\WPPR\Players\PlayerVersusRecord.cs" />
     <Compile Include="Models\WPPR\Players\Result.cs" />
+    <Compile Include="Models\WPPR\Pvp\PlayerComparison.cs" />
+    <Compile Include="Models\WPPR\Pvp\Pvp.cs" />
     <Compile Include="Models\WPPR\Rankings\Ranking.cs" />
     <Compile Include="Models\WPPR\Rankings\RankingList.cs" />
     <Compile Include="Models\WPPR\Rankings\RankingOrder.cs" />
