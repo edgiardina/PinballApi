@@ -12,6 +12,6 @@ namespace PinballApi.Models.WPPR.Players
         public int TotalCompetitors { get; set; }
 
         [JsonProperty("pvp")]
-        public List<PlayerVersusRecord> PlayerVersusRecord { get; set; }
+        public List<PlayerVersusRecord> Pvp { get; set; }
     }
 }
