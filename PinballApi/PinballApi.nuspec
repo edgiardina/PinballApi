@@ -12,4 +12,7 @@
     <copyright>Copyright 2017</copyright>
     <tags>pinball pinballapi</tags>
   </metadata>
+  <files>
+    <file src="*.*" target="lib\net45" />
+  </files>
 </package>
