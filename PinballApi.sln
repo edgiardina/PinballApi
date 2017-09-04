@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinballApi", "PinballApi\PinballApi.csproj", "{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}"
 EndProject
@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinballApi.Tests", "Pinball
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD3F1434-12D1-40D5-98BF-407DFC4EC5FC}"
 	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		MyGet.ps1 = MyGet.ps1
 		README.md = README.md
 	EndProjectSection
 EndProject
