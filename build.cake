@@ -2,7 +2,7 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var version = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Version : "0.0.1";
+var version = MyGet.IsRunningOnMyGet ? EnvironmentVariable("PackageVersion") : "0.0.1";
 var releaseBinPath = "./PinballApi/bin/Release";
 var artifactsDirectory = "./artifacts";
 
@@ -28,7 +28,7 @@ Task("UnitTest")
 	.IsDependentOn("Setup")
 	.Does(() => {
 		var resultsFile = artifactsDirectory + "/NUnitResults.xml";
-		NUnit3("./PinballApi/PinballApi.Tests/bin/Release/PinballApi.Tests.dll", new NUnit3Settings()
+		NUnit3("./PinballApi.Tests/bin/Release/PinballApi.Tests.dll", new NUnit3Settings()
 		{
 			Results = resultsFile,
 		});
