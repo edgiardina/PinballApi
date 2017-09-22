@@ -27,14 +27,13 @@ Task("UnitTest")
 	.IsDependentOn("Build")
 	.IsDependentOn("Setup")
 	.Does(() => {
-		var resultsFile = artifactsDirectory + "/NUnitResults.xml";
 		var settings = new NUnit3Settings();
-		settings.OutputFile = resultsFile;
+		settings.NoResults = false;		
 		NUnit3("./PinballApi.Tests/bin/Release/PinballApi.Tests.dll", settings);
 
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
-			AppVeyor.UploadTestResults(resultsFile, AppVeyorTestResultsType.NUnit3);
+			AppVeyor.UploadTestResults("./TestResult.xml", AppVeyorTestResultsType.NUnit3);
 		}
 	});
 
