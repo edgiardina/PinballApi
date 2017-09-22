@@ -5,6 +5,7 @@ var configuration = Argument("configuration", "Release");
 var version = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Version : "0.0.1";
 var releaseBinPath = "./PinballApi/bin/Release";
 var artifactsDirectory = "./artifacts";
+var resultsFile = artifactsDirectory + "/NUnitResults.xml";
 
 Task("Restore-NuGet-Packages")
 	.Does(() => {
@@ -23,22 +24,24 @@ Task("Build")
 			settings.SetConfiguration(configuration));
 	});
 
+	
 Task("UnitTest")
 	.IsDependentOn("Build")
 	.IsDependentOn("Setup")
-	.Does(() => {
-		var resultsFile = artifactsDirectory + "/NUnitResults.xml";
+	.Does(() => {		
 		var settings = new NUnit3Settings();
 		settings.NoResults = false;		
 		settings.Results = new[] { new NUnit3Result { FileName = resultsFile } };   
 		
 		NUnit3("./PinballApi.Tests/bin/Release/PinballApi.Tests.dll", settings);
 
+})
+	.Finally(() => {  
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
 			AppVeyor.UploadTestResults(resultsFile, AppVeyorTestResultsType.NUnit3);
 		}
-	});
+});
 
 Task("Pack")
 	.IsDependentOn("Build")
