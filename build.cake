@@ -6,6 +6,7 @@ var version = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Version 
 var releaseBinPath = "./PinballApi/bin/Release";
 var artifactsDirectory = "./artifacts";
 var resultsFile = artifactsDirectory + "/NUnitResults.xml";
+var wpprKey = Argument("wpprKey", "");
 
 Task("Restore-NuGet-Packages")
 	.Does(() => {
@@ -31,8 +32,16 @@ Task("UnitTest")
 	.Does(() => {		
 		var settings = new NUnit3Settings();
 		settings.NoResults = false;		
-		settings.Results = new[] { new NUnit3Result { FileName = resultsFile } };   
+		settings.Results = new[] { new NUnit3Result { FileName = resultsFile } };   		
 		
+		var config = File("./PinballApi.Tests/bin/Release/PinballApi.Tests.dll.config");	
+		if(AppVeyor.IsRunningOnAppVeyor)
+		{
+			wpprKey = EnvironmentVariable("ifpa-key");
+		}
+		
+		XmlPoke(config, "/configuration/appSettings/add[@key = 'WPPRKey']/@value", wpprKey);
+
 		NUnit3("./PinballApi.Tests/bin/Release/PinballApi.Tests.dll", settings);
 
 })
