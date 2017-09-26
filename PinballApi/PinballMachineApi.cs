@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
-using ScrapySharp.Extensions;
 using PinballApi.Models.IPDB;
 
 namespace PinballApi
@@ -44,7 +43,7 @@ namespace PinballApi
                 PinballMachineType machineType;
                 int players = 0;
 
-                var tds = node.CssSelect("td").ToArray();
+                var tds = node.SelectNodes("/td").ToArray();
                 DateTime.TryParse(tds[2].InnerText, out dateManufactured);
                 Enum.TryParse(tds[4].InnerText, out machineType);
                 int.TryParse(tds[3].InnerText, out players);
@@ -78,7 +77,7 @@ namespace PinballApi
             {
                 int numOfGames = 0;
 
-                var tds = node.CssSelect("td").ToArray();
+                var tds = node.SelectNodes("/td").ToArray();
 
                 int.TryParse(tds[2].InnerText, out numOfGames);
 
@@ -126,7 +125,7 @@ namespace PinballApi
                 HtmlDocument doc = web.Load(ipdbBaseUrl + listKeyword.Trim());
 
                 //First table row contains the headers. ignore.         
-                nodes.AddRange(doc.DocumentNode.CssSelect("table tr").Skip(1));
+                nodes.AddRange(doc.DocumentNode.SelectNodes("//table/tr").Skip(1));
             }
 
             return nodes;

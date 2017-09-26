@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 using PinballApi.Models.WPPR.Calendar;
 using PinballApi.Models.WPPR.Players;
 using System;
@@ -16,7 +17,9 @@ namespace PinballApi.Tests
         [SetUp]
         public void SetUp()
         {
-            var apiKey = ConfigurationSettings.AppSettings["WPPRKey"];
+            var t = new ConfigurationBuilder().AddXmlFile("app.config").Build();
+
+            var apiKey = t["WPPRKey"];
             rankingApi = new PinballRankingApi(apiKey);
         }
 
@@ -50,7 +53,7 @@ namespace PinballApi.Tests
 
             Assert.That(player.Player.FirstName == "Suppresed");
         }
-
+        /*
         [Test]
         public async Task Wppr_GetPlayerComparisons()
         {
@@ -248,6 +251,6 @@ namespace PinballApi.Tests
 
             Assert.That(stat.Count, Is.GreaterThan(0));
         }
-
+        */
     }
 }
