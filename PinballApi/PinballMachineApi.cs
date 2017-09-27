@@ -43,7 +43,7 @@ namespace PinballApi
                 PinballMachineType machineType;
                 int players = 0;
 
-                var tds = node.SelectNodes("/td").ToArray();
+                var tds = node.SelectNodes("td").ToArray();
                 DateTime.TryParse(tds[2].InnerText, out dateManufactured);
                 Enum.TryParse(tds[4].InnerText, out machineType);
                 int.TryParse(tds[3].InnerText, out players);
@@ -77,7 +77,7 @@ namespace PinballApi
             {
                 int numOfGames = 0;
 
-                var tds = node.SelectNodes("/td").ToArray();
+                var tds = node.SelectNodes("td").ToArray();
 
                 int.TryParse(tds[2].InnerText, out numOfGames);
 

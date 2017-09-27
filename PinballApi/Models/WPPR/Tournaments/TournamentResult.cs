@@ -22,10 +22,10 @@ namespace PinballApi.Models.WPPR.Tournaments
         public int PeriodicCount { get; set; }
 
         [JsonProperty("rating_strength")]
-        public double RatingStrength { get; set; }
+        public double? RatingStrength { get; set; }
 
         [JsonProperty("ranking_strength")]
-        public double RankingStrength { get; set; }
+        public double? RankingStrength { get; set; }
 
         [JsonProperty("base_value")]
         public double BaseValue { get; set; }

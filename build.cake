@@ -1,4 +1,5 @@
 ﻿#tool nuget:?package=NUnit.ConsoleRunner&version=3.5.0
+#addin "Cake.FileHelpers"
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -34,15 +35,19 @@ Task("UnitTest")
 		settings.NoResults = false;		
 		settings.Results = new[] { new NUnit3Result { FileName = resultsFile } };   		
 		
-		var config = File("./PinballApi.Tests/bin/Release/PinballApi.Tests.dll.config");	
+		var config = File("./PinballApi.Tests/bin/Release/netcoreapp2.0/appsettings.json");	
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
 			wpprKey = EnvironmentVariable("ifpa-key");
 		}
 		
-		XmlPoke(config, "/configuration/appSettings/add[@key = 'WPPRKey']/@value", wpprKey);
+		string text = TransformTextFile(config, "[", "]")
+					   .WithToken("INSERT YOUR KEY HERE", wpprKey)
+					   .ToString();
 
-		NUnit3("./PinballApi.Tests/bin/Release/PinballApi.Tests.dll", settings);
+		FileWriteText(config, text);
+
+		NUnit3("./PinballApi.Tests/bin/Release/netcoreapp2.0/PinballApi.Tests.dll", settings);
 
 })
 	.Finally(() => {  

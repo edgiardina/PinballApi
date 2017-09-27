@@ -17,7 +17,7 @@ namespace PinballApi.Tests
         [SetUp]
         public void SetUp()
         {
-            var t = new ConfigurationBuilder().AddXmlFile("app.config").Build();
+            var t = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             var apiKey = t["WPPRKey"];
             rankingApi = new PinballRankingApi(apiKey);
@@ -49,11 +49,21 @@ namespace PinballApi.Tests
 
             //Bowen Kerins is self-suppressed
             int playerId = 2;
-            Assert.DoesNotThrow(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
+            Assert.DoesNotThrowAsync(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
 
             Assert.That(player.Player.FirstName == "Suppresed");
         }
-        /*
+
+        [Test]
+        public async Task Wppr_GetPlayerResults_ShouldReturnCorrectPlayer()
+        {
+            int playerId = 16927;
+            var player = await rankingApi.GetPlayerResults(playerId);
+
+            Assert.That(player.ResultsCount, Is.GreaterThan(0));
+            Assert.That(player.PlayerId, Is.EqualTo(playerId));
+        }
+
         [Test]
         public async Task Wppr_GetPlayerComparisons()
         {
@@ -102,6 +112,8 @@ namespace PinballApi.Tests
             Assert.That(player.RatingHistory.Count > 0);
         }
 
+
+
         [Test]
         public async Task Wppr_GetTournament_ShouldReturnTournament()
         {
@@ -110,7 +122,7 @@ namespace PinballApi.Tests
 
             Assert.That(tournament.TournamentName, Is.EqualTo("PAPA World Pinball Championships"));
         }
-        
+
         [Test]
         public async Task Wppr_GetTournamentResults_ShouldReturnResults()
         {
@@ -201,7 +213,6 @@ namespace PinballApi.Tests
             var pvp = await rankingApi.GetPvp(playerOneId, playerTwoId);
 
             Assert.That(pvp.Pvp.Count > 0);
-
         }
 
         [Test]
@@ -235,7 +246,7 @@ namespace PinballApi.Tests
 
             Assert.That(stat.Count, Is.GreaterThan(0));
         }
-        
+
         [Test]
         public async Task Wppr_GetPlayersPerYearStat()
         {
@@ -251,6 +262,6 @@ namespace PinballApi.Tests
 
             Assert.That(stat.Count, Is.GreaterThan(0));
         }
-        */
+
     }
 }

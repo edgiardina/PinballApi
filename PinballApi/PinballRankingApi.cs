@@ -10,6 +10,8 @@ using Flurl;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace PinballApi
 {
@@ -19,7 +21,7 @@ namespace PinballApi
         private const string ifpaBaseUrl = "https://api.ifpapinball.com/";
         private const string apiVersion = "v1";
         private Url BaseRequest => "https://api.ifpapinball.com/v1/".SetQueryParams(new { api_key = ApiKey });
-        
+
         public PinballRankingApi(string apiKey)
         {
             if (string.IsNullOrEmpty(apiKey))
@@ -32,75 +34,79 @@ namespace PinballApi
 
         public async Task<PlayerRecord> GetPlayerRecord(int playerId)
         {
+            try
+            {
+                return await BaseRequest
+                    .AppendPathSegment("player")
+                    .AppendPathSegment(playerId)
+                    .GetJsonAsync<PlayerRecord>();
+            }
+            catch(FlurlHttpException ex) when (ex.InnerException is JsonSerializationException)
+            {
+                //Indicates null values which may mean invalid playerId
+                return null;
+            }
+        }
+
+        public async Task<PlayerResult> GetPlayerResults(int playerId)
+        {
             return await BaseRequest
                 .AppendPathSegment("player")
                 .AppendPathSegment(playerId)
-                .GetJsonAsync<PlayerRecord>();
+                .AppendPathSegment("results")
+                .GetJsonAsync<PlayerResult>();
         }
-        /*
-        public async Task<PlayerResult> GetPlayerResults(int playerId)
-        {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/{id}/results";
-            restRequest.AddUrlSegment("route", "player");
-            restRequest.AddUrlSegment("id", playerId.ToString());
 
-            var response2 = await restClient.ExecuteTaskAsync<PlayerResult>(restRequest);
-            return response2.Data;
-        }
 
         public async Task<PlayerComparisons> GetPlayerComparisons(int playerId)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/{id}/pvp";
-            restRequest.AddUrlSegment("route", "player");
-            restRequest.AddUrlSegment("id", playerId.ToString());
-
-            var response2 = await restClient.ExecuteTaskAsync<PlayerComparisons>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+                .AppendPathSegment("player")
+                .AppendPathSegment(playerId)
+                .AppendPathSegment("pvp")
+                .GetJsonAsync<PlayerComparisons>();
         }
+
 
         public async Task<PlayerSearch> SearchForPlayerByName(string name)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/search";
-            restRequest.AddUrlSegment("route", "player");
-            restRequest.AddQueryParameter("q", name);
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException("Name cannot be null");
 
-            var response2 = await restClient.ExecuteTaskAsync<PlayerSearch>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+                .AppendPathSegment("player")
+                .AppendPathSegment("search")
+                .SetQueryParam("q", name)
+                .GetJsonAsync<PlayerSearch>();
         }
 
         public async Task<PlayerSearch> SearchForPlayerByEmail(string email)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/search";
-            restRequest.AddUrlSegment("route", "player");
-            restRequest.AddQueryParameter("email", email);
+            if (String.IsNullOrEmpty(email))
+                throw new ArgumentNullException("Email cannot be null");
 
-            var response2 = await restClient.ExecuteTaskAsync<PlayerSearch>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+                .AppendPathSegment("player")
+                .AppendPathSegment("search")
+                .SetQueryParam("email", email)
+                .GetJsonAsync<PlayerSearch>();
         }
 
         public async Task<PlayerSearch> GetCountryDirectors()
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/country_directors";
-            restRequest.AddUrlSegment("route", "player");
-
-            var response2 = await restClient.ExecuteTaskAsync<PlayerSearch>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+                .AppendPathSegment("player")
+                .AppendPathSegment("country_directors")
+                .GetJsonAsync<PlayerSearch>();
         }
 
         public async Task<PlayerHistory> GetPlayerHistory(int playerId)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/{id}/history";
-            restRequest.AddUrlSegment("route", "player");
-            restRequest.AddUrlSegment("id", playerId.ToString());
-
-            var response2 = await restClient.ExecuteTaskAsync<PlayerHistory>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+                .AppendPathSegment("player")
+                .AppendPathSegment(playerId)
+                .AppendPathSegment("history")
+                .GetJsonAsync<PlayerHistory>();
         }
 
         #endregion
@@ -109,33 +115,32 @@ namespace PinballApi
 
         public async Task<Tournament> GetTournament(int tournamentId)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/{id}";
-            restRequest.AddUrlSegment("route", "tournament");
-            restRequest.AddUrlSegment("id", tournamentId.ToString());
-            restRequest.RootElement = "tournament";
+            var json = await BaseRequest
+                .AppendPathSegment("tournament")
+                .AppendPathSegment(tournamentId)
+                .GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<Tournament>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("tournament", false).ToObject<Tournament>();
         }
 
         public async Task<TournamentResult> GetTournamentResults(int tournamentId, int? eventId = null, DateTime? tournamentDate = null)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/{id}/results";
-            restRequest.AddUrlSegment("route", "tournament");
-            restRequest.AddUrlSegment("id", tournamentId.ToString());
+            var request = BaseRequest
+                .AppendPathSegment("tournament")
+                .AppendPathSegment(tournamentId)
+                .AppendPathSegment("results");
 
-            if(eventId.HasValue)
-                restRequest.AddQueryParameter("event_id", eventId.Value.ToString());
+            if (eventId.HasValue)
+                request = request.SetQueryParam("event_id", eventId.Value);
 
-            if(tournamentDate.HasValue)
-                restRequest.AddQueryParameter("tour_date", tournamentDate.Value.ToString("yyyy-MM-dd"));
+            if (tournamentDate.HasValue)
+                request = request.SetQueryParam("tour_date", tournamentDate.Value.ToString("yyyy-MM-dd"));
 
-            restRequest.RootElement = "tournament";
+            var json = await request.GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<TournamentResult>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("tournament", false).ToObject<TournamentResult>();
         }
 
         public async Task<TournamentList> GetTournamentList(int startPosition = 1, int count = 50)
@@ -143,32 +148,32 @@ namespace PinballApi
             if (count > 250 || count < 1)
                 throw new ArgumentException("Count must be less than or equal to 250", "count");
 
-            if(startPosition < 1)
+            if (startPosition < 1)
                 throw new ArgumentException("Start Positon must be a positive integer", "startPosition");
 
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/list";
-            restRequest.AddUrlSegment("route", "tournament");
+            var request = BaseRequest
+                .AppendPathSegment("tournament")
+                .AppendPathSegment("list");
 
             if (startPosition > 1)
-                restRequest.AddQueryParameter("start_pos", startPosition.ToString());
+                request.SetQueryParam("start_pos", startPosition);
 
             if (count != 50)
-                restRequest.AddQueryParameter("count", count.ToString());
-            
-            var response2 = await restClient.ExecuteTaskAsync<TournamentList>(restRequest);
-            return response2.Data;
+                request.SetQueryParam("count", count);
+
+            return await request.GetJsonAsync<TournamentList>();
         }
 
         public async Task<TournamentSearch> TournamentSearch(string tournamentName)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/search";
-            restRequest.AddUrlSegment("route", "tournament");
-            restRequest.AddQueryParameter("q", tournamentName);
+            if (string.IsNullOrEmpty(tournamentName))
+                throw new ArgumentNullException("Tournament Name cannot be null or empty");
 
-            var response2 = await restClient.ExecuteTaskAsync<TournamentSearch>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+                .AppendPathSegment("tournament")
+                .AppendPathSegment("search")
+                .SetQueryParam("q", tournamentName)
+                .GetJsonAsync<TournamentSearch>();
         }
 
         #endregion
@@ -177,14 +182,15 @@ namespace PinballApi
 
         public async Task<RankingList> GetRankings(int startPosition = 1, int count = 50, RankingOrder order = RankingOrder.points)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.AddUrlSegment("route", "rankings");
-            restRequest.AddQueryParameter("start_pos", startPosition.ToString());
-            restRequest.AddQueryParameter("count", count.ToString());
-            restRequest.AddQueryParameter("order", Enum.GetName(typeof(RankingOrder), order));
-
-            var response2 = await restClient.ExecuteTaskAsync<RankingList>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+                .AppendPathSegment("rankings")
+                .SetQueryParams(new
+                {
+                    start_pos = startPosition,
+                    count = count,
+                    order = order
+                })
+                .GetJsonAsync<RankingList>();
         }
 
         #endregion
@@ -193,58 +199,50 @@ namespace PinballApi
 
         public async Task<CalendarList> GetActiveCalendar(string country = null)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/active";
-            restRequest.AddUrlSegment("route", "calendar");
+            var request = BaseRequest
+                .AppendPathSegment("calendar")
+                .AppendPathSegment("active");
 
             if (!string.IsNullOrEmpty(country))
-                restRequest.AddQueryParameter("country", country);
+                request = request.SetQueryParam("country", country);
 
-            var response2 = await restClient.ExecuteTaskAsync<CalendarList>(restRequest);
-            return response2.Data;
+            return await request.GetJsonAsync<CalendarList>();
         }
 
         public async Task<CalendarList> GetCalendarHistory(string country = null)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/history";
-            restRequest.AddUrlSegment("route", "calendar");
+            var request = BaseRequest
+                .AppendPathSegment("calendar")
+                .AppendPathSegment("history");
 
             if (!string.IsNullOrEmpty(country))
-                restRequest.AddQueryParameter("country", country);
+                request = request.SetQueryParam("country", country);
 
-            var response2 = await restClient.ExecuteTaskAsync<CalendarList>(restRequest);
-            return response2.Data;
+            return await request.GetJsonAsync<CalendarList>();
         }
 
         public async Task<CalenderItem> GetCalendarById(int calendarId)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/{id}";
-            restRequest.AddUrlSegment("route", "calendar");
-            restRequest.AddUrlSegment("id", calendarId.ToString());
-
-            var response2 = await restClient.ExecuteTaskAsync<CalenderItem>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+               .AppendPathSegment("calendar")
+               .AppendPathSegment(calendarId)
+               .GetJsonAsync<CalenderItem>();
         }
-
 
         public async Task<CalendarSearch> GetCalendarSearch(string address, int distance, DistanceUnit units)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/search";
-            restRequest.AddUrlSegment("route", "calendar");
-            restRequest.AddQueryParameter("address", address);
+            var request = BaseRequest
+               .AppendPathSegment("calendar")
+               .AppendPathSegment("search")
+               .SetQueryParam("address", address);
 
             if (units == DistanceUnit.Kilometers)
-                restRequest.AddQueryParameter("k", distance.ToString());
+                request = request.SetQueryParam("k", distance);
             else
-                restRequest.AddQueryParameter("m", distance.ToString());
+                request = request.SetQueryParam("m", distance);
 
-            var response2 = await restClient.ExecuteTaskAsync<CalendarSearch>(restRequest);
-            return response2.Data;
+            return await request.GetJsonAsync<CalendarSearch>();
         }
-
 
         #endregion
 
@@ -252,13 +250,14 @@ namespace PinballApi
 
         public async Task<PlayerComparison> GetPvp(int playerOneId, int playerTwoId)
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.AddUrlSegment("route", "pvp");
-            restRequest.AddQueryParameter("p1", playerOneId.ToString());
-            restRequest.AddQueryParameter("p2", playerTwoId.ToString());
-
-            var response2 = await restClient.ExecuteTaskAsync<PlayerComparison>(restRequest);
-            return response2.Data;
+            return await BaseRequest
+               .AppendPathSegment("pvp")
+               .SetQueryParams(new
+               {
+                   p1 = playerOneId,
+                   p2 = playerTwoId
+               })
+               .GetJsonAsync<PlayerComparison>();
         }
 
         #endregion
@@ -267,70 +266,70 @@ namespace PinballApi
 
         public async Task<List<PointsThisYearStat>> GetPointsThisYearStats()
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/points_this_year";
-            restRequest.AddUrlSegment("route", "stats");
-            restRequest.RootElement = "stats";
+            var json = await BaseRequest
+               .AppendPathSegment("stats")
+               .AppendPathSegment("points_this_year")
+               .GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<List<PointsThisYearStat>>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PointsThisYearStat>>();
         }
 
         public async Task<List<MostEventsStat>> GetMostEventsStats()
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/most_events";
-            restRequest.AddUrlSegment("route", "stats");
-            restRequest.RootElement = "stats";
+            var json = await BaseRequest
+                .AppendPathSegment("stats")
+                .AppendPathSegment("most_events")
+                .GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<List<MostEventsStat>>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<MostEventsStat>>();
         }
 
         public async Task<List<PlayersByCountryStat>> GetPlayersByCountryStat()
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/country_players";
-            restRequest.AddUrlSegment("route", "stats");
-            restRequest.RootElement = "stats";
+            var json = await BaseRequest
+                .AppendPathSegment("stats")
+                .AppendPathSegment("country_players")
+                .GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<List<PlayersByCountryStat>>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PlayersByCountryStat>>();
         }
 
         public async Task<List<EventsByYearStat>> GetEventsPerYearStat()
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/events_by_year";
-            restRequest.AddUrlSegment("route", "stats");
-            restRequest.RootElement = "stats";
+            var json = await BaseRequest
+                .AppendPathSegment("stats")
+                .AppendPathSegment("events_by_year")
+                .GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<List<EventsByYearStat>>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<EventsByYearStat>>();
         }
 
         public async Task<List<PlayersByYearStat>> GetPlayersPerYearStat()
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/players_by_year";
-            restRequest.AddUrlSegment("route", "stats");
-            restRequest.RootElement = "stats";
+            var json = await BaseRequest
+                .AppendPathSegment("stats")
+                .AppendPathSegment("players_by_year")
+                .GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<List<PlayersByYearStat>>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PlayersByYearStat>>();
         }
-        
+
         public async Task<List<BiggestMoversStat>> GetBiggestMoversStat()
         {
-            var restRequest = GenerateDefaultRestRequest();
-            restRequest.Resource += "/biggest_movers";
-            restRequest.AddUrlSegment("route", "stats");
-            restRequest.RootElement = "stats";
+            var json = await BaseRequest
+                .AppendPathSegment("stats")
+                .AppendPathSegment("biggest_movers")
+                .GetStringAsync();
 
-            var response2 = await restClient.ExecuteTaskAsync<List<BiggestMoversStat>>(restRequest);
-            return response2.Data;
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<BiggestMoversStat>>(); 
         }
-          */
+
         #endregion
 
     }

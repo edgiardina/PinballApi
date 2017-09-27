@@ -6,7 +6,7 @@
     <Authors>Ed Giardina</Authors>
     <Description>PinballApi - .NET API for pinball data</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <Copyright>Copyright 2017</Copyright>
     <PackageTags>pinball pinballapi</PackageTags>
   </PropertyGroup>

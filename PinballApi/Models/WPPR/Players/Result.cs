@@ -9,7 +9,7 @@ namespace PinballApi.Models.WPPR.Players
         public string TournamentName { get; set; }
 
         [JsonProperty("tournament_id")]
-        public string TournamentId { get; set; }
+        public int TournamentId { get; set; }
 
         [JsonProperty("country_code")]
         public string CountryCode { get; set; }
