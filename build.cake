@@ -32,7 +32,8 @@ Task("UnitTest")
 	.IsDependentOn("Setup")
 	.Does(() => {		
 		var settings = new NUnit3Settings();
-		settings.NoResults = false;		
+		settings.NoResults = false;	
+		settings.WorkingDirectory = "./PinballApi.Tests/bin/Release/";
 		settings.Results = new[] { new NUnit3Result { FileName = resultsFile } };   		
 		
 		var config = File("./PinballApi.Tests/bin/Release/netcoreapp2.0/appsettings.json");	
@@ -47,7 +48,8 @@ Task("UnitTest")
 
 		FileWriteText(config, text);
 
-		NUnit3("./PinballApi.Tests/bin/Release/netcoreapp2.0/PinballApi.Tests.dll", settings);
+		//NUnit3("./PinballApi.Tests/bin/Release/netcoreapp2.0/PinballApi.Tests.dll", settings);
+		DotNetCoreTest("./PinballApi.Tests/");
 
 })
 	.Finally(() => {  
