@@ -22,8 +22,7 @@ Task("Setup")
 Task("Build")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() => {
-		MSBuild("./PinballApi.sln", settings =>
-			settings.SetConfiguration(configuration));
+		DotNetCoreBuild("./PinballApi.sln", new DotNetCoreBuildSettings{ Configuration = configuration});	
 	});
 
 	
@@ -47,9 +46,11 @@ Task("UnitTest")
 					   .ToString();
 
 		FileWriteText(config, text);
-
-		//NUnit3("./PinballApi.Tests/bin/Release/netcoreapp2.0/PinballApi.Tests.dll", settings);
-		DotNetCoreTest("./PinballApi.Tests/");
+		DotNetCoreTest("./PinballApi.Tests/", new  DotNetCoreTestSettings
+		 {
+			 Configuration = configuration,
+			 NoBuild = true
+		 });
 
 })
 	.Finally(() => {  
@@ -63,13 +64,14 @@ Task("Pack")
 	.IsDependentOn("Build")
 	.IsDependentOn("Setup")
 	.Does(() => {
-		NuGetPack("./PinballApi/PinballApi.nuspec", new NuGetPackSettings()
-		{
-			Version = version,
-			ArgumentCustomization = args => args.Append("-Prop Configuration=" + configuration),
-			BasePath = releaseBinPath,
-			OutputDirectory = artifactsDirectory,
-		});
+		 var settings = new DotNetCorePackSettings
+		 {
+			 Configuration = configuration,
+			 OutputDirectory = artifactsDirectory,
+			 VersionSuffix = version
+		 };
+
+		DotNetCorePack("./PinballApi/", settings);
 	});
 
 Task("UploadNugetPackages")
