@@ -1,10 +1,9 @@
-﻿#tool nuget:?package=NUnit.ConsoleRunner&version=3.5.0
+﻿#tool nuget:?package=NUnit.ConsoleRunner&version=3.8.
 #addin "Cake.FileHelpers"
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var version = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Version : "0.0.1";
-var releaseBinPath = "./PinballApi/bin/Release";
 var artifactsDirectory = "./artifacts";
 var resultsFile = artifactsDirectory + "/NUnitResults.xml";
 var wpprKey = Argument("wpprKey", "");
