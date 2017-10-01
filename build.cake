@@ -11,6 +11,7 @@ var wpprKey = Argument("wpprKey", "");
 
 Task("Restore-NuGet-Packages")
 	.Does(() => {
+		//DotNetCoreRestore("./PinballApi.sln");
 		NuGetRestore("./PinballApi.sln");
 	});
 
@@ -22,19 +23,20 @@ Task("Setup")
 Task("Build")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() => {
-		DotNetCoreBuild("./PinballApi.sln", new DotNetCoreBuildSettings{ Configuration = configuration});	
+		 MSBuild("./PinballApi.sln", new MSBuildSettings 
+			{
+				Verbosity = Verbosity.Minimal,
+				ToolVersion = MSBuildToolVersion.VS2017,
+				Configuration = configuration,
+				ArgumentCustomization = args => args.Append("/p:SemVer=" + version)
+			});
 	});
 
 	
 Task("UnitTest")
 	.IsDependentOn("Build")
 	.IsDependentOn("Setup")
-	.Does(() => {		
-		var settings = new NUnit3Settings();
-		settings.NoResults = false;	
-		settings.WorkingDirectory = "./PinballApi.Tests/bin/Release/";
-		settings.Results = new[] { new NUnit3Result { FileName = resultsFile } };   		
-		
+	.Does(() => {			
 		var config = File("./PinballApi.Tests/bin/Release/netcoreapp2.0/appsettings.json");	
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
@@ -67,10 +69,11 @@ Task("Pack")
 		 var settings = new DotNetCorePackSettings
 		 {
 			 Configuration = configuration,
-			 OutputDirectory = artifactsDirectory,
-			 VersionSuffix = version
+			 OutputDirectory = artifactsDirectory
 		 };
 
+		 //<PackageVersion>1.0.0</PackageVersion>
+		 XmlPoke("./PinballApi/PinballApi.csproj", "Project/PropertyGroup/PackageVersion", version);
 		DotNetCorePack("./PinballApi/", settings);
 	});
 

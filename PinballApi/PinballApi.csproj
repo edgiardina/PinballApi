@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>PinballApi</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>0.0.1</PackageVersion>
     <Authors>Ed Giardina</Authors>
     <Description>PinballApi - .NET API for pinball data</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
