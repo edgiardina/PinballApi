@@ -1,4 +1,4 @@
-﻿#tool nuget:?package=NUnit.ConsoleRunner&version=3.8.
+﻿#tool nuget:?package=NUnit.ConsoleRunner&version=3.5.0
 #addin "Cake.FileHelpers"
 
 var target = Argument("target", "Default");
