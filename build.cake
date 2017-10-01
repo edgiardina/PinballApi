@@ -18,6 +18,11 @@ Task("Restore-NuGet-Packages")
 Task("Setup")
 	.Does(() => { 
 		CreateDirectory(artifactsDirectory);
+
+		//commented out for now, patching happens on AppVeyor
+		 //<PackageVersion>1.0.0</PackageVersion>
+		 //XmlPoke("./PinballApi/PinballApi.csproj", "Project/PropertyGroup/PackageVersion", version);
+		 //XmlPoke("./PinballApi/PinballApi.csproj", "Project/PropertyGroup/Version", version);
 	});
 
 Task("Build")
@@ -71,9 +76,6 @@ Task("Pack")
 			 Configuration = configuration,
 			 OutputDirectory = artifactsDirectory
 		 };
-
-		 //<PackageVersion>1.0.0</PackageVersion>
-		 XmlPoke("./PinballApi/PinballApi.csproj", "Project/PropertyGroup/PackageVersion", version);
 		DotNetCorePack("./PinballApi/", settings);
 	});
 
