@@ -11,7 +11,8 @@ var wpprKey = Argument("wpprKey", "");
 Task("Restore-NuGet-Packages")
 	.Does(() => {
 		//DotNetCoreRestore("./PinballApi.sln");
-		NuGetRestore("./PinballApi.sln");
+		//NuGetRestore("./PinballApi.sln");
+		StartProcess("nuget", new ProcessSettings{ Arguments = "restore" });
 	});
 
 Task("Setup")
