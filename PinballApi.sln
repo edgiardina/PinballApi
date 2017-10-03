@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinballApi", "PinballApi\PinballApi.csproj", "{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PinballApi", "PinballApi\PinballApi.csproj", "{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinballApi.Tests", "PinballApi.Tests\PinballApi.Tests.csproj", "{9950319E-D99C-444F-9093-C8CF572559F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PinballApi.Tests", "PinballApi.Tests\PinballApi.Tests.csproj", "{9950319E-D99C-444F-9093-C8CF572559F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD3F1434-12D1-40D5-98BF-407DFC4EC5FC}"
 	ProjectSection(SolutionItems) = preProject
 		build.cake = build.cake
-		MyGet.ps1 = MyGet.ps1
+		build.ps1 = build.ps1
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -31,5 +31,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6AC53C7B-C844-4EC5-B97D-91B972083288}
 	EndGlobalSection
 EndGlobal

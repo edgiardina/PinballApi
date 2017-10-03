@@ -8,7 +8,7 @@ namespace PinballApi.Models.WPPR.Players
         [JsonProperty("player")]
         public Player Player { get; set; }
 
-        [JsonProperty("rating_history")]
+        [JsonProperty("rank_history")]
         public List<RankHistory> RankHistory { get; set; }
 
         [JsonProperty("rating_history")]

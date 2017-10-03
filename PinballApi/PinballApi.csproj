@@ -1,137 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90204B91-AEC5-4E2E-A1E7-D7FAF535DC8C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PinballApi</RootNamespace>
-    <AssemblyName>PinballApi</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>PinballApi</PackageId>
+    <PackageVersion>0.0.1</PackageVersion>
+    <Authors>Ed Giardina</Authors>
+    <Description>PinballApi - .NET API for pinball data</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <Copyright>Copyright 2017</Copyright>
+    <PackageTags>pinball pinballapi</PackageTags>
+    <PackageProjectUrl>https://github.com/edgiardina/PinballApi</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/edgiardina/PinballApi</RepositoryUrl>
+    <Version>1.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ScrapySharp.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScrapySharp.2.6.2\lib\net45\ScrapySharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ScrapySharpAsync, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScrapySharp.2.6.2\lib\net45\ScrapySharpAsync.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Flurl" Version="2.5.0" />
+    <PackageReference Include="Flurl.Http" Version="1.2.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.5.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\IntegerExtensions.cs" />
-    <Compile Include="Models\IPDB\PinballDatabaseAttribute.cs" />
-    <Compile Include="Models\WPPR\Calendar\CalendarDetails.cs" />
-    <Compile Include="Models\WPPR\Calendar\CalendarEntry.cs" />
-    <Compile Include="Models\WPPR\Calendar\CalendarSearch.cs" />
-    <Compile Include="Models\WPPR\Calendar\CalenderItem.cs" />
-    <Compile Include="Models\WPPR\Calendar\Country.cs" />
-    <Compile Include="Models\WPPR\Calendar\CalendarList.cs" />
-    <Compile Include="Models\WPPR\Calendar\Date.cs" />
-    <Compile Include="Models\WPPR\Calendar\DistanceUnit.cs" />
-    <Compile Include="Models\WPPR\Calendar\Month.cs" />
-    <Compile Include="Models\WPPR\ChampionshipSeries.cs" />
-    <Compile Include="Models\WPPR\Event.cs" />
-    <Compile Include="Models\WPPR\Players\Player.cs" />
-    <Compile Include="Models\WPPR\Players\PlayerComparisons.cs" />
-    <Compile Include="Models\WPPR\Players\PlayerHistory.cs" />
-    <Compile Include="Models\WPPR\Players\PlayerRecord.cs" />
-    <Compile Include="Models\WPPR\Players\PlayerSearch.cs" />
-    <Compile Include="Models\WPPR\Players\PlayerStats.cs" />
-    <Compile Include="Models\WPPR\Players\RankHistory.cs" />
-    <Compile Include="Models\WPPR\Players\RatingHistory.cs" />
-    <Compile Include="Models\WPPR\Players\PlayerVersusRecord.cs" />
-    <Compile Include="Models\WPPR\Players\Result.cs" />
-    <Compile Include="Models\WPPR\Pvp\PlayerComparison.cs" />
-    <Compile Include="Models\WPPR\Pvp\Pvp.cs" />
-    <Compile Include="Models\WPPR\Rankings\Ranking.cs" />
-    <Compile Include="Models\WPPR\Rankings\RankingList.cs" />
-    <Compile Include="Models\WPPR\Rankings\RankingOrder.cs" />
-    <Compile Include="Models\WPPR\Tournaments\Result.cs" />
-    <Compile Include="Models\WPPR\Players\Search.cs" />
-    <Compile Include="Models\WPPR\Statistics\BiggestMoversStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\EventsByYearStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\MostEventsStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\PlayersByCountryStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\PlayersByYearStat.cs" />
-    <Compile Include="Models\WPPR\Statistics\PointsThisYearStat.cs" />
-    <Compile Include="Models\WPPR\Tournaments\Tournament.cs" />
-    <Compile Include="Models\WPPR\Tournaments\TournamentEvent.cs" />
-    <Compile Include="Models\WPPR\Tournaments\TournamentList.cs" />
-    <Compile Include="Models\WPPR\Players\PlayerResult.cs" />
-    <Compile Include="Models\WPPR\Tournaments\TournamentListItem.cs" />
-    <Compile Include="Models\WPPR\Tournaments\TournamentResult.cs" />
-    <Compile Include="Models\WPPR\Tournaments\TournamentSearch.cs" />
-    <Compile Include="Models\WPPR\Tournaments\TournamentSearchItem.cs" />
-    <Compile Include="PinballMachineApi.cs" />
-    <Compile Include="Models\IPDB\PinballMachineType.cs" />
-    <Compile Include="Models\IPDB\PinballManufacturer.cs" />
-    <Compile Include="Models\IPDB\PinballMachine.cs" />
-    <Compile Include="PinballRankingApi.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\IJsonSerializer.cs" />
-    <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="PinballApi.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

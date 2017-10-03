@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
 using PinballApi.Models.WPPR.Calendar;
 using PinballApi.Models.WPPR.Players;
 using System;
@@ -16,7 +17,9 @@ namespace PinballApi.Tests
         [SetUp]
         public void SetUp()
         {
-            var apiKey = ConfigurationSettings.AppSettings["WPPRKey"];
+            var t = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+            var apiKey = t["WPPRKey"];
             rankingApi = new PinballRankingApi(apiKey);
         }
 
@@ -46,9 +49,19 @@ namespace PinballApi.Tests
 
             //Bowen Kerins is self-suppressed
             int playerId = 2;
-            Assert.DoesNotThrow(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
+            Assert.DoesNotThrowAsync(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
 
             Assert.That(player.Player.FirstName == "Suppresed");
+        }
+
+        [Test]
+        public async Task Wppr_GetPlayerResults_ShouldReturnCorrectPlayer()
+        {
+            int playerId = 16927;
+            var player = await rankingApi.GetPlayerResults(playerId);
+
+            Assert.That(player.ResultsCount, Is.GreaterThan(0));
+            Assert.That(player.PlayerId, Is.EqualTo(playerId));
         }
 
         [Test]
@@ -99,6 +112,8 @@ namespace PinballApi.Tests
             Assert.That(player.RatingHistory.Count > 0);
         }
 
+
+
         [Test]
         public async Task Wppr_GetTournament_ShouldReturnTournament()
         {
@@ -107,7 +122,7 @@ namespace PinballApi.Tests
 
             Assert.That(tournament.TournamentName, Is.EqualTo("PAPA World Pinball Championships"));
         }
-        
+
         [Test]
         public async Task Wppr_GetTournamentResults_ShouldReturnResults()
         {
@@ -157,9 +172,10 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("IFPA data has a bug where 0000-00-01 is listed as a date in the calendar history")]
         public async Task Wpp_GetHistoryCalendar_ShouldReturnHistoryCalendar()
         {
-            var country = "Sweden";
+            var country = "Switzerland";
             var calendar = await rankingApi.GetCalendarHistory(country);
 
             Assert.That(calendar.Calendar.All(n => n.CountryName == country));
@@ -198,7 +214,6 @@ namespace PinballApi.Tests
             var pvp = await rankingApi.GetPvp(playerOneId, playerTwoId);
 
             Assert.That(pvp.Pvp.Count > 0);
-
         }
 
         [Test]
@@ -232,7 +247,7 @@ namespace PinballApi.Tests
 
             Assert.That(stat.Count, Is.GreaterThan(0));
         }
-        
+
         [Test]
         public async Task Wppr_GetPlayersPerYearStat()
         {
