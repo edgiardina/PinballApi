@@ -12,7 +12,7 @@ Task("Restore-NuGet-Packages")
 	.Does(() => {
 		//DotNetCoreRestore("./PinballApi.sln");
 		//NuGetRestore("./PinballApi.sln");
-		StartProcess("nuget", new ProcessSettings{ Arguments = "restore" })
+		StartProcess("nuget", new ProcessSettings{ Arguments = "restore" });
 	});
 
 Task("Setup")
@@ -63,7 +63,6 @@ Task("UnitTest")
 	.Finally(() => {  
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
-			//TODO: write test results to appveyor
 			//AppVeyor.UploadTestResults(resultsFile, AppVeyorTestResultsType.NUnit3);
 		}
 });
