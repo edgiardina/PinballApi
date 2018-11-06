@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+using System;
 
 namespace PinballApi.Models.WPPR.Players
 {
@@ -20,7 +20,21 @@ namespace PinballApi.Models.WPPR.Players
         [JsonProperty("wppr_state")]
         public string WpprState { get; set; }
 
-        [JsonProperty("event")]
-        public IList<Event> Event { get; set; }
+        [JsonProperty("event_name")]
+        public string EventName { get; set; }
+
+        [JsonProperty("event_date")]
+        public DateTime EventDate { get; set; }
+
+        [JsonProperty("position")]
+        public string Position { get; set; }
+
+        [JsonProperty("original_points")]
+        public double OriginalPoints { get; set; }
+
+        [JsonProperty("current_points")]
+        public double CurrentPoints { get; set; }
+
+
     }
 }

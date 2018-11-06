@@ -167,7 +167,7 @@ namespace PinballApi.Tests
             var calendar = await rankingApi.GetActiveCalendar(country);
 
 
-            Assert.That(calendar.Calendar.All(n => n.CountryName == country));
+            Assert.That(calendar.Calendar.All(n => n.Country == country));
             Assert.That(calendar.Calendar.All(n => n.EndDate >= DateTime.Now));
         }
 
@@ -178,7 +178,7 @@ namespace PinballApi.Tests
             var country = "Switzerland";
             var calendar = await rankingApi.GetCalendarHistory(country);
 
-            Assert.That(calendar.Calendar.All(n => n.CountryName == country));
+            Assert.That(calendar.Calendar.All(n => n.Country == country));
             Assert.That(calendar.Calendar.All(n => n.EndDate < DateTime.Now));
         }
 

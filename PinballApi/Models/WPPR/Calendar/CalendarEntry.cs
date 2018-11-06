@@ -23,8 +23,8 @@ namespace PinballApi.Models.WPPR.Calendar
         [JsonProperty("state")]
         public string State { get; set; }
 
-        [JsonProperty("country_name")]
-        public string CountryName { get; set; }
+        [JsonProperty("country")]
+        public string Country { get; set; }
 
         [JsonProperty("country_code")]
         public string CountryCode { get; set; }
