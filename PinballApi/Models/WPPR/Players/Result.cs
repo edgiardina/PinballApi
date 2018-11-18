@@ -27,7 +27,7 @@ namespace PinballApi.Models.WPPR.Players
         public DateTime EventDate { get; set; }
 
         [JsonProperty("position")]
-        public string Position { get; set; }
+        public int Position { get; set; }
 
         [JsonProperty("original_points")]
         public double OriginalPoints { get; set; }

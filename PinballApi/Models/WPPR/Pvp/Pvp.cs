@@ -20,9 +20,9 @@ namespace PinballApi.Models.WPPR.Pvp
         public string TournamentCountryCode { get; set; }
 
         [JsonProperty("p1_finish_position")]
-        public string P1FinishPosition { get; set; }
+        public int P1FinishPosition { get; set; }
 
         [JsonProperty("p2_finish_position")]
-        public string P2FinishPosition { get; set; }
+        public int P2FinishPosition { get; set; }
     }
 }
