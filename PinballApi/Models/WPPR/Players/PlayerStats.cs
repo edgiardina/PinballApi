@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PinballApi.Converters;
 using System;
 
 namespace PinballApi.Models.WPPR.Players
@@ -55,10 +56,11 @@ namespace PinballApi.Models.WPPR.Players
         public double RatingsValue { get; set; }
 
         [JsonProperty("efficiency_rank")]
-        public int EfficiencyRank { get; set; }
+        [JsonConverter(typeof(EfficiencyRankConverter))]
+        public int? EfficiencyRank { get; set; }
 
         [JsonProperty("efficiency_value")]
-        public double EfficiencyValue { get; set; }
+        public double? EfficiencyValue { get; set; }
     }
 
 }
