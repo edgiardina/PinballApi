@@ -26,6 +26,6 @@ namespace PinballApi.Models.WPPR.Players
         public string State { get; set; }
 
         [JsonProperty("wppr_rank")]
-        public string WpprRank { get; set; }
+        public int WpprRank { get; set; }
     }
 }

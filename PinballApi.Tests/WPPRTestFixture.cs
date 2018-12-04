@@ -3,7 +3,6 @@ using NUnit.Framework;
 using PinballApi.Models.WPPR.Calendar;
 using PinballApi.Models.WPPR.Players;
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
