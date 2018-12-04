@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using PinballApi.Converters;
 
 namespace PinballApi
 {
@@ -36,12 +37,13 @@ namespace PinballApi
         {
             try
             {
-                return await BaseRequest
+                return
+                 await BaseRequest
                     .AppendPathSegment("player")
                     .AppendPathSegment(playerId)
                     .GetJsonAsync<PlayerRecord>();
             }
-            catch(FlurlHttpException ex) when (ex.InnerException is JsonSerializationException)
+            catch(FlurlHttpException ex ) when (ex.InnerException is JsonSerializationException)
             {
                 //Indicates null values which may mean invalid playerId
                 return null;
@@ -57,7 +59,6 @@ namespace PinballApi
                 .GetJsonAsync<PlayerResult>();
         }
 
-
         public async Task<PlayerComparisons> GetPlayerComparisons(int playerId)
         {
             return await BaseRequest
@@ -66,7 +67,6 @@ namespace PinballApi
                 .AppendPathSegment("pvp")
                 .GetJsonAsync<PlayerComparisons>();
         }
-
 
         public async Task<PlayerSearch> SearchForPlayerByName(string name)
         {

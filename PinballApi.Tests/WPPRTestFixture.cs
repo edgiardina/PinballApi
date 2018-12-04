@@ -29,6 +29,9 @@ namespace PinballApi.Tests
             var player = await rankingApi.GetPlayerRecord(playerId);
 
             Assert.That(player.Player.FirstName == "Ed");
+            //To make sure unranked player changes didn't ruin ranked player efficiency stats
+            Assert.That(player.PlayerStats.EfficiencyRank, Is.Not.Null);
+            Assert.That(player.PlayerStats.EfficiencyValue, Is.Not.Null);
         }
 
         [Test]
@@ -61,6 +64,18 @@ namespace PinballApi.Tests
 
             Assert.That(player.ResultsCount, Is.GreaterThan(0));
             Assert.That(player.PlayerId, Is.EqualTo(playerId));
+        }
+
+        [Test]
+        public async Task Wppr_GetPlayer_ShouldHandleUnrankedPlayer()
+        {
+            PlayerRecord player = null;
+            int playerId = 66417;
+            Assert.DoesNotThrowAsync(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
+
+            Assert.That(player.Player.FirstName == "Lida");
+            Assert.That(player.PlayerStats.EfficiencyRank, Is.Null);
+            Assert.That(player.PlayerStats.EfficiencyValue, Is.Null);
         }
 
         [Test]
@@ -165,9 +180,8 @@ namespace PinballApi.Tests
             var country = "Sweden";
             var calendar = await rankingApi.GetActiveCalendar(country);
 
-
             Assert.That(calendar.Calendar.All(n => n.Country == country));
-            Assert.That(calendar.Calendar.All(n => n.EndDate >= DateTime.Now));
+            Assert.That(calendar.Calendar.All(n => n.EndDate.Date >= DateTime.Now.Date));
         }
 
         [Test]
@@ -194,7 +208,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task Wppr_GetCalendarSearch_ShouldReturnCalendar()
         {
-            var address = "Providence, RI";
+            var address = "346 Rochambeau Ave, Providence, RI";
             var distance = 250;
             var units = DistanceUnit.Miles;
 
