@@ -180,7 +180,7 @@ namespace PinballApi
 
         #region ranking
 
-        public async Task<RankingList> GetRankings(int startPosition = 1, int count = 50, RankingOrder order = RankingOrder.points)
+        public async Task<RankingList> GetRankings(int startPosition = 1, int count = 50, RankingOrder order = RankingOrder.points, string countryName = null)
         {
             return await BaseRequest
                 .AppendPathSegment("rankings")
@@ -188,7 +188,8 @@ namespace PinballApi
                 {
                     start_pos = startPosition,
                     count = count,
-                    order = order
+                    order = order,
+                    country = countryName
                 })
                 .GetJsonAsync<RankingList>();
         }

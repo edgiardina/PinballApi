@@ -172,6 +172,20 @@ namespace PinballApi.Tests
             var rankings = await rankingApi.GetRankings(startpos, totalrecords);
             Assert.That(rankings.Rankings.Count, Is.EqualTo(totalrecords));
             Assert.That(rankings.Rankings.First().CurrentWpprRank, Is.EqualTo(startpos));
+            Assert.That(rankings.RankCountryName, Is.Null);
+        }
+
+
+        [Test]
+        public async Task Wppr_GetRankingsByCountry_ShouldReturnRankings()
+        {
+            var totalrecords = 75;
+            var startpos = 5;
+            var country = "Austria";
+
+            var rankings = await rankingApi.GetRankings(startpos, totalrecords, countryName: country);
+            Assert.That(rankings.Rankings.Count, Is.EqualTo(totalrecords));
+            Assert.That(rankings.RankCountryName, Is.EqualTo(country));
         }
 
         [Test]
