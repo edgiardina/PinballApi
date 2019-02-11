@@ -7,7 +7,7 @@
     <Description>PinballApi - .NET API for pinball data</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <Copyright>Copyright 2017</Copyright>
+    <Copyright>Copyright 2019</Copyright>
     <PackageTags>pinball pinballapi</PackageTags>
     <PackageProjectUrl>https://github.com/edgiardina/PinballApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/edgiardina/PinballApi</RepositoryUrl>
