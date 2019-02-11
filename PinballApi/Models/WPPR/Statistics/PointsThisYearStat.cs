@@ -20,7 +20,7 @@ namespace PinballApi.Models.WPPR.Statistics
         public string CountryCode { get; set; }
 
         [JsonProperty("wppr_points")]
-        public string WpprPoints { get; set; }
+        public double WpprPoints { get; set; }
 
         [JsonProperty("stats_rank")]
         public int StatsRank { get; set; }

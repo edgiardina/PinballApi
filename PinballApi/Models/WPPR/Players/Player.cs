@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.Players
 {
@@ -32,9 +33,11 @@ namespace PinballApi.Models.WPPR.Players
         public string Age { get; set; }
 
         [JsonProperty("excluded_flag")]
-        public string ExcludedFlag { get; set; }
+        [JsonConverter(typeof(YesNoConverter))]
+        public bool ExcludedFlag { get; set; }
 
         [JsonProperty("ifpa_registered")]
-        public string IfpaRegistered { get; set; }
+        [JsonConverter(typeof(YesNoConverter))]
+        public bool IfpaRegistered { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace PinballApi.Converters
 {
-    public class EfficiencyRankConverter : JsonConverter
+    public class YesNoConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -16,21 +16,10 @@ namespace PinballApi.Converters
             {
                 if (reader.TokenType == JsonToken.String)
                 {
-                    string integerOrNotRanked = reader.Value.ToString();
+                    string booleanString = reader.Value.ToString();
 
-                    if (integerOrNotRanked == "Not Ranked")
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        return int.Parse(integerOrNotRanked);
-                    }
-                }
-                else if (reader.TokenType == JsonToken.Integer)
-                {
-                    return reader.Value;
-                }
+                    return booleanString == "Y";
+                }               
                 else
                 {
                     throw new JsonSerializationException($"Unsupported reader token type {reader.TokenType}");
@@ -38,13 +27,13 @@ namespace PinballApi.Converters
             }
             catch (Exception ex)
             {
-                throw new JsonSerializationException("Error converting value to type int?.", ex);
+                throw new JsonSerializationException("Error converting value to type bool.", ex);
             }
         }
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(int?);
+            return objectType == typeof(bool);
         }
     }
 }

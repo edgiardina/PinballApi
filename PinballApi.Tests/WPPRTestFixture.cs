@@ -74,8 +74,20 @@ namespace PinballApi.Tests
             Assert.DoesNotThrowAsync(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
 
             Assert.That(player.Player.FirstName == "Lida");
+            Assert.That(player.Player.IfpaRegistered, Is.True);
             Assert.That(player.PlayerStats.EfficiencyRank, Is.Null);
             Assert.That(player.PlayerStats.EfficiencyValue, Is.Null);
+        }
+
+        [Test]
+        public async Task Wppr_GetPlayer_ShouldHandleUnregisteredPlayer()
+        {
+            PlayerRecord player = null;
+            int playerId = 66660;
+            Assert.DoesNotThrowAsync(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
+
+            Assert.That(player.Player.FirstName == "Kelly");
+            Assert.That(player.Player.IfpaRegistered, Is.False);
         }
 
         [Test]
