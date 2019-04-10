@@ -111,12 +111,30 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task Wppr_SearchPlayer_NameDoesNotExist()
+        {
+            var name = "definitelynotarealname";
+            var search = await rankingApi.SearchForPlayerByName(name);
+
+            Assert.That(search.Search.Count == 0);
+        }
+
+        [Test]
         public async Task Wppr_SearchPlayer_ByEmail()
         {
             var email = "ed@edgiardina.com";
             var search = await rankingApi.SearchForPlayerByEmail(email);
 
             Assert.That(search.Search.Single().FirstName == "Ed");
+        }
+
+        [Test]
+        public async Task Wppr_SearchPlayer_EmailDoesNotExist()
+        {
+            var name = "definitelynotarealemail@notarealdomain.com";
+            var search = await rankingApi.SearchForPlayerByName(name);
+
+            Assert.That(search.Search.Count == 0);
         }
 
         [Test]

@@ -43,7 +43,7 @@ namespace PinballApi
                     .AppendPathSegment(playerId)
                     .GetJsonAsync<PlayerRecord>();
             }
-            catch(FlurlHttpException ex ) when (ex.InnerException is JsonSerializationException)
+            catch (FlurlHttpException ex) when (ex.InnerException is JsonSerializationException)
             {
                 //Indicates null values which may mean invalid playerId
                 return null;
@@ -73,23 +73,56 @@ namespace PinballApi
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Name cannot be null");
 
-            return await BaseRequest
-                .AppendPathSegment("player")
-                .AppendPathSegment("search")
-                .SetQueryParam("q", name)
-                .GetJsonAsync<PlayerSearch>();
+            try
+            {
+                return await BaseRequest
+                    .AppendPathSegment("player")
+                    .AppendPathSegment("search")
+                    .SetQueryParam("q", name)
+                    .GetJsonAsync<PlayerSearch>();
+            }
+            catch (FlurlParsingException ex)
+            {
+                //admittedly this is a bit hacky. Might be better to have a custom converted on PlayerSearch's Search list but that gets tricky.
+                if (ex.InnerException.Message.Contains("No players found"))
+                {
+                    return new PlayerSearch
+                    {
+                        Query = name,
+                        Search = new List<Search>()
+                    };
+                }
+
+                throw ex;
+            }
         }
 
         public async Task<PlayerSearch> SearchForPlayerByEmail(string email)
         {
             if (String.IsNullOrEmpty(email))
                 throw new ArgumentNullException("Email cannot be null");
-
-            return await BaseRequest
+            try
+            {
+                return await BaseRequest
                 .AppendPathSegment("player")
                 .AppendPathSegment("search")
                 .SetQueryParam("email", email)
                 .GetJsonAsync<PlayerSearch>();
+            }
+            catch (FlurlParsingException ex)
+            {
+                //admittedly this is a bit hacky. Might be better to have a custom converted on PlayerSearch's Search list but that gets tricky.
+                if (ex.InnerException.Message.Contains("No players found"))
+                {
+                    return new PlayerSearch
+                    {
+                        Query = email,
+                        Search = new List<Search>()
+                    };
+                }
+
+                throw ex;
+            }
         }
 
         public async Task<PlayerSearch> GetCountryDirectors()
@@ -328,7 +361,7 @@ namespace PinballApi
                 .GetStringAsync();
 
             return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<BiggestMoversStat>>(); 
+                .SelectToken("stats", false).ToObject<List<BiggestMoversStat>>();
         }
 
         #endregion
