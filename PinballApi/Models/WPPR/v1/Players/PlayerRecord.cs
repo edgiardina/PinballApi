@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v1.Players
 {
@@ -11,7 +10,5 @@ namespace PinballApi.Models.WPPR.v1.Players
         [JsonProperty("player_stats")]
         public PlayerStats PlayerStats { get; set; }
 
-        [JsonProperty("championshipSeries")]
-        public List<ChampionshipSeries> ChampionshipSeries { get; set; }
     }
 }

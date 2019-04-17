@@ -23,7 +23,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayer_ShouldReturnCorrectPlayer()
+        public async Task PinballRankingApiV1_GetPlayer_ShouldReturnCorrectPlayer()
         {
             int playerId = 16927;
             var player = await rankingApi.GetPlayerRecord(playerId);
@@ -35,7 +35,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayer_ShouldRespectInvalidPlayerId()
+        public async Task PinballRankingApiV1_GetPlayer_ShouldRespectInvalidPlayerId()
         {
             int playerId = 999999;
             var player = await rankingApi.GetPlayerRecord(playerId);
@@ -45,7 +45,7 @@ namespace PinballApi.Tests
 
         [Test]
         [Ignore("Suppressed players not yet handled. TODO")]
-        public async Task Wppr_GetPlayer_ShouldHandleSuppressedPlayer()
+        public async Task PinballRankingApiV1_GetPlayer_ShouldHandleSuppressedPlayer()
         {
             PlayerRecord player = null;
 
@@ -57,7 +57,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayerResults_ShouldReturnCorrectPlayer()
+        public async Task PinballRankingApiV1_GetPlayerResults_ShouldReturnCorrectPlayer()
         {
             int playerId = 16927;
             var player = await rankingApi.GetPlayerResults(playerId);
@@ -67,7 +67,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayer_ShouldHandleUnrankedPlayer()
+        public async Task PinballRankingApiV1_GetPlayer_ShouldHandleUnrankedPlayer()
         {
             PlayerRecord player = null;
             int playerId = 66417;
@@ -80,7 +80,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayer_ShouldHandleUnregisteredPlayer()
+        public async Task PinballRankingApiV1_GetPlayer_ShouldHandleUnregisteredPlayer()
         {
             PlayerRecord player = null;
             int playerId = 66660;
@@ -91,7 +91,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayerComparisons()
+        public async Task PinballRankingApiV1_GetPlayerComparisons()
         {
             int playerId = 16927;
             var comparisons = await rankingApi.GetPlayerComparisons(playerId);
@@ -101,7 +101,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_SearchPlayer_ByName()
+        public async Task PinballRankingApiV1_SearchPlayer_ByName()
         {
             var name = "J Sharpe";
             var search = await rankingApi.SearchForPlayerByName(name);
@@ -111,7 +111,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_SearchPlayer_NameDoesNotExist()
+        public async Task PinballRankingApiV1_SearchPlayer_NameDoesNotExist()
         {
             var name = "definitelynotarealname";
             var search = await rankingApi.SearchForPlayerByName(name);
@@ -120,7 +120,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_SearchPlayer_ByEmail()
+        public async Task PinballRankingApiV1_SearchPlayer_ByEmail()
         {
             var email = "ed@edgiardina.com";
             var search = await rankingApi.SearchForPlayerByEmail(email);
@@ -129,7 +129,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_SearchPlayer_EmailDoesNotExist()
+        public async Task PinballRankingApiV1_SearchPlayer_EmailDoesNotExist()
         {
             var name = "definitelynotarealemail@notarealdomain.com";
             var search = await rankingApi.SearchForPlayerByName(name);
@@ -138,7 +138,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetCountryDirectors()
+        public async Task PinballRankingApiV1_GetCountryDirectors()
         {
             var search = await rankingApi.GetCountryDirectors();
 
@@ -146,7 +146,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayer_ShouldReturnPlayerHistory()
+        public async Task PinballRankingApiV1_GetPlayer_ShouldReturnPlayerHistory()
         {
             int playerId = 16927;
             var player = await rankingApi.GetPlayerHistory(playerId);
@@ -159,7 +159,7 @@ namespace PinballApi.Tests
 
 
         [Test]
-        public async Task Wppr_GetTournament_ShouldReturnTournament()
+        public async Task PinballRankingApiV1_GetTournament_ShouldReturnTournament()
         {
             int tournamentId = 18411;
             var tournament = await rankingApi.GetTournament(tournamentId);
@@ -168,7 +168,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetTournamentResults_ShouldReturnResults()
+        public async Task PinballRankingApiV1_GetTournamentResults_ShouldReturnResults()
         {
             int tournamentId = 18411;
             var tournamentResults = await rankingApi.GetTournamentResults(tournamentId);
@@ -177,7 +177,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetTournamentList_ShouldReturnList()
+        public async Task PinballRankingApiV1_GetTournamentList_ShouldReturnList()
         {
             var tournamentList = await rankingApi.GetTournamentList();
 
@@ -185,7 +185,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_SearchForTournament_ShouldReturnTournament()
+        public async Task PinballRankingApiV1_SearchForTournament_ShouldReturnTournament()
         {
             var searchStr = "PAPA";
             var tournamentSearch = await rankingApi.TournamentSearch(searchStr);
@@ -194,7 +194,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetRankings_ShouldReturnRankings()
+        public async Task PinballRankingApiV1_GetRankings_ShouldReturnRankings()
         {
             var totalrecords = 75;
             var startpos = 5;
@@ -207,7 +207,7 @@ namespace PinballApi.Tests
 
 
         [Test]
-        public async Task Wppr_GetRankingsByCountry_ShouldReturnRankings()
+        public async Task PinballRankingApiV1_GetRankingsByCountry_ShouldReturnRankings()
         {
             var totalrecords = 75;
             var startpos = 5;
@@ -250,7 +250,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetCalendarSearch_ShouldReturnCalendar()
+        public async Task PinballRankingApiV1_GetCalendarSearch_ShouldReturnCalendar()
         {
             var address = "346 Rochambeau Ave, Providence, RI";
             var distance = 250;
@@ -263,7 +263,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPvp_ShouldReturnPvp()
+        public async Task PinballRankingApiV1_GetPvp_ShouldReturnPvp()
         {
             var playerOneId = 16927;
             var playerTwoId = 19611;
@@ -274,7 +274,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPointsThisYearStat()
+        public async Task PinballRankingApiV1_GetPointsThisYearStat()
         {
             var stat = await rankingApi.GetPointsThisYearStats();
 
@@ -282,7 +282,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetMostEventsStat()
+        public async Task PinballRankingApiV1_GetMostEventsStat()
         {
             var stat = await rankingApi.GetMostEventsStats();
 
@@ -290,7 +290,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayersByCountryStat()
+        public async Task PinballRankingApiV1_GetPlayersByCountryStat()
         {
             var stat = await rankingApi.GetPlayersByCountryStat();
 
@@ -298,7 +298,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetEventsPerYearStat()
+        public async Task PinballRankingApiV1_GetEventsPerYearStat()
         {
             var stat = await rankingApi.GetEventsPerYearStat();
 
@@ -306,7 +306,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetPlayersPerYearStat()
+        public async Task PinballRankingApiV1_GetPlayersPerYearStat()
         {
             var stat = await rankingApi.GetPlayersPerYearStat();
 
@@ -314,7 +314,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task Wppr_GetBiggestMoversStat()
+        public async Task PinballRankingApiV1_GetBiggestMoversStat()
         {
             var stat = await rankingApi.GetBiggestMoversStat();
 
