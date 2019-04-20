@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v1.Players;
+using System;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Players
@@ -45,7 +46,7 @@ namespace PinballApi.Models.WPPR.v2.Players
 
 
         [JsonProperty("profile_photo")]
-        public string ProfilePhoto { get; set; }
+        public Uri ProfilePhoto { get; set; }
 
         [JsonProperty("player_stats")]
         public PlayerStats PlayerStats { get; set; }

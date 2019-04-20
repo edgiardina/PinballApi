@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Models.WPPR.v2.Calendar;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -80,7 +81,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_GetPlayerBySearch_ShouldReturnPlayer()
         {
-            var searchFilter = new SearchFilter { Name = "Giardina" };
+            var searchFilter = new Models.WPPR.v2.Players.SearchFilter { Name = "Giardina" };
             var player = await rankingApi.GetPlayersBySearch(searchFilter);
 
             Assert.That(player.Results.Any(n => n.PlayerId == EdGiardinaPlayerId), Is.True);
@@ -94,7 +95,7 @@ namespace PinballApi.Tests
             Assert.That(player.Count, Is.Positive);
 
             //OH SHIT IF THIS FAILS ED SUCKS AT PINBALL
-            Assert.That(player.Single(n => n.StateProvinceName == "Rhode Island").CurrentLeaderPlayerKey, Is.EqualTo(EdGiardinaPlayerId));
+            Assert.That(player.Single(n => n.StateProvinceName == "Rhode Island").CurrentLeaderPlayerId, Is.EqualTo(EdGiardinaPlayerId));
         }
 
         [Test]
@@ -130,6 +131,27 @@ namespace PinballApi.Tests
             Assert.That(player.USAPlayerCount, Is.Positive);
             Assert.That(player.CanadaPlayerCount, Is.Positive);
             Assert.That(player.Year, Is.EqualTo(DateTime.Now.Year));
+        }
+
+
+        [Test]
+        public async Task PinballRankingApiV2_GetCalendarEntry_ShouldReturnEntry()
+        {
+            var tourneyid = 29978;
+
+            var calendarEntry = await rankingApi.GetCalendarEntry(tourneyid);
+
+            Assert.That(calendarEntry.TournamentName, Is.EqualTo("PinCrossing Monthly Tournament"));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetCalendarEntryByDistance_ShouldReturnEntry()
+        {
+            var searchFilter = new Models.WPPR.v2.Calendar.SearchFilter { Address = "Providence, RI", Distance = 50, DistanceType = DistanceType.Miles };
+
+            var calendarEntries = await rankingApi.GetCalendarEntriesByDistance(searchFilter);
+
+            Assert.That(calendarEntries.CalendarEntries.Count, Is.Positive);
         }
 
     }

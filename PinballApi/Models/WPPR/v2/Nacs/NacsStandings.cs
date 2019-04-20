@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace PinballApi.Models.WPPR.v2.Nacs
 {
@@ -29,9 +30,9 @@ namespace PinballApi.Models.WPPR.v2.Nacs
         public string CurrentLeaderName { get; set; }
 
         [JsonProperty("current_leader_player_key")]
-        public int CurrentLeaderPlayerKey { get; set; }
+        public int CurrentLeaderPlayerId { get; set; }
 
         [JsonProperty("current_leader_profile_photo")]
-        public string CurrentLeaderProfilePhoto { get; set; }
+        public Uri CurrentLeaderProfilePhoto { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Linq;
 using PinballApi.Models.WPPR.v2.Nacs;
+using PinballApi.Models.WPPR.v2.Calendar;
 
 namespace PinballApi
 {
@@ -101,7 +102,7 @@ namespace PinballApi
         }
 
         //name, country, stateprov, tournament, tourpos
-        public async Task<PlayerSearch> GetPlayersBySearch(SearchFilter searchFilter)
+        public async Task<PlayerSearch> GetPlayersBySearch(Models.WPPR.v2.Players.SearchFilter searchFilter)
         {
             if (searchFilter == null)
                 throw new ArgumentNullException(nameof(searchFilter));
@@ -177,6 +178,32 @@ namespace PinballApi
 
             return JObject.Parse(json)
                 .SelectToken("winners", false).ToObject<List<NacsPastWinners>>();
+        }
+
+        #endregion
+
+        #region Calendar
+
+        /*
+           /calendar/search
+           /calendar/upcoming
+        */
+
+        public async Task<CalendarEntry> GetCalendarEntry(int tournamentId)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("calendar")
+                    .AppendPathSegment(tournamentId)
+                    .GetJsonAsync<CalendarEntry>();
+        }
+
+        public async Task<CalendarSearch> GetCalendarEntriesByDistance(Models.WPPR.v2.Calendar.SearchFilter searchFilter)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("calendar/search/distance")
+                    .SetQueryParam("address", searchFilter.Address)
+                    .SetQueryParam(searchFilter.DistanceType.ToString().ToLower().Substring(0, 1), searchFilter.Distance)
+                    .GetJsonAsync<CalendarSearch>();
         }
 
         #endregion
