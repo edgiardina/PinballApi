@@ -9,6 +9,8 @@ using PinballApi.Models.WPPR.v2.Players;
 using System.Linq;
 using PinballApi.Models.WPPR.v2.Nacs;
 using PinballApi.Models.WPPR.v2.Calendar;
+using PinballApi.Models.WPPR.v2;
+using PinballApi.Models.WPPR.v2.Rankings;
 
 namespace PinballApi
 {
@@ -50,6 +52,17 @@ namespace PinballApi
             request = request.SetQueryParam("players", string.Join(",", playerIds));
 
             return await request.GetJsonAsync<List<Player>>();
+        }
+
+        public async Task<PlayerResults> GetPlayerResults(int playerId, RankingType rankingType = RankingType.Main, ResultType resultType = ResultType.Active)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("player")
+                    .AppendPathSegment(playerId)
+                    .AppendPathSegment("results")
+                    .AppendPathSegment(rankingType.ToString().ToLower())
+                    .AppendPathSegment(resultType.ToString().ToLower())
+                    .GetJsonAsync<PlayerResults>();
         }
 
         public async Task<Player> GetPlayerAcheivements(int playerId)
@@ -222,6 +235,18 @@ namespace PinballApi
         {
             throw new NotImplementedException("whoops");
         }
+
+        #endregion
+
+        #region Rankings
+
+        public async Task<CountryList> GetRankingCountries()
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/country_list")     
+                    .GetJsonAsync<CountryList>();
+        }
+
 
         #endregion
     }

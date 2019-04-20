@@ -5,6 +5,7 @@ using PinballApi.Models.WPPR.v2.Calendar;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using PinballApi.Models.WPPR.v2;
 
 namespace PinballApi.Tests
 {
@@ -81,10 +82,23 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_GetPlayerBySearch_ShouldReturnPlayer()
         {
-            var searchFilter = new Models.WPPR.v2.Players.SearchFilter { Name = "Giardina" };
+            var searchFilter = new SearchFilter { Name = "Giardina" };
             var player = await rankingApi.GetPlayersBySearch(searchFilter);
 
             Assert.That(player.Results.Any(n => n.PlayerId == EdGiardinaPlayerId), Is.True);
+        }
+
+        [Test]
+        [TestCase(RankingType.Main, ResultType.Active)]
+        [TestCase(RankingType.Main, ResultType.Inactive)]
+        [TestCase(RankingType.Main, ResultType.NonActive)]
+        public async Task PinballRankingApiV2_GetPlayerResults_ShouldReturnResults(RankingType rankingType, ResultType resultType)
+        {
+            var playerResults = await rankingApi.GetPlayerResults(EdGiardinaPlayerId, rankingType, resultType);
+
+            Assert.That(playerResults.ResultsCount, Is.Positive);
+            Assert.That(playerResults.RankingType, Is.EqualTo(rankingType));
+            Assert.That(playerResults.ResultsType, Is.EqualTo(resultType));
         }
 
         [Test]
@@ -162,6 +176,14 @@ namespace PinballApi.Tests
             var calendarEntries = await rankingApi.GetCalendarEntriesByDistance(searchFilter);
 
             Assert.That(calendarEntries.CalendarEntries.Count, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetRankingCountries_ShouldReturnCountries()
+        {
+            var countries = await rankingApi.GetRankingCountries();
+
+            Assert.That(countries.TotalCount, Is.Positive);
         }
 
     }
