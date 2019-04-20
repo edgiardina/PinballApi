@@ -185,7 +185,6 @@ namespace PinballApi
         #region Calendar
 
         /*
-           /calendar/search
            /calendar/upcoming
         */
 
@@ -197,13 +196,31 @@ namespace PinballApi
                     .GetJsonAsync<CalendarEntry>();
         }
 
-        public async Task<CalendarSearch> GetCalendarEntriesByDistance(Models.WPPR.v2.Calendar.SearchFilter searchFilter)
+        public async Task<CalendarSearch> GetCalendarEntriesBySearch(CalendarSearchFilter searchFilter)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("calendar/search")
+                    .SetQueryParam("start_date", searchFilter.StartDate.ToString("yyyy-MM-dd"))
+                    .SetQueryParam("end_date", searchFilter.EndDate.ToString("yyyy-MM-dd"))
+                    .SetQueryParam("ranking_type", searchFilter.RankingType)
+                    .SetQueryParam("stateprov", searchFilter.StateProvince)
+                    .SetQueryParam("name", searchFilter.Name)
+                    .GetJsonAsync<CalendarSearch>();
+        }
+
+        public async Task<CalendarDistanceSearch> GetCalendarEntriesByDistance(CalendarDistanceSearchFilter searchFilter)
         {
             return await BaseRequest
                     .AppendPathSegment("calendar/search/distance")
                     .SetQueryParam("address", searchFilter.Address)
                     .SetQueryParam(searchFilter.DistanceType.ToString().ToLower().Substring(0, 1), searchFilter.Distance)
-                    .GetJsonAsync<CalendarSearch>();
+                    .GetJsonAsync<CalendarDistanceSearch>();
+        }
+
+
+        public async Task<CalendarDistanceSearch> GetCalendarUpcoming()
+        {
+            throw new NotImplementedException("whoops");
         }
 
         #endregion

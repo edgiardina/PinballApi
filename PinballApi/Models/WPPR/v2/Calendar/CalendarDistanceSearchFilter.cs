@@ -3,7 +3,7 @@ using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Calendar
 {
-    public class SearchFilter
+    public class CalendarDistanceSearchFilter
     {
         [JsonProperty("address")]
         public string Address { get; set; }

@@ -89,7 +89,7 @@ namespace PinballApi.Tests
 
         [Test]
         public async Task PinballRankingApiV2_NacsStandings_ShouldReturnStandings()
-        {            
+        {
             var player = await rankingApi.GetNacsStandings();
 
             Assert.That(player.Count, Is.Positive);
@@ -145,9 +145,19 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetCalendarEntryBySearch_ShouldReturnEntry()
+        {
+            var searchFilter = new CalendarSearchFilter { StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(2) };
+
+            var calendarEntries = await rankingApi.GetCalendarEntriesBySearch(searchFilter);
+
+            Assert.That(calendarEntries.CalendarEntries.Count, Is.Positive);
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_GetCalendarEntryByDistance_ShouldReturnEntry()
         {
-            var searchFilter = new Models.WPPR.v2.Calendar.SearchFilter { Address = "Providence, RI", Distance = 50, DistanceType = DistanceType.Miles };
+            var searchFilter = new CalendarDistanceSearchFilter { Address = "Providence, RI", Distance = 50, DistanceType = DistanceType.Miles };
 
             var calendarEntries = await rankingApi.GetCalendarEntriesByDistance(searchFilter);
 
