@@ -34,6 +34,18 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetPlayers_ShouldReturnCorrectPlayers()
+        {
+            var players = await rankingApi.GetPlayers(new System.Collections.Generic.List<int> { EdGiardinaPlayerId, 2 });
+
+            Assert.That(players.First().FirstName == "Ed");
+            Assert.That(players.Last().FirstName == "Bowen");
+            //To make sure unranked player changes didn't ruin ranked player efficiency stats
+            Assert.That(players.First().PlayerStats.EfficiencyRank, Is.Not.Null);
+            Assert.That(players.First().PlayerStats.EfficiencyValue, Is.Not.Null);
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_GetPlayerHistory_ShouldReturnHistory()
         {
             var player = await rankingApi.GetPlayerHistory(EdGiardinaPlayerId);
@@ -66,6 +78,15 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetPlayerBySearch_ShouldReturnPlayer()
+        {
+            var searchFilter = new SearchFilter { Name = "Giardina" };
+            var player = await rankingApi.GetPlayersBySearch(searchFilter);
+
+            Assert.That(player.Results.Any(n => n.PlayerId == EdGiardinaPlayerId), Is.True);
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_NacsStandings_ShouldReturnStandings()
         {            
             var player = await rankingApi.GetNacsStandings();
@@ -74,6 +95,27 @@ namespace PinballApi.Tests
 
             //OH SHIT IF THIS FAILS ED SUCKS AT PINBALL
             Assert.That(player.Single(n => n.StateProvinceName == "Rhode Island").CurrentLeaderPlayerKey, Is.EqualTo(EdGiardinaPlayerId));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_NacsStateProvinceStandings_ShouldReturnStandings()
+        {
+            string stateAbbrv = "RI";
+
+            var player = await rankingApi.GetNacsStateProvinceStandings(stateAbbrv);
+
+            Assert.That(player.PlayerStandings.Count, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_NacsPastWinners_ShouldReturnWinners()
+        {
+            string stateAbbrv = "RI";
+
+            var winners = await rankingApi.GetNacsPastWinners();
+
+            Assert.That(winners.Count, Is.Positive);
+            Assert.That(winners.Single(n => n.StateProvince == "Rhode Island").Winners.Any(n => n.PlayerId == EdGiardinaPlayerId), Is.True);
         }
 
         [Test]

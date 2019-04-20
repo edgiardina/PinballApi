@@ -17,7 +17,7 @@ namespace PinballApi
 
         public PinballRankingApiV2(string apiKey) : base(apiKey)
         {
-            
+
         }
 
         #region player
@@ -39,6 +39,16 @@ namespace PinballApi
                 //Indicates null values which may mean invalid playerId
                 return null;
             }
+        }
+
+        public async Task<List<Player>> GetPlayers(List<int> playerIds)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("player");
+
+            request = request.SetQueryParam("players", string.Join(",", playerIds));
+
+            return await request.GetJsonAsync<List<Player>>();
         }
 
         public async Task<Player> GetPlayerAcheivements(int playerId)
@@ -68,7 +78,7 @@ namespace PinballApi
                     .AppendPathSegment("player")
                     .AppendPathSegment(playerId)
                     .AppendPathSegment("history")
-                    .GetJsonAsync<PlayerHistory>();        
+                    .GetJsonAsync<PlayerHistory>();
         }
 
         public async Task<PlayerVersusPlayer> GetPlayerVersusPlayer(int playerId)
@@ -90,18 +100,66 @@ namespace PinballApi
                     .GetJsonAsync<PlayerVersusPlayerComparison>();
         }
 
+        //name, country, stateprov, tournament, tourpos
+        public async Task<PlayerSearch> GetPlayersBySearch(SearchFilter searchFilter)
+        {
+            if (searchFilter == null)
+                throw new ArgumentNullException(nameof(searchFilter));
+
+            var request = BaseRequest
+                    .AppendPathSegment("player/search");
+
+            if(!string.IsNullOrEmpty(searchFilter.Name))
+            {
+                request = request.SetQueryParam("name", searchFilter.Name);
+            }
+
+            if (!string.IsNullOrEmpty(searchFilter.Country))
+            {
+                request = request.SetQueryParam("country", searchFilter.Country);
+            }
+
+            if (!string.IsNullOrEmpty(searchFilter.StateProvince))
+            {
+                request = request.SetQueryParam("stateprov", searchFilter.StateProvince);
+            }
+
+            if (!string.IsNullOrEmpty(searchFilter.Tournament))
+            {
+                request = request.SetQueryParam("tournament", searchFilter.Tournament);
+            }
+
+            if (!string.IsNullOrEmpty(searchFilter.Tourpos))
+            {
+                request = request.SetQueryParam("tourpos", searchFilter.Tourpos);
+            }
+
+            if (request.QueryParams.Count == 1)
+                throw new ArgumentOutOfRangeException("Expected at least one value in the provided searchFilter was not null or empty.");
+
+            return await request.GetJsonAsync<PlayerSearch>();
+        }
+
         #endregion
 
 
         #region NACS
         public async Task<List<NacsStandings>> GetNacsStandings()
         {
-                var json = await BaseRequest
-                    .AppendPathSegment("nacs/standings")          
-                    .GetStringAsync();
+            var json = await BaseRequest
+                .AppendPathSegment("nacs/standings")
+                .GetStringAsync();
 
-                return JObject.Parse(json)
-                    .SelectToken("nacs", false).ToObject<List<NacsStandings>>();         
+            return JObject.Parse(json)
+                .SelectToken("nacs", false).ToObject<List<NacsStandings>>();
+        }
+
+        public async Task<NacsStateProvinceStandings> GetNacsStateProvinceStandings(string stateProvinceAbbreviation)
+        {
+            return await BaseRequest
+                .AppendPathSegment("nacs/standings")
+                 .AppendPathSegment(stateProvinceAbbreviation)
+                .GetJsonAsync<NacsStateProvinceStandings>();
         }
 
         public async Task<NacsStatistics> GetNacsStatistics()
@@ -109,6 +167,16 @@ namespace PinballApi
             return await BaseRequest
                     .AppendPathSegment("nacs/stats")
                     .GetJsonAsync<NacsStatistics>();
+        }
+
+        public async Task<List<NacsPastWinners>> GetNacsPastWinners()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("nacs/winners")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("winners", false).ToObject<List<NacsPastWinners>>();
         }
 
         #endregion
