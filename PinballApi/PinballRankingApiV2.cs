@@ -247,6 +247,52 @@ namespace PinballApi
                     .GetJsonAsync<CountryList>();
         }
 
+        public async Task<CountryRanking> GetRankingForCountry(string countryName)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/country")
+                    .SetQueryParam("country", countryName)
+                    .GetJsonAsync<CountryRanking>();
+        }
+
+        public async Task<EliteRanking> GetEliteRanking()
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/elite/list")
+                    .GetJsonAsync<EliteRanking>();
+        }
+
+        public async Task<ElitePlayerVersusPlayer> GetElitePlayerVersusPlayer(int elitePlayerId)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/elite/pvp")
+                    .AppendPathSegment(elitePlayerId)
+                    .GetJsonAsync<ElitePlayerVersusPlayer>();
+        }
+
+        public async Task<WomensRanking> GetRankingForWomen(TournamentType tournamentType)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/women")
+                    .AppendPathSegment(tournamentType.ToString().ToLower())
+                    .GetJsonAsync<WomensRanking>();
+        }
+
+        public async Task<CustomRanking> GetRankingCustomView(int viewId)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/custom")
+                    .AppendPathSegment(viewId)
+                    .GetJsonAsync<CustomRanking>();
+        }
+
+        public async Task<CustomRankingList> GetRankingCustomViewList()
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/custom/list")
+                    .GetJsonAsync<CustomRankingList>();
+        }
+
 
         #endregion
     }

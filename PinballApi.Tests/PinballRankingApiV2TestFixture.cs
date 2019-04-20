@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using PinballApi.Models.WPPR.v2;
+using PinballApi.Models.WPPR.v2.Rankings;
 
 namespace PinballApi.Tests
 {
@@ -182,6 +183,62 @@ namespace PinballApi.Tests
         public async Task PinballRankingApiV2_GetRankingCountries_ShouldReturnCountries()
         {
             var countries = await rankingApi.GetRankingCountries();
+
+            Assert.That(countries.TotalCount, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetRankingCountry_ShouldReturnRanking()
+        {
+            var ranking = await rankingApi.GetRankingForCountry("United States");
+
+            Assert.That(ranking.TotalCount, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetRankingElite_ShouldReturnRankingElite()
+        {
+            var ranking = await rankingApi.GetEliteRanking();
+
+            Assert.That(ranking.TotalCount, Is.Positive);
+        }
+
+
+        [Test]
+        public async Task PinballRankingApiV2_GetRankingElitePvp_ShouldReturnRankingElite()
+        {
+            var elitePlayerId = 1256;
+            var ranking = await rankingApi.GetElitePlayerVersusPlayer(elitePlayerId);
+
+            Assert.That(ranking.Records.Count, Is.Positive);
+        }
+
+        [Test]
+        [TestCase(TournamentType.Open)]
+        [TestCase(TournamentType.Restricted)]
+        public async Task PinballRankingApiV2_GetRankingWomen_ShouldReturnRanking(TournamentType tournamentType)
+        {
+            var ranking = await rankingApi.GetRankingForWomen(tournamentType);
+
+            Assert.That(ranking.ReturnCount, Is.Positive);
+            Assert.That(ranking.TournamentType, Is.EqualTo(tournamentType));
+        }
+
+
+        [Test]
+        public async Task PinballRankingApiV2_GetRankingCustom_ShouldReturnCustom()
+        {
+            int viewId = 13;
+            var customView = await rankingApi.GetRankingCustomView(viewId);
+
+            Assert.That(customView.TotalCount, Is.Positive);
+            Assert.That(customView.ViewId, Is.EqualTo(viewId));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetRankingCustomList_ShouldReturnCustomList()
+        {
+            var countries = await rankingApi.GetRankingCustomViewList();
 
             Assert.That(countries.TotalCount, Is.Positive);
         }

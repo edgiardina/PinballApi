@@ -4,6 +4,9 @@
     {
         Main,
         Women,
-        Youth
+        Youth,
+        Elite,
+        WPPR,
+        Country
     }
 }
