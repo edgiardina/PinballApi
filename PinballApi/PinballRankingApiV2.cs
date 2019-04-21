@@ -11,6 +11,7 @@ using PinballApi.Models.WPPR.v2.Nacs;
 using PinballApi.Models.WPPR.v2.Calendar;
 using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
+using PinballApi.Models.WPPR.v2.Tournaments;
 
 namespace PinballApi
 {
@@ -272,10 +273,33 @@ namespace PinballApi
 
         public async Task<WomensRanking> GetRankingForWomen(TournamentType tournamentType)
         {
+            var request = BaseRequest
+                    .AppendPathSegment("rankings/women");
+
+            if (tournamentType == TournamentType.Women)
+            {
+                request = request.AppendPathSegment("restricted");
+            }
+            else
+            {
+                request = request.AppendPathSegment(tournamentType.ToString().ToLower());
+            }
+
+            return await request.GetJsonAsync<WomensRanking>();
+        }
+
+        public async Task<YouthRanking> GetRankingForYouth()
+        {
             return await BaseRequest
-                    .AppendPathSegment("rankings/women")
-                    .AppendPathSegment(tournamentType.ToString().ToLower())
-                    .GetJsonAsync<WomensRanking>();
+                    .AppendPathSegment("rankings/youth")
+                    .GetJsonAsync<YouthRanking>();
+        }
+
+        public async Task<WpprRanking> GetWpprRanking()
+        {
+            return await BaseRequest
+                    .AppendPathSegment("rankings/wppr")
+                    .GetJsonAsync<WpprRanking>();
         }
 
         public async Task<CustomRanking> GetRankingCustomView(int viewId)
@@ -291,6 +315,30 @@ namespace PinballApi
             return await BaseRequest
                     .AppendPathSegment("rankings/custom/list")
                     .GetJsonAsync<CustomRankingList>();
+        }
+
+
+        #endregion
+
+        #region Tournaments
+        public async Task<Models.WPPR.v2.Tournaments.Tournament> GetTournament(int tournamentId)
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("tournament")
+                    .AppendPathSegment(tournamentId)
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("tournament", false).ToObject<Models.WPPR.v2.Tournaments.Tournament>();
+        }
+
+        public async Task<TournamentResults> GetTournamentResults(int tournamentId)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("tournament")
+                    .AppendPathSegment(tournamentId)
+                    .AppendPathSegment("results")
+                    .GetJsonAsync<TournamentResults>();
         }
 
 

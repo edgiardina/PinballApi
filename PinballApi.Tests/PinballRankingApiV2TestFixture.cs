@@ -215,13 +215,29 @@ namespace PinballApi.Tests
 
         [Test]
         [TestCase(TournamentType.Open)]
-        [TestCase(TournamentType.Restricted)]
+        [TestCase(TournamentType.Women)]
         public async Task PinballRankingApiV2_GetRankingWomen_ShouldReturnRanking(TournamentType tournamentType)
         {
             var ranking = await rankingApi.GetRankingForWomen(tournamentType);
 
             Assert.That(ranking.ReturnCount, Is.Positive);
             Assert.That(ranking.TournamentType, Is.EqualTo(tournamentType));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetRankingYouth_ShouldReturnRanking()
+        {
+            var ranking = await rankingApi.GetRankingForYouth();
+
+            Assert.That(ranking.ReturnCount, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetWpprRanking_ShouldReturnRanking()
+        {
+            var ranking = await rankingApi.GetWpprRanking();
+
+            Assert.That(ranking.ReturnCount, Is.Positive);
         }
 
 
@@ -241,6 +257,26 @@ namespace PinballApi.Tests
             var countries = await rankingApi.GetRankingCustomViewList();
 
             Assert.That(countries.TotalCount, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetTournament_ShouldReturnTournament()
+        {
+            var tournamentId = 25586;
+
+            var tournament = await rankingApi.GetTournament(tournamentId);
+
+            Assert.That(tournament.TournamentId, Is.EqualTo(tournamentId));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetTournamentResults_ShouldReturnTournamentResults()
+        {
+            var tournamentId = 25586;
+
+            var tournament = await rankingApi.GetTournamentResults(tournamentId);
+
+            Assert.That(tournament.Results.Count, Is.Positive);
         }
 
     }

@@ -3,6 +3,6 @@
     public enum TournamentType
     {
         Open,
-        Restricted
+        Women
     }
 }
