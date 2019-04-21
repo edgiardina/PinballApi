@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
+using PinballApi.Models.WPPR.v2.Tournaments;
 
 namespace PinballApi.Tests
 {
@@ -83,7 +84,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_GetPlayerBySearch_ShouldReturnPlayer()
         {
-            var searchFilter = new SearchFilter { Name = "Giardina" };
+            var searchFilter = new PlayerSearchFilter { Name = "Giardina" };
             var player = await rankingApi.GetPlayersBySearch(searchFilter);
 
             Assert.That(player.Results.Any(n => n.PlayerId == EdGiardinaPlayerId), Is.True);
@@ -275,6 +276,16 @@ namespace PinballApi.Tests
             var tournamentId = 25586;
 
             var tournament = await rankingApi.GetTournamentResults(tournamentId);
+
+            Assert.That(tournament.Results.Count, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetTournamentBySearch_ShouldReturnTournament()
+        {
+            var searchCriteria = new TournamentSearchFilter { Name = "Pinburgh" };
+
+            var tournament = await rankingApi.GetTournamentBySearch(searchCriteria);
 
             Assert.That(tournament.Results.Count, Is.Positive);
         }

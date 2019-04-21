@@ -116,7 +116,7 @@ namespace PinballApi
         }
 
         //name, country, stateprov, tournament, tourpos
-        public async Task<PlayerSearch> GetPlayersBySearch(Models.WPPR.v2.Players.SearchFilter searchFilter)
+        public async Task<PlayerSearch> GetPlayersBySearch(Models.WPPR.v2.Players.PlayerSearchFilter searchFilter)
         {
             if (searchFilter == null)
                 throw new ArgumentNullException(nameof(searchFilter));
@@ -339,6 +339,43 @@ namespace PinballApi
                     .AppendPathSegment(tournamentId)
                     .AppendPathSegment("results")
                     .GetJsonAsync<TournamentResults>();
+        }
+
+        public async Task<TournamentSearch> GetTournamentBySearch(TournamentSearchFilter searchFilter)
+        {
+            var request = BaseRequest
+                    .AppendPathSegment("tournament")
+                    .AppendPathSegment("search");
+
+            if (!string.IsNullOrEmpty(searchFilter.Name))
+            {
+                request = request.SetQueryParam("name", searchFilter.Name);
+            }
+
+            if (!string.IsNullOrEmpty(searchFilter.Country))
+            {
+                request = request.SetQueryParam("country", searchFilter.Country);
+            }
+
+            if (!string.IsNullOrEmpty(searchFilter.StateProvince))
+            {
+                request = request.SetQueryParam("stateprov", searchFilter.StateProvince);
+            }
+
+            if (searchFilter.StartDate.HasValue)
+            {
+                request = request.SetQueryParam("start_date", searchFilter.StartDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            if (searchFilter.EndDate.HasValue)
+            {
+                request = request.SetQueryParam("end_date", searchFilter.EndDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            if (request.QueryParams.Count == 1)
+                throw new ArgumentOutOfRangeException("Expected at least one value in the provided searchFilter was not null or empty.");
+
+            return await request.GetJsonAsync<TournamentSearch>();
         }
 
 

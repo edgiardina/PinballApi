@@ -2,7 +2,7 @@
 
 namespace PinballApi.Models.WPPR.v2.Players
 {
-    public class SearchFilter
+    public class PlayerSearchFilter
     {
         [JsonProperty("name")]
         public string Name { get; set; }
