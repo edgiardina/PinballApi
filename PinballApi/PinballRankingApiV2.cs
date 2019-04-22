@@ -342,6 +342,20 @@ namespace PinballApi
                     .GetJsonAsync<TournamentResults>();
         }
 
+        public async Task<ActiveLeagues> GetActiveLeagues()
+        {
+            return await BaseRequest
+                    .AppendPathSegment("tournament/leagues/active")      
+                    .GetJsonAsync<ActiveLeagues>();
+        }
+
+        public async Task<HistoricalLeagues> GetHistoricalLeagues()
+        {
+            return await BaseRequest
+                    .AppendPathSegment("tournament/leagues/history")
+                    .GetJsonAsync<HistoricalLeagues>();
+        }
+
         public async Task<TournamentSearch> GetTournamentBySearch(TournamentSearchFilter searchFilter)
         {
             var request = BaseRequest

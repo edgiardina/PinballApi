@@ -291,6 +291,22 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetActiveLeagues_ShouldReturnLeague()
+        {
+            var tournament = await rankingApi.GetActiveLeagues();
+
+            Assert.That(tournament.TotalEntries, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetHistoricalLeagues_ShouldReturnLeague()
+        {
+            var tournament = await rankingApi.GetHistoricalLeagues();
+
+            Assert.That(tournament.TotalEntries, Is.Positive);
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_GetNacsDirectors_ShouldReturnDirectors()
         {          
             var directors = await rankingApi.GetNacsDirectors();
