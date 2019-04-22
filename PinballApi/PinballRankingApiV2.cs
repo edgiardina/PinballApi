@@ -12,6 +12,7 @@ using PinballApi.Models.WPPR.v2.Calendar;
 using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
+using PinballApi.Models.WPPR.v2.Directors;
 
 namespace PinballApi
 {
@@ -378,6 +379,29 @@ namespace PinballApi
             return await request.GetJsonAsync<TournamentSearch>();
         }
 
+
+        #endregion
+
+        #region Directors
+        public async Task<List<Director>> GetNacsDirectors()
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("directors/nacs")
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("nacs_directors", false).ToObject<List<Director>>();
+        }
+
+        public async Task<List<Director>> GetCountryDirectors()
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("directors/country")
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("country_director", false).ToObject<List<Director>>();
+        }
 
         #endregion
     }

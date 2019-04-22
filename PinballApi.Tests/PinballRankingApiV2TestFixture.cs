@@ -290,5 +290,21 @@ namespace PinballApi.Tests
             Assert.That(tournament.Results.Count, Is.Positive);
         }
 
+        [Test]
+        public async Task PinballRankingApiV2_GetNacsDirectors_ShouldReturnDirectors()
+        {          
+            var directors = await rankingApi.GetNacsDirectors();
+
+            Assert.That(directors.Count, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetCountryDirectors_ShouldReturnDirectors()
+        {
+            var directors = await rankingApi.GetCountryDirectors();
+
+            Assert.That(directors.Count, Is.Positive);
+        }
+
     }
 }
