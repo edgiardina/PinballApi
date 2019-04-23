@@ -19,7 +19,11 @@ namespace PinballApi.Converters
                     string booleanString = reader.Value.ToString();
 
                     return booleanString == "Y";
-                }               
+                }   
+                else if(reader.TokenType == JsonToken.Boolean)
+                {
+                    return (bool)reader.Value;
+                }
                 else
                 {
                     throw new JsonSerializationException($"Unsupported reader token type {reader.TokenType}");
