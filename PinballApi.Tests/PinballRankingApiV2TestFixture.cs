@@ -38,6 +38,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("endpoint appears busted for now")]
         public async Task PinballRankingApiV2_GetPlayers_ShouldReturnCorrectPlayers()
         {
             var players = await rankingApi.GetPlayers(new System.Collections.Generic.List<int> { EdGiardinaPlayerId, 2 });
