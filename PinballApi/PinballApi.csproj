@@ -20,7 +20,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\WPPR\v2\Stats\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

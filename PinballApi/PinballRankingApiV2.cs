@@ -13,6 +13,8 @@ using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
 using PinballApi.Models.WPPR.v2.Directors;
+using PinballApi.Models.WPPR.v2.Stats;
+using PinballApi.Models.WPPR.v1.Statistics;
 
 namespace PinballApi
 {
@@ -418,5 +420,80 @@ namespace PinballApi
         }
 
         #endregion
+
+        #region Stats
+        public async Task<OverallStatistics> GetOverallStatistics()
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("stats/overall")
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("stats", false).ToObject<OverallStatistics>();
+        }
+
+        public async Task<List<EventsByYearStatistics>> GetEventsByYearStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/events_by_year")              
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<EventsByYearStatistics>>();
+        }
+
+        public async Task<List<LargestTournamentStatistics>> GetLargestTournamentStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/largest_tournaments")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<LargestTournamentStatistics>>();
+        }
+
+        public async Task<List<LucrativeTournamentStatistics>> GetLucrativeTournamentStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/lucrative_tournaments")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<LucrativeTournamentStatistics>>();
+        }
+
+        public async Task<List<PlayersByYearStatistics>> GetPlayersByYearStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/players_by_year")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PlayersByYearStatistics>>();
+        }
+
+        public async Task<List<PlayersByStateStatistics>> GetPlayersByStateStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/state_players")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PlayersByStateStatistics>>();
+        }
+
+        public async Task<List<TournamentsByStateStatistics>> GetTournamentsByStateStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/state_tournaments")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<TournamentsByStateStatistics>>();
+        }
+
+
+        #endregion
+
     }
 }

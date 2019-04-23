@@ -322,5 +322,94 @@ namespace PinballApi.Tests
             Assert.That(directors.Count, Is.Positive);
         }
 
+        [Test]
+        public async Task PinballRankingApiV2_GetOverallStatistics_ShouldReturnStats()
+        {
+            var stats = await rankingApi.GetOverallStatistics();
+
+            Assert.That(stats.TournamentCount, Is.Positive);
+            Assert.That(stats.OverallPlayerCount, Is.Positive);
+            Assert.That(stats.TournamentCountLastMonth, Is.Positive);
+            Assert.That(stats.TournamentCountThisYear, Is.Positive);
+            Assert.That(stats.TournamentPlayerCount, Is.Positive);
+            Assert.That(stats.TournamentPlayerCountAverage, Is.Positive);           
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetEventsByYearStatistics()
+        {
+            var stat = await rankingApi.GetEventsByYearStatistics();
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.CountryCount, Is.Positive);
+            Assert.That(firstStat.Year, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+            Assert.That(firstStat.PlayerCount, Is.Positive);
+            Assert.That(firstStat.Count, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetLargestTournamentStatistics()
+        {
+            var stat = await rankingApi.GetLargestTournamentStatistics();
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+            Assert.That(firstStat.PlayerCount, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetLucrativeTournamentStatistics()
+        {
+            var stat = await rankingApi.GetLucrativeTournamentStatistics();
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetPlayersByYearStatistics()
+        {
+            var stat = await rankingApi.GetPlayersByYearStatistics();
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+            Assert.That(firstStat.Count, Is.Positive);
+            Assert.That(firstStat.Previous2_YearCount, Is.Positive);
+            Assert.That(firstStat.PreviousYearCount, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetPlayersByStateStatistics()
+        {
+            var stat = await rankingApi.GetPlayersByStateStatistics();
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetTournamentsByStateStatistics()
+        {
+            var stat = await rankingApi.GetTournamentsByStateStatistics();
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+            Assert.That(firstStat.TotalPointsAll, Is.Positive);
+            Assert.That(firstStat.TotalPointsTourValue, Is.Positive);
+        }
+
     }
 }
