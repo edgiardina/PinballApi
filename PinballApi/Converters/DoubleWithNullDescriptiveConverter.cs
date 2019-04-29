@@ -3,8 +3,19 @@ using System;
 
 namespace PinballApi.Converters
 {
-    public class EfficiencyRankConverter : JsonConverter
+    /// <summary>
+    /// For some data points, like Ratings Value or Ranking Value, we might see a string instead of a 
+    /// datapoint; that string might read "not rated". Parse that value into a null.
+    /// </summary>
+    public class DoubleWithNullDescriptiveConverter : JsonConverter
     {
+        private readonly string descriptiveTerm;
+
+        public DoubleWithNullDescriptiveConverter(string descriptiveTerm)
+        {
+            this.descriptiveTerm = descriptiveTerm;
+        }
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
@@ -16,18 +27,18 @@ namespace PinballApi.Converters
             {
                 if (reader.TokenType == JsonToken.String)
                 {
-                    string integerOrNotRanked = reader.Value.ToString();
+                    string integerOrNullDescriptiveTerm = reader.Value.ToString();
 
-                    if (integerOrNotRanked == "Not Ranked")
+                    if (integerOrNullDescriptiveTerm == descriptiveTerm)
                     {
                         return null;
                     }
                     else
                     {
-                        return int.Parse(integerOrNotRanked);
+                        return double.Parse(integerOrNullDescriptiveTerm);
                     }
                 }
-                else if (reader.TokenType == JsonToken.Integer)
+                else if (reader.TokenType == JsonToken.Float)
                 {
                     return reader.Value;
                 }
@@ -38,13 +49,13 @@ namespace PinballApi.Converters
             }
             catch (Exception ex)
             {
-                throw new JsonSerializationException("Error converting value to type int?.", ex);
+                throw new JsonSerializationException("Error converting value to type double?.", ex);
             }
         }
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(int?);
+            return objectType == typeof(double?);
         }
     }
 }

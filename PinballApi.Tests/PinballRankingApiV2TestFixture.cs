@@ -282,6 +282,16 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetTournamentResults_WithUnratedPlayerShouldReturnTournamentResults()
+        {
+            var tournamentId = 21076;
+
+            var tournament = await rankingApi.GetTournamentResults(tournamentId);
+
+            Assert.That(tournament.Results.Count, Is.Positive);
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_GetTournamentBySearch_ShouldReturnTournament()
         {
             var searchCriteria = new TournamentSearchFilter { Name = "Pinburgh" };

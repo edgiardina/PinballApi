@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class TournamentResult
     {
-        [JsonProperty("player_id")]
-        public int PlayerId { get; set; }
+        /// <summary>
+        /// Is null if player is suppressed.
+        /// </summary> 
+        [JsonProperty("player_id")]        
+        public int? PlayerId { get; set; }
 
         [JsonProperty("first_name")]
         public string FirstName { get; set; }
@@ -29,7 +33,8 @@ namespace PinballApi.Models.WPPR.v2.Tournaments
         public int WpprRank { get; set; }
 
         [JsonProperty("ratings_value")]
-        public double RatingsValue { get; set; }
+        [JsonConverter(typeof(DoubleWithNullDescriptiveConverter), "Not Rated")]
+        public double? RatingsValue { get; set; }
 
         [JsonProperty("excluded_flag")]
         public bool ExcludedFlag { get; set; }

@@ -56,7 +56,7 @@ namespace PinballApi.Models.WPPR.v1.Players
         public double RatingsValue { get; set; }
 
         [JsonProperty("efficiency_rank")]
-        [JsonConverter(typeof(EfficiencyRankConverter))]
+        [JsonConverter(typeof(IntegerWithNullDescriptiveConverter), "Not Ranked")]
         public int? EfficiencyRank { get; set; }
 
         [JsonProperty("efficiency_value")]
