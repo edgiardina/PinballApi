@@ -14,7 +14,6 @@ using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
 using PinballApi.Models.WPPR.v2.Directors;
 using PinballApi.Models.WPPR.v2.Stats;
-using PinballApi.Models.WPPR.v1.Statistics;
 
 namespace PinballApi
 {
@@ -251,18 +250,28 @@ namespace PinballApi
                     .GetJsonAsync<CountryList>();
         }
 
-        public async Task<CountryRanking> GetRankingForCountry(string countryName)
+        public async Task<CountryRanking> GetRankingForCountry(string countryName, int startPosition = 1, int count = 50)
         {
             return await BaseRequest
                     .AppendPathSegment("rankings/country")
                     .SetQueryParam("country", countryName)
+                    .SetQueryParams(new
+                    {
+                        start_pos = startPosition,
+                        count
+                    })
                     .GetJsonAsync<CountryRanking>();
         }
 
-        public async Task<EliteRanking> GetEliteRanking()
+        public async Task<EliteRanking> GetEliteRanking(int startPosition = 1, int count = 50)
         {
             return await BaseRequest
                     .AppendPathSegment("rankings/elite/list")
+                    .SetQueryParams(new
+                    {
+                        start_pos = startPosition,
+                        count
+                    })
                     .GetJsonAsync<EliteRanking>();
         }
 
@@ -274,7 +283,7 @@ namespace PinballApi
                     .GetJsonAsync<ElitePlayerVersusPlayer>();
         }
 
-        public async Task<WomensRanking> GetRankingForWomen(TournamentType tournamentType)
+        public async Task<WomensRanking> GetRankingForWomen(TournamentType tournamentType, int startPosition = 1, int count = 50)
         {
             var request = BaseRequest
                     .AppendPathSegment("rankings/women");
@@ -288,20 +297,36 @@ namespace PinballApi
                 request = request.AppendPathSegment(tournamentType.ToString().ToLower());
             }
 
+            request.SetQueryParams(new
+            {
+                start_pos = startPosition,
+                count
+            });
+
             return await request.GetJsonAsync<WomensRanking>();
         }
 
-        public async Task<YouthRanking> GetRankingForYouth()
+        public async Task<YouthRanking> GetRankingForYouth(int startPosition = 1, int count = 50)
         {
             return await BaseRequest
                     .AppendPathSegment("rankings/youth")
+                    .SetQueryParams(new
+                    {
+                        start_pos = startPosition,
+                        count
+                    })
                     .GetJsonAsync<YouthRanking>();
         }
 
-        public async Task<WpprRanking> GetWpprRanking()
+        public async Task<WpprRanking> GetWpprRanking(int startPosition = 1, int count = 50)
         {
             return await BaseRequest
                     .AppendPathSegment("rankings/wppr")
+                    .SetQueryParams(new
+                    {
+                        start_pos = startPosition,
+                        count
+                    })
                     .GetJsonAsync<WpprRanking>();
         }
 
