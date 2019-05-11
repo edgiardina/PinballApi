@@ -51,7 +51,7 @@ namespace PinballApi.Models.WPPR.v2.Rankings
         public int RatingDeviation { get; set; }
 
         [JsonProperty("efficiency_percent")]
-        public double EfficiencyPercent { get; set; }
+        public double? EfficiencyPercent { get; set; }
 
         [JsonProperty("event_count")]
         public int EventCount { get; set; }

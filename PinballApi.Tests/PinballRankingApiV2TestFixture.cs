@@ -229,7 +229,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_GetRankingYouth_ShouldReturnRanking()
         {
-            var ranking = await rankingApi.GetRankingForYouth();
+            var ranking = await rankingApi.GetRankingForYouth(1, 100);
 
             Assert.That(ranking.ReturnCount, Is.Positive);
         }
