@@ -17,6 +17,7 @@ namespace PinballApi.Tests
         private PinballRankingApiV2 rankingApi;
         private const int EdGiardinaPlayerId = 16927;
 
+
         [SetUp]
         public void SetUp()
         {
@@ -32,9 +33,19 @@ namespace PinballApi.Tests
             var player = await rankingApi.GetPlayer(EdGiardinaPlayerId);
 
             Assert.That(player.FirstName == "Ed");
+            Assert.That(player.Gender, Is.EqualTo(Gender.Male));
             //To make sure unranked player changes didn't ruin ranked player efficiency stats
             Assert.That(player.PlayerStats.EfficiencyRank, Is.Not.Null);
             Assert.That(player.PlayerStats.EfficiencyValue, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithEmptyGender()
+        {
+            var playerId = 61313;
+            var player = await rankingApi.GetPlayer(playerId);
+
+            Assert.That(player.Gender, Is.Null);
         }
 
         [Test]

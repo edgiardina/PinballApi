@@ -36,7 +36,7 @@ namespace PinballApi.Models.WPPR.v2.Players
         public int? Age { get; set; }
 
         [JsonProperty("gender")]
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         [JsonProperty("excluded_flag")]
         public bool ExcludedFlag { get; set; }
