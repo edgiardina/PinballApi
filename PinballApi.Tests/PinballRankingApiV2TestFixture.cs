@@ -37,6 +37,7 @@ namespace PinballApi.Tests
             //To make sure unranked player changes didn't ruin ranked player efficiency stats
             Assert.That(player.PlayerStats.EfficiencyRank, Is.Not.Null);
             Assert.That(player.PlayerStats.EfficiencyValue, Is.Not.Null);
+            Assert.That(player.PlayerStats.HighestRankDate.HasValue, Is.True);
         }
 
         [Test]
@@ -46,6 +47,18 @@ namespace PinballApi.Tests
             var player = await rankingApi.GetPlayer(playerId);
 
             Assert.That(player.Gender, Is.Null);
+        }
+
+        /*
+         {"player":[{"player_id":"72827","first_name":"Dan","last_name":"Tyler ","initials":"","gender":"male","age":"","excluded_flag":"false","city":"","stateprov":"","country_name":"United States","country_code":"US","ifpa_registered":"false","profile_photo":"","player_stats":{"current_wppr_rank":"21526","last_month_rank":"0","last_year_rank":"0","highest_rank":"0","highest_rank_date":"0000-00-00","current_wppr_value":"0.33","wppr_points_all_time":"0.33","best_finish":"24","best_finish_count":"1","average_finish":"24","average_finish_last_year":"0","total_events_all_time":"1","total_active_events":"1","total_events_away":"0","ratings_rank":"10616","ratings_value":"1255.97","efficiency_rank":"Not Ranked","efficiency_value":""},"championshipSeries_us":[{"group_code":"PA","group_name":"Pennsylvania","series_rank":"515","series_name":null,"year":"2019"}]}]}
+             */
+        [Test]
+        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithBadHighestRankDate()
+        {
+            var playerId = 72827;
+            var player = await rankingApi.GetPlayer(playerId);
+
+            Assert.That(player.PlayerStats.HighestRankDate.HasValue, Is.False);
         }
 
         [Test]
