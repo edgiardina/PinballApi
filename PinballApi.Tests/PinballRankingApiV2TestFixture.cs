@@ -62,6 +62,17 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithEmptyRatingsRank()
+        {
+            var playerId = 71932;
+            var player = await rankingApi.GetPlayer(playerId);
+
+            Assert.That(player.PlayerStats.RatingsRank.HasValue, Is.False);
+            Assert.That(player.PlayerStats.EfficiencyRank.HasValue, Is.False);
+        }
+
+
+        [Test]
         [Ignore("endpoint appears busted for now")]
         public async Task PinballRankingApiV2_GetPlayers_ShouldReturnCorrectPlayers()
         {

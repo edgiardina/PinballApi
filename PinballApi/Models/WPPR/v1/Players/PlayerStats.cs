@@ -51,10 +51,11 @@ namespace PinballApi.Models.WPPR.v1.Players
 
         //TODO: These four properties fail to load if you view a suppressed player. 
         [JsonProperty("ratings_rank")]
-        public int RatingsRank { get; set; }
+        [JsonConverter(typeof(IntegerWithNullDescriptiveConverter), "Not Ranked")]
+        public int? RatingsRank { get; set; }
 
         [JsonProperty("ratings_value")]
-        public double RatingsValue { get; set; }
+        public double? RatingsValue { get; set; }
 
         [JsonProperty("efficiency_rank")]
         [JsonConverter(typeof(IntegerWithNullDescriptiveConverter), "Not Ranked")]
