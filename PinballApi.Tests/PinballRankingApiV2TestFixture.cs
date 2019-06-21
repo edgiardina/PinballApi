@@ -55,7 +55,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithBadHighestRankDate()
         {
-            var playerId = 72827;
+            var playerId = 71932;
             var player = await rankingApi.GetPlayer(playerId);
 
             Assert.That(player.PlayerStats.HighestRankDate.HasValue, Is.False);
