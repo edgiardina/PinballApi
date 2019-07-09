@@ -245,6 +245,10 @@ namespace PinballApi.Tests
             var ranking = await rankingApi.GetWpprRanking();
 
             Assert.That(ranking.ReturnCount, Is.Positive);
+            Assert.That(ranking.Rankings, Is.Not.Null);
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
+            Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
 
 
