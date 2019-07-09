@@ -236,9 +236,7 @@ namespace PinballApi.Tests
             Assert.That(ranking.TournamentType, Is.EqualTo(tournamentType));
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-//          Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
-            Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
-            Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
+//          Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive); 
         }
 
         [Test]
