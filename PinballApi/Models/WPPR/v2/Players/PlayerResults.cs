@@ -19,7 +19,7 @@ namespace PinballApi.Models.WPPR.v2.Players
         [JsonProperty("rank_type")]
         public RankingType RankingType { get; set; }
 
-        [JsonProperty("active_results")]
+        [JsonProperty("results")]
         public List<PlayerResult> Results { get; set; }
     }
 }

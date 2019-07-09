@@ -133,6 +133,7 @@ namespace PinballApi.Tests
         {
             var playerResults = await rankingApi.GetPlayerResults(EdGiardinaPlayerId, rankingType, resultType);
 
+            Assert.That(playerResults.Results, Is.Not.Null);
             Assert.That(playerResults.ResultsCount, Is.Positive);
             Assert.That(playerResults.RankingType, Is.EqualTo(rankingType));
             Assert.That(playerResults.ResultsType, Is.EqualTo(resultType));
