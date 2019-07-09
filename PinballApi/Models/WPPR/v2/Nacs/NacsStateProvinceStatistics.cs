@@ -7,7 +7,7 @@ namespace PinballApi.Models.WPPR.v2.Nacs
         [JsonProperty("month")]
         public int Month { get; set; }
 
-        [JsonProperty("total_player_cnt")]
+        [JsonProperty("total_player_count")]
         public int TotalPlayerCount { get; set; }
 
         [JsonProperty("unique_player_count")]

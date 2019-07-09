@@ -158,6 +158,7 @@ namespace PinballApi.Tests
             var player = await rankingApi.GetNacsStateProvinceStandings(stateAbbrv);
 
             Assert.That(player.PlayerStandings.Count, Is.Positive);
+            Assert.That(player.PlayerStandings.All(n => n.PlayerId > 0), Is.True);
         }
 
         [Test]

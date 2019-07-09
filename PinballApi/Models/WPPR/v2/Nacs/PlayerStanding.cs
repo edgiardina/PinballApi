@@ -7,7 +7,7 @@ namespace PinballApi.Models.WPPR.v2.Nacs
         [JsonProperty("position")]
         public int Position { get; set; }
 
-        [JsonProperty("player_key")]
+        [JsonProperty("player_id")]
         public int PlayerId { get; set; }
 
         [JsonProperty("first_name")]
