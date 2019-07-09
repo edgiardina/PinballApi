@@ -13,7 +13,7 @@ namespace PinballApi.Models.WPPR.v2.Stats
         [JsonProperty("total_points_all")]
         public double TotalPointsAll { get; set; }
 
-        [JsonProperty("total_points_tour_value")]
+        [JsonProperty("total_points_tournament_value")]
         public double TotalPointsTourValue { get; set; }
 
         [JsonProperty("stats_rank")]

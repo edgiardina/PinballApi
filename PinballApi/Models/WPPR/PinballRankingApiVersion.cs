@@ -7,6 +7,6 @@ namespace PinballApi.Models.WPPR
     public enum PinballRankingApiVersion
     {
         v1,
-        v2beta
+        v2
     }
 }

@@ -16,7 +16,7 @@ namespace PinballApi.Models.WPPR.v2.Players
         [JsonProperty("tournament")]
         public string Tournament { get; set; }
 
-        [JsonProperty("tourpos")]
+        [JsonProperty("tournament_position")]
         public string Tourpos { get; set; }
     }
 }

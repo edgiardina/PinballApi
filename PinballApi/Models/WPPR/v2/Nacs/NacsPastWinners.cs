@@ -5,10 +5,13 @@ namespace PinballApi.Models.WPPR.v2.Nacs
 {
     public class NacsPastWinners
     {
-        [JsonProperty("stateprov")]
+        [JsonProperty("stateprov_name")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("info")]
+        [JsonProperty("stateprov")]
+        public string StateProvinceAbbreviation { get; set; }
+
+        [JsonProperty("winners")]
         public List<NacsWinner> Winners { get; set; }
     }
 }

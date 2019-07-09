@@ -3,7 +3,7 @@ using System;
 
 namespace PinballApi.Models.WPPR.v2.Tournaments
 {
-    public class TournamentEvent
+    public class TournamentWinner
     {
         [JsonProperty("tournament_id")]
         public int TournamentId { get; set; }
@@ -17,10 +17,16 @@ namespace PinballApi.Models.WPPR.v2.Tournaments
         [JsonProperty("event_end_date")]
         public DateTime EventEndDate { get; set; }
 
-        [JsonProperty("year")]
-        public int Year { get; set; }
+        [JsonProperty("player_id")]
+        public int PlayerId { get; set; }
 
-        [JsonProperty("year_count")]
-        public int YearCount { get; set; }
+        [JsonProperty("first_name")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("last_name")]
+        public string LastName { get; set; }
+
+        [JsonProperty("profile_photo", NullValueHandling = NullValueHandling.Ignore)]
+        public Uri ProfilePhoto { get; set; }
     }
 }

@@ -5,13 +5,13 @@ namespace PinballApi.Models.WPPR.v2.Players
 {
     public class PlayerSearch
     {
-        [JsonProperty("search_filter")]
+        [JsonProperty("filter")]
         public PlayerSearchFilter SearchFilter { get; set; }
 
-        [JsonProperty("search_count")]
+        [JsonProperty("count")]
         public int SearchCount { get; set; }
 
-        [JsonProperty("search")]
+        [JsonProperty("results")]
         public List<Player> Results { get; set; }
     }
 }

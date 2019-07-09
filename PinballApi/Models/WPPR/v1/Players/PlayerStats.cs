@@ -22,10 +22,10 @@ namespace PinballApi.Models.WPPR.v1.Players
         [JsonConverter(typeof(NullableDateConverter))]
         public DateTime? HighestRankDate { get; set; }
 
-        [JsonProperty("current_wppr_value")]
+        [JsonProperty("current_wppr_points")]
         public double CurrentWpprValue { get; set; }
 
-        [JsonProperty("wppr_points_all_time")]
+        [JsonProperty("all_time_wppr_points")]
         public double WpprPointsAllTime { get; set; }
 
         [JsonProperty("best_finish")]

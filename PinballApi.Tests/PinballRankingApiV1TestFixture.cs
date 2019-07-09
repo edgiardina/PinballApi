@@ -179,9 +179,9 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV1_GetTournamentList_ShouldReturnList()
         {
-            var tournamentList = await rankingApi.GetTournamentList();
+            var tournamentList = await rankingApi.GetTournamentList(count: 10);
 
-            Assert.AreEqual(tournamentList.Tournament.Count, 50);
+            Assert.AreEqual(tournamentList.Tournament.Count, 10);
         }
 
         [Test]
@@ -259,7 +259,19 @@ namespace PinballApi.Tests
             var calendar = await rankingApi.GetCalendarSearch(address, distance, units);
 
             Assert.That(calendar.TotalEntries, Is.GreaterThan(0));
+        }
 
+        [Test]
+        [Ignore("known not working, informed Brian S.")]
+        public async Task PinballRankingApiV1_GetCalendarSearch_ForItaly_ShouldReturnCalendar()
+        {
+            var address = "Italy";
+            var distance = 115;
+            var units = DistanceUnit.Miles;
+
+            var calendar = await rankingApi.GetCalendarSearch(address, distance, units);
+
+            Assert.That(calendar.TotalEntries, Is.GreaterThan(0));
         }
 
         [Test]

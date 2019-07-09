@@ -8,7 +8,6 @@ using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Linq;
 using PinballApi.Models.WPPR.v2.Nacs;
-using PinballApi.Models.WPPR.v2.Calendar;
 using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
@@ -19,7 +18,7 @@ namespace PinballApi
 {
     public class PinballRankingApiV2 : BasePinballRankingApi
     {
-        protected override PinballRankingApiVersion ApiVersion => PinballRankingApiVersion.v2beta;
+        protected override PinballRankingApiVersion ApiVersion => PinballRankingApiVersion.v2;
 
         public PinballRankingApiV2(string apiKey) : base(apiKey)
         {
@@ -54,7 +53,10 @@ namespace PinballApi
 
             request = request.SetQueryParam("players", string.Join(",", playerIds));
 
-            return await request.GetJsonAsync<List<Player>>();
+            var json = await request.GetStringAsync();
+            
+            return JObject.Parse(json)
+                .SelectToken("player", false).ToObject<List<Player>>();
         }
 
         public async Task<PlayerResults> GetPlayerResults(int playerId, RankingType rankingType = RankingType.Main, ResultType resultType = ResultType.Active)
@@ -68,33 +70,12 @@ namespace PinballApi
                     .GetJsonAsync<PlayerResults>();
         }
 
-        public async Task<Player> GetPlayerAcheivements(int playerId)
-        {
-            throw new NotImplementedException("Achievements 404s currently");
-
-            try
-            {
-                var json = await BaseRequest
-                    .AppendPathSegment("player")
-                    .AppendPathSegment(playerId)
-                    .GetStringAsync();
-
-                return JObject.Parse(json)
-                    .SelectToken("player", false).ToObject<List<Player>>().First();
-            }
-            catch (FlurlHttpException ex) when (ex.InnerException is JsonSerializationException)
-            {
-                //Indicates null values which may mean invalid playerId
-                return null;
-            }
-        }
-
         public async Task<PlayerHistory> GetPlayerHistory(int playerId)
         {
             return await BaseRequest
                     .AppendPathSegment("player")
                     .AppendPathSegment(playerId)
-                    .AppendPathSegment("history")
+                    .AppendPathSegment("rank_history")
                     .GetJsonAsync<PlayerHistory>();
         }
 
@@ -105,6 +86,15 @@ namespace PinballApi
                     .AppendPathSegment(playerId)
                     .AppendPathSegment("pvp")
                     .GetJsonAsync<PlayerVersusPlayer>();
+        }
+
+        public async Task<ElitePlayerVersusPlayer> GetPlayerVersusElitePlayer(int elitePlayerId)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("player")
+                    .AppendPathSegment(elitePlayerId)
+                    .AppendPathSegment("pvp/elite")
+                    .GetJsonAsync<ElitePlayerVersusPlayer>();
         }
 
         public async Task<PlayerVersusPlayerComparison> GetPlayerVersusPlayerComparison(int playerId, int comparisonPlayerId)
@@ -118,7 +108,7 @@ namespace PinballApi
         }
 
         //name, country, stateprov, tournament, tourpos
-        public async Task<PlayerSearch> GetPlayersBySearch(Models.WPPR.v2.Players.PlayerSearchFilter searchFilter)
+        public async Task<PlayerSearch> GetPlayersBySearch(PlayerSearchFilter searchFilter)
         {
             if (searchFilter == null)
                 throw new ArgumentNullException(nameof(searchFilter));
@@ -168,7 +158,7 @@ namespace PinballApi
                 .GetStringAsync();
 
             return JObject.Parse(json)
-                .SelectToken("nacs", false).ToObject<List<NacsStandings>>();
+                .SelectToken("standings", false).ToObject<List<NacsStandings>>();
         }
 
         public async Task<NacsStateProvinceStandings> GetNacsStateProvinceStandings(string stateProvinceAbbreviation)
@@ -179,11 +169,11 @@ namespace PinballApi
                 .GetJsonAsync<NacsStateProvinceStandings>();
         }
 
-        public async Task<NacsStatistics> GetNacsStatistics()
+        public async Task<NacsStatisticsByYear> GetNacsStatistics()
         {
             return await BaseRequest
                     .AppendPathSegment("nacs/stats")
-                    .GetJsonAsync<NacsStatistics>();
+                    .GetJsonAsync<NacsStatisticsByYear>();
         }
 
         public async Task<List<NacsPastWinners>> GetNacsPastWinners()
@@ -193,53 +183,10 @@ namespace PinballApi
                 .GetStringAsync();
 
             return JObject.Parse(json)
-                .SelectToken("winners", false).ToObject<List<NacsPastWinners>>();
+                .SelectToken("results", false).ToObject<List<NacsPastWinners>>();
         }
 
-        #endregion
-
-        #region Calendar
-
-        /*
-           /calendar/upcoming
-        */
-
-        public async Task<CalendarEntry> GetCalendarEntry(int tournamentId)
-        {
-            return await BaseRequest
-                    .AppendPathSegment("calendar")
-                    .AppendPathSegment(tournamentId)
-                    .GetJsonAsync<CalendarEntry>();
-        }
-
-        public async Task<CalendarSearch> GetCalendarEntriesBySearch(CalendarSearchFilter searchFilter)
-        {
-            return await BaseRequest
-                    .AppendPathSegment("calendar/search")
-                    .SetQueryParam("start_date", searchFilter.StartDate.ToString("yyyy-MM-dd"))
-                    .SetQueryParam("end_date", searchFilter.EndDate.ToString("yyyy-MM-dd"))
-                    .SetQueryParam("ranking_type", searchFilter.RankingType)
-                    .SetQueryParam("stateprov", searchFilter.StateProvince)
-                    .SetQueryParam("name", searchFilter.Name)
-                    .GetJsonAsync<CalendarSearch>();
-        }
-
-        public async Task<CalendarDistanceSearch> GetCalendarEntriesByDistance(CalendarDistanceSearchFilter searchFilter)
-        {
-            return await BaseRequest
-                    .AppendPathSegment("calendar/search/distance")
-                    .SetQueryParam("address", searchFilter.Address)
-                    .SetQueryParam(searchFilter.DistanceType.ToString().ToLower().Substring(0, 1), searchFilter.Distance)
-                    .GetJsonAsync<CalendarDistanceSearch>();
-        }
-
-
-        public async Task<CalendarDistanceSearch> GetCalendarUpcoming()
-        {
-            throw new NotImplementedException("whoops");
-        }
-
-        #endregion
+        #endregion       
 
         #region Rankings
 
@@ -266,21 +213,13 @@ namespace PinballApi
         public async Task<EliteRanking> GetEliteRanking(int startPosition = 1, int count = 50)
         {
             return await BaseRequest
-                    .AppendPathSegment("rankings/elite/list")
+                    .AppendPathSegment("rankings/elite")
                     .SetQueryParams(new
                     {
                         start_pos = startPosition,
                         count
                     })
                     .GetJsonAsync<EliteRanking>();
-        }
-
-        public async Task<ElitePlayerVersusPlayer> GetElitePlayerVersusPlayer(int elitePlayerId)
-        {
-            return await BaseRequest
-                    .AppendPathSegment("rankings/elite/pvp")
-                    .AppendPathSegment(elitePlayerId)
-                    .GetJsonAsync<ElitePlayerVersusPlayer>();
         }
 
         public async Task<WomensRanking> GetRankingForWomen(TournamentType tournamentType, int startPosition = 1, int count = 50)
@@ -360,6 +299,18 @@ namespace PinballApi
             .SelectToken("tournament", false).ToObject<Models.WPPR.v2.Tournaments.Tournament>();
         }
 
+        public async Task<List<Models.WPPR.v2.Tournaments.Tournament>> GetRelatedTournaments(int tournamentId)
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("tournament")
+                    .AppendPathSegment(tournamentId)
+                    .AppendPathSegment("related")
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("tournament", false).ToObject<List<Models.WPPR.v2.Tournaments.Tournament>>();
+        }
+
         public async Task<TournamentResults> GetTournamentResults(int tournamentId)
         {
             return await BaseRequest
@@ -369,18 +320,28 @@ namespace PinballApi
                     .GetJsonAsync<TournamentResults>();
         }
 
-        public async Task<ActiveLeagues> GetActiveLeagues()
+        public async Task<List<TournamentWinner>> GetTournamentWinners(int tournamentId)
         {
-            return await BaseRequest
-                    .AppendPathSegment("tournament/leagues/active")      
-                    .GetJsonAsync<ActiveLeagues>();
+            var json = await BaseRequest
+                    .AppendPathSegment("tournament")
+                    .AppendPathSegment(tournamentId)
+                    .AppendPathSegment("winners/list")
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("winners", false).ToObject<List<TournamentWinner>>();
         }
 
-        public async Task<HistoricalLeagues> GetHistoricalLeagues()
+        public async Task<List<TournamentWinnerGrouped>> GetTournamentWinnersGrouped(int tournamentId)
         {
-            return await BaseRequest
-                    .AppendPathSegment("tournament/leagues/history")
-                    .GetJsonAsync<HistoricalLeagues>();
+            var json = await BaseRequest
+                .AppendPathSegment("tournament")
+                .AppendPathSegment(tournamentId)
+                .AppendPathSegment("winners/group")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("winners", false).ToObject<List<TournamentWinnerGrouped>>();
         }
 
         public async Task<TournamentSearch> GetTournamentBySearch(TournamentSearchFilter searchFilter)
@@ -414,6 +375,16 @@ namespace PinballApi
                 request = request.SetQueryParam("end_date", searchFilter.EndDate.Value.ToString("yyyy-MM-dd"));
             }
 
+            if(searchFilter.RankingType.HasValue)
+            {
+                if (searchFilter.RankingType.Value != RankingType.Main || searchFilter.RankingType.Value != RankingType.Women)
+                {
+                    throw new ArgumentOutOfRangeException("Tournament search only supports Main or Women's ranking");
+                }
+
+                request = request.SetQueryParam("rank_type", searchFilter.RankingType.Value.ToString());
+            }
+
             if (request.QueryParams.Count == 1)
                 throw new ArgumentOutOfRangeException("Expected at least one value in the provided searchFilter was not null or empty.");
 
@@ -427,7 +398,7 @@ namespace PinballApi
         public async Task<List<Director>> GetNacsDirectors()
         {
             var json = await BaseRequest
-                    .AppendPathSegment("directors/nacs")
+                    .AppendPathSegment("director/nacs")
                     .GetStringAsync();
 
             return JObject.Parse(json)
@@ -437,11 +408,32 @@ namespace PinballApi
         public async Task<List<Director>> GetCountryDirectors()
         {
             var json = await BaseRequest
-                    .AppendPathSegment("directors/country")
+                    .AppendPathSegment("director/country")
                     .GetStringAsync();
 
             return JObject.Parse(json)
-            .SelectToken("country_director", false).ToObject<List<Director>>();
+            .SelectToken("country_directors", false).ToObject<List<Director>>();
+        }
+
+        public async Task<List<Director>> GetDirectorList()
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("director/list")
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("country_directors", false).ToObject<List<Director>>();
+        }
+
+        public async Task<List<Director>> GetDirector(int directorId)
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("director")
+                    .AppendPathSegment(directorId)
+                    .GetStringAsync();
+
+            return JObject.Parse(json)
+            .SelectToken("country_directors", false).ToObject<List<Director>>();
         }
 
         #endregion
@@ -517,6 +509,43 @@ namespace PinballApi
                 .SelectToken("stats", false).ToObject<List<TournamentsByStateStatistics>>();
         }
 
+        public async Task<List<PlayersByCountryStatistics>> GetPlayersByCountryStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/country_players")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PlayersByCountryStatistics>>();
+        }
+
+        ///stats/points_given_period
+        public async Task<List<PlayersPointsByGivenPeriodStatistics>> GetPlayersPointsByGivenPeriod(DateTime startDate, DateTime endDate, int limit = 25)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/points_given_period")
+                .SetQueryParam("start_date", startDate)
+                .SetQueryParam("end_date", endDate)
+                .SetQueryParam("limit", limit)
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PlayersPointsByGivenPeriodStatistics>>();
+        }
+
+        ////stats/events_attended_period
+        public async Task<List<PlayersEventsAttendedByGivenPeriodStatistics>> GetPlayersEventsAttendedByGivenPeriod(DateTime startDate, DateTime endDate, int limit = 25)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/events_attended_period")
+                .SetQueryParam("start_date", startDate)
+                .SetQueryParam("end_date", endDate)
+                .SetQueryParam("limit", limit)
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("stats", false).ToObject<List<PlayersEventsAttendedByGivenPeriodStatistics>>();
+        }
 
         #endregion
 

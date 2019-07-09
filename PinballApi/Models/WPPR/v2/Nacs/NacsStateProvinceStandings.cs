@@ -5,7 +5,7 @@ namespace PinballApi.Models.WPPR.v2.Nacs
 {
     public class NacsStateProvinceStandings
     {
-        [JsonProperty("player_standings")]
+        [JsonProperty("standings")]
         public List<PlayerStanding> PlayerStandings { get; set; }
 
         [JsonProperty("stats")]

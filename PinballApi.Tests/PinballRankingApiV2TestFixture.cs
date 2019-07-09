@@ -73,16 +73,15 @@ namespace PinballApi.Tests
 
 
         [Test]
-        [Ignore("endpoint appears busted for now")]
         public async Task PinballRankingApiV2_GetPlayers_ShouldReturnCorrectPlayers()
         {
             var players = await rankingApi.GetPlayers(new System.Collections.Generic.List<int> { EdGiardinaPlayerId, 2 });
 
-            Assert.That(players.First().FirstName == "Ed");
-            Assert.That(players.Last().FirstName == "Bowen");
+            Assert.That(players.Last().FirstName == "Ed");
+            Assert.That(players.First().FirstName == "Bowen");
             //To make sure unranked player changes didn't ruin ranked player efficiency stats
-            Assert.That(players.First().PlayerStats.EfficiencyRank, Is.Not.Null);
-            Assert.That(players.First().PlayerStats.EfficiencyValue, Is.Not.Null);
+            Assert.That(players.Last().PlayerStats.EfficiencyRank, Is.Not.Null);
+            Assert.That(players.Last().PlayerStats.EfficiencyValue, Is.Not.Null);
         }
 
         [Test]
@@ -90,7 +89,7 @@ namespace PinballApi.Tests
         {
             var player = await rankingApi.GetPlayerHistory(EdGiardinaPlayerId);
 
-            Assert.That(player.Player.PlayerId == EdGiardinaPlayerId);
+            Assert.That(player.PlayerId == EdGiardinaPlayerId);
             Assert.That(player.RankHistory.Count, Is.Positive);
             Assert.That(player.RatingHistory.Count, Is.Positive);
         }
@@ -147,7 +146,7 @@ namespace PinballApi.Tests
             Assert.That(player.Count, Is.Positive);
 
             //OH SHIT IF THIS FAILS ED SUCKS AT PINBALL
-            Assert.That(player.Single(n => n.StateProvinceName == "Rhode Island").CurrentLeaderPlayerId, Is.EqualTo(EdGiardinaPlayerId));
+            Assert.That(player.Single(n => n.StateProvinceName == "Rhode Island").CurrentLeader.PlayerId, Is.EqualTo(EdGiardinaPlayerId));
         }
 
         [Test]
@@ -176,44 +175,13 @@ namespace PinballApi.Tests
         {
             var player = await rankingApi.GetNacsStatistics();
 
-            Assert.That(player.StateProvinceCount, Is.Positive);
-            Assert.That(player.CanadaPlayerCount, Is.Positive);
-            Assert.That(player.NationalsPrizeValue, Is.Positive);
-            Assert.That(player.TotalPlayerCount, Is.Positive);
-            Assert.That(player.USAPlayerCount, Is.Positive);
-            Assert.That(player.CanadaPlayerCount, Is.Positive);
+            Assert.That(player.Statistics.StateProvinceCount, Is.Positive);
+            Assert.That(player.Statistics.CanadaPlayerCount, Is.Positive);
+            Assert.That(player.Statistics.NationalsPrizeValue, Is.Positive);
+            Assert.That(player.Statistics.TotalPlayerCount, Is.Positive);
+            Assert.That(player.Statistics.USAPlayerCount, Is.Positive);
+            Assert.That(player.Statistics.CanadaPlayerCount, Is.Positive);
             Assert.That(player.Year, Is.EqualTo(DateTime.Now.Year));
-        }
-
-
-        [Test]
-        public async Task PinballRankingApiV2_GetCalendarEntry_ShouldReturnEntry()
-        {
-            var tourneyid = 29978;
-
-            var calendarEntry = await rankingApi.GetCalendarEntry(tourneyid);
-
-            Assert.That(calendarEntry.TournamentName, Is.EqualTo("PinCrossing Monthly Tournament"));
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_GetCalendarEntryBySearch_ShouldReturnEntry()
-        {
-            var searchFilter = new CalendarSearchFilter { StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(2) };
-
-            var calendarEntries = await rankingApi.GetCalendarEntriesBySearch(searchFilter);
-
-            Assert.That(calendarEntries.CalendarEntries.Count, Is.Positive);
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_GetCalendarEntryByDistance_ShouldReturnEntry()
-        {
-            var searchFilter = new CalendarDistanceSearchFilter { Address = "Providence, RI", Distance = 50, DistanceType = DistanceType.Miles };
-
-            var calendarEntries = await rankingApi.GetCalendarEntriesByDistance(searchFilter);
-
-            Assert.That(calendarEntries.CalendarEntries.Count, Is.Positive);
         }
 
         [Test]
@@ -245,7 +213,7 @@ namespace PinballApi.Tests
         public async Task PinballRankingApiV2_GetRankingElitePvp_ShouldReturnRankingElite()
         {
             var elitePlayerId = 1256;
-            var ranking = await rankingApi.GetElitePlayerVersusPlayer(elitePlayerId);
+            var ranking = await rankingApi.GetPlayerVersusElitePlayer(elitePlayerId);
 
             Assert.That(ranking.Records.Count, Is.Positive);
         }
@@ -307,6 +275,16 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetRelatedTournaments_ShouldReturnRelatedTournament()
+        {
+            var tournamentId = 25586;
+
+            var tournament = await rankingApi.GetRelatedTournaments(tournamentId);
+
+            Assert.That(tournament.First().TournamentName, Is.EqualTo("IFPA World Pinball Championship"));
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_GetTournamentResults_ShouldReturnTournamentResults()
         {
             var tournamentId = 25586;
@@ -326,6 +304,27 @@ namespace PinballApi.Tests
             Assert.That(tournament.Results.Count, Is.Positive);
         }
 
+
+        [Test]
+        public async Task PinballRankingApiV2_GetTournamentResults_ShouldReturnTournamentWinners()
+        {
+            var tournamentId = 21076;
+
+            var tournament = await rankingApi.GetTournamentWinners(tournamentId);
+
+            Assert.That(tournament.Count, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetTournamentResults_ShouldReturnTournamentWinnersGrouped()
+        {
+            var tournamentId = 21076;
+
+            var tournament = await rankingApi.GetTournamentWinnersGrouped(tournamentId);
+
+            Assert.That(tournament.Count, Is.Positive);
+        }
+
         [Test]
         public async Task PinballRankingApiV2_GetTournamentBySearch_ShouldReturnTournament()
         {
@@ -334,22 +333,6 @@ namespace PinballApi.Tests
             var tournament = await rankingApi.GetTournamentBySearch(searchCriteria);
 
             Assert.That(tournament.Results.Count, Is.Positive);
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_GetActiveLeagues_ShouldReturnLeague()
-        {
-            var tournament = await rankingApi.GetActiveLeagues();
-
-            Assert.That(tournament.TotalEntries, Is.Positive);
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_GetHistoricalLeagues_ShouldReturnLeague()
-        {
-            var tournament = await rankingApi.GetHistoricalLeagues();
-
-            Assert.That(tournament.TotalEntries, Is.Positive);
         }
 
         [Test]
@@ -455,6 +438,41 @@ namespace PinballApi.Tests
             Assert.That(firstStat.StatsRank, Is.Positive);
             Assert.That(firstStat.TotalPointsAll, Is.Positive);
             Assert.That(firstStat.TotalPointsTourValue, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetPlayersByCountryStatistics()
+        {
+            var stat = await rankingApi.GetPlayersByCountryStatistics();
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+        }
+
+
+        [Test]
+        public async Task PinballRankingApiV2_GetPlayersPointsByGivenPeriod()
+        {
+            var stat = await rankingApi.GetPlayersPointsByGivenPeriod(DateTime.Now.AddYears(-1), DateTime.Now);
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetPlayersEventsAttendedByGivenPeriod()
+        {
+            var stat = await rankingApi.GetPlayersEventsAttendedByGivenPeriod(DateTime.Now.AddYears(-1), DateTime.Now);
+
+            var firstStat = stat.First();
+
+            Assert.That(stat.Count, Is.Positive);
+            Assert.That(firstStat.StatsRank, Is.Positive);
+            Assert.That(firstStat.TournamentCount, Is.Positive);
         }
 
     }
