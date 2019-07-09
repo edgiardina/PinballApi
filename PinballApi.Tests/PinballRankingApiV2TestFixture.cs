@@ -200,6 +200,11 @@ namespace PinballApi.Tests
             var ranking = await rankingApi.GetRankingForCountry("United States");
 
             Assert.That(ranking.TotalCount, Is.Positive);
+            Assert.That(ranking.Rankings, Is.Not.Null);
+            Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
+            Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
 
         [Test]
@@ -229,6 +234,11 @@ namespace PinballApi.Tests
 
             Assert.That(ranking.ReturnCount, Is.Positive);
             Assert.That(ranking.TournamentType, Is.EqualTo(tournamentType));
+            Assert.That(ranking.Rankings, Is.Not.Null);
+            Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
+//          Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
+            Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
 
         [Test]
@@ -237,6 +247,11 @@ namespace PinballApi.Tests
             var ranking = await rankingApi.GetRankingForYouth(1, 100);
 
             Assert.That(ranking.ReturnCount, Is.Positive);
+            Assert.That(ranking.Rankings, Is.Not.Null);
+            Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
+            Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
 
         [Test]
@@ -246,7 +261,8 @@ namespace PinballApi.Tests
 
             Assert.That(ranking.ReturnCount, Is.Positive);
             Assert.That(ranking.Rankings, Is.Not.Null);
-            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
+//          Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
             Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
             Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
