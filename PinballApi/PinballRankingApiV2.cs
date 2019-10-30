@@ -54,7 +54,7 @@ namespace PinballApi
             request = request.SetQueryParam("players", string.Join(",", playerIds));
 
             var json = await request.GetStringAsync();
-            
+
             return JObject.Parse(json)
                 .SelectToken("player", false).ToObject<List<Player>>();
         }
@@ -116,7 +116,7 @@ namespace PinballApi
             var request = BaseRequest
                     .AppendPathSegment("player/search");
 
-            if(!string.IsNullOrEmpty(searchFilter.Name))
+            if (!string.IsNullOrEmpty(searchFilter.Name))
             {
                 request = request.SetQueryParam("name", searchFilter.Name);
             }
@@ -186,6 +186,19 @@ namespace PinballApi
                 .SelectToken("results", false).ToObject<List<NacsPastWinners>>();
         }
 
+        public async Task<NacsTournamentCard> GetNacsTournamentCard(int year, int playerId, string stateProvinceAbbreviation)
+        {
+            return await BaseRequest
+                .AppendPathSegment("nacs/tournament_card")
+                .SetQueryParams(new
+                {
+                    year,
+                    player_id = playerId,
+                    location_code = stateProvinceAbbreviation
+                })
+                .GetJsonAsync<NacsTournamentCard>();
+        }
+
         #endregion       
 
         #region Rankings
@@ -193,7 +206,7 @@ namespace PinballApi
         public async Task<CountryList> GetRankingCountries()
         {
             return await BaseRequest
-                    .AppendPathSegment("rankings/country_list")     
+                    .AppendPathSegment("rankings/country_list")
                     .GetJsonAsync<CountryList>();
         }
 
@@ -375,7 +388,7 @@ namespace PinballApi
                 request = request.SetQueryParam("end_date", searchFilter.EndDate.Value.ToString("yyyy-MM-dd"));
             }
 
-            if(searchFilter.RankingType.HasValue)
+            if (searchFilter.RankingType.HasValue)
             {
                 if (searchFilter.RankingType.Value != RankingType.Main || searchFilter.RankingType.Value != RankingType.Women)
                 {
@@ -452,7 +465,7 @@ namespace PinballApi
         public async Task<List<EventsByYearStatistics>> GetEventsByYearStatistics()
         {
             var json = await BaseRequest
-                .AppendPathSegment("stats/events_by_year")              
+                .AppendPathSegment("stats/events_by_year")
                 .GetStringAsync();
 
             return JObject.Parse(json)

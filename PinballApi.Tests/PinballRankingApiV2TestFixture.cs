@@ -173,6 +173,18 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_NacsTournamentCard_ShouldReturnCard()
+        {
+            string stateAbbrv = "RI";
+            int year = 2019;
+
+            var card = await rankingApi.GetNacsTournamentCard(year, EdGiardinaPlayerId, stateAbbrv);
+
+            Assert.That(card.StateProvince, Is.EqualTo(stateAbbrv));
+            Assert.That(card.Year, Is.EqualTo(year));
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_NacsStatistics_ShouldReturnStatistics()
         {
             var player = await rankingApi.GetNacsStatistics();
