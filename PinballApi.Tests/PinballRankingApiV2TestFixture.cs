@@ -142,7 +142,9 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_NacsStandings_ShouldReturnStandings()
         {
-            var player = await rankingApi.GetNacsStandings();
+            int year = 2019;
+
+            var player = await rankingApi.GetNacsStandings(year);
 
             Assert.That(player.Count, Is.Positive);
 
@@ -154,8 +156,9 @@ namespace PinballApi.Tests
         public async Task PinballRankingApiV2_NacsStateProvinceStandings_ShouldReturnStandings()
         {
             string stateAbbrv = "RI";
+            int year = 2019;
 
-            var player = await rankingApi.GetNacsStateProvinceStandings(stateAbbrv);
+            var player = await rankingApi.GetNacsStateProvinceStandings(stateAbbrv, year);
 
             Assert.That(player.PlayerStandings.Count, Is.Positive);
             Assert.That(player.PlayerStandings.All(n => n.PlayerId > 0), Is.True);
@@ -187,7 +190,9 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_NacsStatistics_ShouldReturnStatistics()
         {
-            var player = await rankingApi.GetNacsStatistics();
+            int year = 2019;
+
+            var player = await rankingApi.GetNacsStatistics(year);
 
             Assert.That(player.Statistics.StateProvinceCount, Is.Positive);
             Assert.That(player.Statistics.CanadaPlayerCount, Is.Positive);
@@ -195,7 +200,7 @@ namespace PinballApi.Tests
             Assert.That(player.Statistics.TotalPlayerCount, Is.Positive);
             Assert.That(player.Statistics.USAPlayerCount, Is.Positive);
             Assert.That(player.Statistics.CanadaPlayerCount, Is.Positive);
-            Assert.That(player.Year, Is.EqualTo(DateTime.Now.Year));
+            Assert.That(player.Year, Is.EqualTo(year));
         }
 
         [Test]

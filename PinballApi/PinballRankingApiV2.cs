@@ -151,28 +151,31 @@ namespace PinballApi
 
 
         #region NACS
-        public async Task<List<NacsStandings>> GetNacsStandings()
+        public async Task<List<NacsStandings>> GetNacsStandings(int year)
         {
             var json = await BaseRequest
                 .AppendPathSegment("nacs/standings")
+                .SetQueryParam("year", year)
                 .GetStringAsync();
 
             return JObject.Parse(json)
                 .SelectToken("standings", false).ToObject<List<NacsStandings>>();
         }
 
-        public async Task<NacsStateProvinceStandings> GetNacsStateProvinceStandings(string stateProvinceAbbreviation)
+        public async Task<NacsStateProvinceStandings> GetNacsStateProvinceStandings(string stateProvinceAbbreviation, int year)
         {
             return await BaseRequest
-                .AppendPathSegment("nacs/standings")
-                 .AppendPathSegment(stateProvinceAbbreviation)
+                .AppendPathSegment("nacs/standings")            
+                .AppendPathSegment(stateProvinceAbbreviation)
+                .SetQueryParam("year", year)
                 .GetJsonAsync<NacsStateProvinceStandings>();
         }
 
-        public async Task<NacsStatisticsByYear> GetNacsStatistics()
+        public async Task<NacsStatisticsByYear> GetNacsStatistics(int year)
         {
             return await BaseRequest
                     .AppendPathSegment("nacs/stats")
+                    .SetQueryParam("year", year)
                     .GetJsonAsync<NacsStatisticsByYear>();
         }
 
