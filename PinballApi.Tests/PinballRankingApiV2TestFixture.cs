@@ -41,6 +41,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("This player has an assigned Gender now, this test isn't valid.")]
         public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithEmptyGender()
         {
             var playerId = 61313;

@@ -2,7 +2,7 @@
 
 namespace PinballApi.Models.IPDB
 {
-    [PinballDatabase(ListKeyword = "mfg1,mfg2")]
+    [PinballDatabase(ListKeyword = "mfgAM,mfgNZ")]
     public class PinballManufacturer 
     {
         public string Name { get; set; }
