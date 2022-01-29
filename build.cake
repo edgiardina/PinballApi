@@ -1,5 +1,5 @@
 ﻿#tool nuget:?package=NUnit.ConsoleRunner&version=3.5.0
-#addin "Cake.FileHelpers"
+#addin nuget:?package=Cake.FileHelpers&version=3.0.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -7,6 +7,7 @@ var version = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Version 
 var artifactsDirectory = "./artifacts";
 var resultsFile = artifactsDirectory + "/NUnitResults.xml";
 var wpprKey = Argument("wpprKey", "");
+var OPDBToken = Argument("OPDBToken", "");
 
 Task("Restore-NuGet-Packages")
 	.Does(() => {
@@ -28,12 +29,9 @@ Task("Setup")
 Task("Build")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() => {
-		 MSBuild("./PinballApi.sln", new MSBuildSettings 
+		 DotNetCoreBuild("./PinballApi.sln", new DotNetCoreBuildSettings 
 			{
-				Verbosity = Verbosity.Minimal,
-				ToolVersion = MSBuildToolVersion.VS2017,
-				Configuration = configuration,
-				ArgumentCustomization = args => args.Append("/p:SemVer=" + version)
+				Configuration = configuration
 			});
 	});
 
@@ -42,14 +40,16 @@ Task("UnitTest")
 	.IsDependentOn("Build")
 	.IsDependentOn("Setup")
 	.Does(() => {			
-		var config = File("./PinballApi.Tests/bin/Release/netcoreapp2.0/appsettings.json");	
+		var config = File("./PinballApi.Tests/bin/"+configuration+"/net6.0/appsettings.json");	
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
 			wpprKey = EnvironmentVariable("ifpa-key");
+			OPDBToken = EnvironmentVariable("opdb-token");
 		}
 		
 		string text = TransformTextFile(config, "[", "]")
 					   .WithToken("INSERT YOUR KEY HERE", wpprKey)
+					   .WithToken("INSERT YOUR TOKEN HERE", OPDBToken)
 					   .ToString();
 
 		FileWriteText(config, text);
