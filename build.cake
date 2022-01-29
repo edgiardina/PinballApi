@@ -46,10 +46,12 @@ Task("UnitTest")
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
 			wpprKey = EnvironmentVariable("ifpa-key");
+			OPDBToken = EnvironmentVariable("opdb-token");
 		}
 		
 		string text = TransformTextFile(config, "[", "]")
 					   .WithToken("INSERT YOUR KEY HERE", wpprKey)
+					   .WithToken("INSERT YOUR TOKEN HERE", OPDBToken)
 					   .ToString();
 
 		FileWriteText(config, text);
