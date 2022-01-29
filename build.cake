@@ -1,5 +1,5 @@
 ﻿#tool nuget:?package=NUnit.ConsoleRunner&version=3.5.0
-#addin "Cake.FileHelpers"
+#addin nuget:?package=Cake.FileHelpers&version=3.0.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -29,12 +29,9 @@ Task("Setup")
 Task("Build")
 	.IsDependentOn("Restore-NuGet-Packages")
 	.Does(() => {
-		 MSBuild("./PinballApi.sln", new MSBuildSettings 
+		 DotNetCoreBuild("./PinballApi.sln", new DotNetCoreBuildSettings 
 			{
-				Verbosity = Verbosity.Minimal,
-				ToolVersion = MSBuildToolVersion.VS2017,
-				Configuration = configuration,
-				ArgumentCustomization = args => args.Append("/p:SemVer=" + version)
+				Configuration = configuration
 			});
 	});
 
@@ -43,7 +40,7 @@ Task("UnitTest")
 	.IsDependentOn("Build")
 	.IsDependentOn("Setup")
 	.Does(() => {			
-		var config = File("./PinballApi.Tests/bin/Release/netcoreapp2.0/appsettings.json");	
+		var config = File("./PinballApi.Tests/bin/"+configuration+"/net6.0/appsettings.json");	
 		if(AppVeyor.IsRunningOnAppVeyor)
 		{
 			wpprKey = EnvironmentVariable("ifpa-key");
