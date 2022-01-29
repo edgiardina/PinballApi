@@ -40,10 +40,10 @@ namespace PinballApi
             return await BaseRequest
                             .AppendPathSegment("search")
                             .SetQueryParam("q", query)
-                            .SetQueryParam("require_opdb", requireOpdb)
-                            .SetQueryParam("include_groups", includeGroups)
-                            .SetQueryParam("include_aliases", includeAliases)
-                            .SetQueryParam("include_grouping_entries", includeGroupingEntries)
+                            .SetQueryParam("require_opdb", requireOpdb ? 1 : 0)
+                            .SetQueryParam("include_groups", includeGroups ? 1 : 0)
+                            .SetQueryParam("include_aliases", includeAliases ? 1 : 0)
+                            .SetQueryParam("include_grouping_entries", includeGroupingEntries ? 1 : 0)
                             .GetJsonAsync<IEnumerable<PinballMachine>>();
         }
 
@@ -53,8 +53,8 @@ namespace PinballApi
                             .AppendPathSegment("search")
                             .AppendPathSegment("typeahead")
                             .SetQueryParam("q", query)
-                            .SetQueryParam("include_groups", includeGroups)
-                            .SetQueryParam("include_aliases", includeAliases)
+                            .SetQueryParam("include_groups", includeGroups ? 1 : 0)
+                            .SetQueryParam("include_aliases", includeAliases ? 1 : 0)
                             .GetJsonAsync<IEnumerable<TypeAheadSearchResult>>();
         }
     }

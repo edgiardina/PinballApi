@@ -46,7 +46,24 @@ namespace PinballApi.Tests
         {
             var machine = await OpdbApi.Search("Addams");
 
-            Assert.That(machine.Count(), Is.EqualTo(4));
+            Assert.That(machine.Count(), Is.EqualTo(3));
+        }
+
+        [Test]
+        public async Task OPDBApi_SearchMachines_WithoutAliases_ShouldReturnCorrectMachines()
+        {
+            var machine = await OpdbApi.Search("Addams", includeAliases: false);
+
+            Assert.That(machine.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public async Task OPDBApi_SearchMachines_RequireOPDB_ShouldReturnCorrectMachines()
+        {
+            var machine = await OpdbApi.Search("Addams", requireOpdb: false);
+
+            Assert.That(machine.Count(), Is.EqualTo(3));
+            Assert.That(machine.First().IpdbId, Is.GreaterThan(0));
         }
 
         [Test]
@@ -54,7 +71,7 @@ namespace PinballApi.Tests
         {
             var machine = await OpdbApi.TypeAheadSearch("Addams");
 
-            Assert.That(machine.Count(), Is.EqualTo(4));
+            Assert.That(machine.Count(), Is.EqualTo(3));
         }
     }
 }
