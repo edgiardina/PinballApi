@@ -7,6 +7,7 @@ var version = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Version 
 var artifactsDirectory = "./artifacts";
 var resultsFile = artifactsDirectory + "/NUnitResults.xml";
 var wpprKey = Argument("wpprKey", "");
+var OPDBToken = Argument("OPDBToken", "");
 
 Task("Restore-NuGet-Packages")
 	.Does(() => {
