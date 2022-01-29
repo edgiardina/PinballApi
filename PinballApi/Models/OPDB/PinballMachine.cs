@@ -30,7 +30,7 @@ namespace PinballApi.Models.OPDB
         public int IpdbId { get; set; }
 
         [JsonProperty("manufacture_date")]
-        public string ManufactureDate { get; set; }
+        public DateTime ManufactureDate { get; set; }
 
         [JsonProperty("manufacturer")]
         public Manufacturer Manufacturer { get; set; }
@@ -54,10 +54,10 @@ namespace PinballApi.Models.OPDB
         public string Description { get; set; }
 
         [JsonProperty("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [JsonProperty("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         [JsonProperty("images")]
         public List<MachineImage> Images { get; set; }

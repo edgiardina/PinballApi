@@ -18,9 +18,9 @@ namespace PinballApi.Models.OPDB
         public string FullName { get; set; }
 
         [JsonProperty("created_at")]
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [JsonProperty("updated_at")]
-        public string UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }
