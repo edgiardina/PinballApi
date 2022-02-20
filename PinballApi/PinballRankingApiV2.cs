@@ -13,6 +13,7 @@ using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
 using PinballApi.Models.WPPR.v2.Directors;
 using PinballApi.Models.WPPR.v2.Stats;
+using PinballApi.Models.WPPR.v2.Series;
 
 namespace PinballApi
 {
@@ -149,6 +150,132 @@ namespace PinballApi
 
         #endregion
 
+        #region Series
+
+        public async Task<List<Series>> GetSeries()
+        {
+            var json = await BaseRequest
+                  .AppendPathSegment("series/list")                  
+                  .GetStringAsync();
+
+            return JObject.Parse(json)
+             .SelectToken("series", false).ToObject<List<Series>>();
+        }
+
+        /// <summary>
+        /// Retrieve overall standings for a Series
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<SeriesOverallResults> GetSeriesOverallStanding(string seriesCode, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("overall_standings");
+
+            if(year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<SeriesOverallResults>();
+        }
+
+        /// <summary>
+        /// Get Series Standings for Region
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<RegionStandings> GetSeriesStandingsForRegion(string seriesCode, string region, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("standings")
+                .SetQueryParam("region_code", region);              
+
+            if (year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<RegionStandings>();
+        }
+
+        /// <summary>
+        /// Get Tournaments in Series for Region
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<SeriesTournaments> GetSeriesTournamentsForRegion(string seriesCode, string region, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("tournaments")
+                .SetQueryParam("region_code", region);                
+
+            if (year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<SeriesTournaments>();
+        }
+
+        /// <summary>
+        /// Get a player's top 20 results for a region within a series
+        /// </summary>
+        /// <param name="playerId">Player's id</param>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<SeriesPlayerCard> GetSeriesPlayerCard(int playerId, string seriesCode, string region, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("player_card")
+                .AppendPathSegment(playerId)
+                .SetQueryParam("region_code", region);
+
+            if (year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<SeriesPlayerCard>();
+        }
+
+        /// <summary>
+        /// Retrieve the winners for past series
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Optional abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <returns></returns>
+        public async Task<SeriesWinners> GetSeriesWinners(string seriesCode, string region = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("past_winners");  
+
+            if (!string.IsNullOrEmpty(region))
+            {
+                request.SetQueryParam("region_code", region);
+            }
+
+            return await request.GetJsonAsync<SeriesWinners>();
+        }
+
+        #endregion
 
         #region NACS
         public async Task<List<NacsStandings>> GetNacsStandings(int year)
@@ -336,7 +463,7 @@ namespace PinballApi
                     .GetJsonAsync<TournamentResults>();
         }
 
-        public async Task<List<TournamentWinner>> GetTournamentWinners(int tournamentId)
+        public async Task<List<Models.WPPR.v2.Tournaments.TournamentWinner>> GetTournamentWinners(int tournamentId)
         {
             var json = await BaseRequest
                     .AppendPathSegment("tournament")
@@ -345,7 +472,7 @@ namespace PinballApi
                     .GetStringAsync();
 
             return JObject.Parse(json)
-            .SelectToken("winners", false).ToObject<List<TournamentWinner>>();
+            .SelectToken("winners", false).ToObject<List<Models.WPPR.v2.Tournaments.TournamentWinner>>();
         }
 
         public async Task<List<TournamentWinnerGrouped>> GetTournamentWinnersGrouped(int tournamentId)

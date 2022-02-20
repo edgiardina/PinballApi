@@ -140,6 +140,60 @@ namespace PinballApi.Tests
             Assert.That(playerResults.ResultsType, Is.EqualTo(resultType));
         }
 
+        [Test]
+        public async Task PinballRankingApiV2_GetSeries_ShouldReturnSeries()
+        {
+            var series = await rankingApi.GetSeries();
+
+            Assert.That(series.Count, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetSeriesOverallStandings_ShouldReturnSeriesStandings()
+        {
+            var series = await rankingApi.GetSeriesOverallStanding("NACS");
+
+            Assert.That(series.Year, Is.Positive);
+            Assert.That(series.ChampionshipPrizeFund, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetSeriesRegionStandings_ShouldReturnRegionStandings()
+        {
+            var series = await rankingApi.GetSeriesStandingsForRegion("NACS", "MA");
+
+            Assert.That(series.Year, Is.Positive);
+            Assert.That(series.SeriesCode, Is.EqualTo("NACS"));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetSeriesRegionTournaments_ShouldReturnRegionTournaments()
+        {
+            var series = await rankingApi.GetSeriesTournamentsForRegion("NACS", "MA");
+
+            Assert.That(series.Year, Is.Positive);
+            Assert.That(series.SeriesCode, Is.EqualTo("NACS"));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetSeriesPlayerCard_ShouldReturnPlayerCard()
+        {
+            var series = await rankingApi.GetSeriesPlayerCard(16927, "NACS", "CT");
+
+            Assert.That(series.Year, Is.Positive);
+            Assert.That(series.SeriesCode, Is.EqualTo("NACS"));
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetSeriesWinner_ShouldReturnwinner()
+        {
+            var series = await rankingApi.GetSeriesWinners("NACS");
+
+            Assert.That(series.Results.Count, Is.Positive);
+            Assert.That(series.SeriesCode, Is.EqualTo("NACS"));
+        }
+
+
         [Test, Ignore("Right now, NACS api endpoint is in flux for Womens CS and Australia CS")]
         public async Task PinballRankingApiV2_NacsStandings_ShouldReturnStandings()
         {
