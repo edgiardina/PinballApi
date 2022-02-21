@@ -14,7 +14,7 @@ namespace PinballApi.Models.WPPR.v2.Series
         public int Year { get; set; }
 
         [JsonProperty("championship_prize_fund")]
-        public int ChampionshipPrizeFund { get; set; }
+        public double ChampionshipPrizeFund { get; set; }
 
         [JsonProperty("overall_results")]
         public List<SeriesOverallResult> OverallResults { get; set; }
