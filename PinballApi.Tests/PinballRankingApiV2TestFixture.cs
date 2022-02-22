@@ -146,6 +146,7 @@ namespace PinballApi.Tests
             var series = await rankingApi.GetSeries();
 
             Assert.That(series.Count, Is.Positive);
+            Assert.That(series.FirstOrDefault().Years.Count, Is.Positive);
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Series
 {
@@ -9,5 +10,8 @@ namespace PinballApi.Models.WPPR.v2.Series
 
         [JsonProperty("title")]
         public string Title { get; set; }
+
+        [JsonProperty("years")]
+        public List<int> Years { get; set; }
     }
 }

@@ -4,14 +4,17 @@ namespace PinballApi.Models.v2.WPPR
 {
     public class ChampionshipSeries
     {
-        [JsonProperty("stateprov_code")]
-        public string StateProvince { get; set; }
+        [JsonProperty("region_code")]
+        public string RegionCode { get; set; }
 
-        [JsonProperty("stateprov")]
-        public string StateProvinceName { get; set; }
+        [JsonProperty("series_code")]
+        public string SeriesCode { get; set; }
 
-        [JsonProperty("current_rank")]
+        [JsonProperty("series_rank")]
         public int Rank { get; set; }
+
+        [JsonProperty("total_points")]
+        public double TotalPoints { get; set; }
 
         [JsonProperty("year")]
         public int Year { get; set; }
