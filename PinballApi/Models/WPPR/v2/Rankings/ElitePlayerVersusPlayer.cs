@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PinballApi.Models.WPPR.v2.Players;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Rankings
@@ -24,6 +25,6 @@ namespace PinballApi.Models.WPPR.v2.Rankings
         public int TotalDraws { get; set; }
 
         [JsonProperty("pvp")]
-        public List<ElitePlayerVersusPlayerRecord> Records { get; set; }
+        public List<PlayerVersusRecord> Records { get; set; }
     }
 }
