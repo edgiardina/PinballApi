@@ -21,6 +21,6 @@ namespace PinballApi.Models.WPPR.v2.Rankings
         public string RankCountryName { get; set; }
 
         [JsonProperty("rankings")]
-        public List<RankingResult> Rankings { get; set; }
+        public List<CountryRankingResult> Rankings { get; set; }
     }
 }

@@ -275,7 +275,7 @@ namespace PinballApi.Tests
             Assert.That(ranking.TotalCount, Is.Positive);
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-            //Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
             Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
             Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
@@ -309,7 +309,8 @@ namespace PinballApi.Tests
             Assert.That(ranking.TournamentType, Is.EqualTo(tournamentType));
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-//          Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive); 
+            //TODO: right now the women's ranking returns current_rank instead of current_wppr_rank, needs to be normalized.
+            //Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive); 
         }
 
         [Test]
@@ -320,7 +321,7 @@ namespace PinballApi.Tests
             Assert.That(ranking.ReturnCount, Is.Positive);
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-            //Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
             Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
             Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }

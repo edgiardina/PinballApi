@@ -23,6 +23,6 @@ namespace PinballApi.Models.WPPR.v2.Rankings
         public int TotalCount { get; set; }
         
         [JsonProperty("rankings")]
-        public List<RankingResult> Rankings { get; set; }
+        public List<WomensRankingResult> Rankings { get; set; }
     }
 }
