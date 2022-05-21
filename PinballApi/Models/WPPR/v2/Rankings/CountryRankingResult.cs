@@ -8,6 +8,6 @@ namespace PinballApi.Models.WPPR.v2.Rankings
     public class CountryRankingResult : RankingResult
     {
         [JsonProperty("current_wppr_rank")]
-        public int CurrentWpprRank { get; set; }
+        public new int CurrentWpprRank { get; set; }
     }
 }
