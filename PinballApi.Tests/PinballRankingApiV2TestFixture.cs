@@ -351,6 +351,16 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetRankingCustomWithNullRank_ShouldReturnCustom()
+        {
+            int viewId = 14;
+            var customView = await rankingApi.GetRankingCustomView(viewId);
+
+            Assert.That(customView.TotalCount, Is.Positive);
+            Assert.That(customView.ViewId, Is.EqualTo(viewId));
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_GetRankingCustomList_ShouldReturnCustomList()
         {
             var countries = await rankingApi.GetRankingCustomViewList();

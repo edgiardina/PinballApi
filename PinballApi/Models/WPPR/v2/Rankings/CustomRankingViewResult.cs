@@ -26,7 +26,7 @@ namespace PinballApi.Models.WPPR.v2.Rankings
         public string StateProvince { get; set; }
 
         [JsonProperty("wppr_rank")]
-        public int WpprRank { get; set; }
+        public int? WpprRank { get; set; }
 
         [JsonProperty("wppr_points")]
         public double WpprPoints { get; set; }
