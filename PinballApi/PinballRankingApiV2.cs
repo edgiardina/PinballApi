@@ -49,6 +49,9 @@ namespace PinballApi
 
         public async Task<List<Player>> GetPlayers(List<int> playerIds)
         {
+            if (playerIds.Count > 50)
+                throw new ArgumentException("GetPlayers can only process 50 or less player IDs at a time due to limitations in the IFPA API.");
+
             var request = BaseRequest
                 .AppendPathSegment("player");
 
