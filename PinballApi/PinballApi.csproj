@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <PackageId>PinballApi</PackageId>
     <PackageVersion>0.0.1</PackageVersion>
     <Authors>Ed Giardina</Authors>
     <Description>PinballApi - .NET API for pinball data</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <Copyright>Copyright 2019</Copyright>
-    <PackageTags>pinball pinballapi</PackageTags>
+    <Copyright>Copyright 2022</Copyright>
+    <PackageTags>pinball pinballapi ifpa ipdb</PackageTags>
     <PackageProjectUrl>https://github.com/edgiardina/PinballApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/edgiardina/PinballApi</RepositoryUrl>
     <Version>1.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Flurl" Version="3.0.4" />
-    <PackageReference Include="Flurl.Http" Version="3.2.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.40" />
+    <PackageReference Include="Flurl" Version="3.0.6" />
+    <PackageReference Include="Flurl.Http" Version="3.2.4" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Text.Json" Version="6.0.1" />
+    <PackageReference Include="System.Text.Json" Version="6.0.5" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
