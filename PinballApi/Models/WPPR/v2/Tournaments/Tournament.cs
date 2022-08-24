@@ -63,6 +63,9 @@ namespace PinballApi.Models.WPPR.v2.Tournaments
         [JsonProperty("event_end_date")]
         public DateTime EventEndDate { get; set; }
 
+        [JsonProperty("event_weight")]
+        public double EventWeight { get; set; }
+
         [JsonProperty("ratings_strength")]
         public double RatingsStrength { get; set; }
 

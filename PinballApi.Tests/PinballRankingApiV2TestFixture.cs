@@ -319,7 +319,7 @@ namespace PinballApi.Tests
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
             //TODO: right now the women's ranking returns current_rank instead of current_wppr_rank, needs to be normalized.
-            //Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive); 
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive); 
         }
 
         [Test]
@@ -385,6 +385,7 @@ namespace PinballApi.Tests
             var tournament = await rankingApi.GetTournament(tournamentId);
 
             Assert.That(tournament.TournamentId, Is.EqualTo(tournamentId));
+            Assert.That(tournament.EventWeight, Is.Positive);
         }
 
         [Test]
