@@ -283,6 +283,8 @@ namespace PinballApi.Tests
 
             Assert.That(ranking.TotalCount, Is.Positive);
             Assert.That(ranking.Rankings, Is.Not.Null);
+            //TODO: this is bugged and returns +1 endpoint
+            //Assert.That(ranking.Rankings.First().CountryRank, Is.EqualTo(1));
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
             Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
             Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
