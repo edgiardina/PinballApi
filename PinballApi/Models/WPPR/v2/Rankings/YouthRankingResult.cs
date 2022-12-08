@@ -8,6 +8,6 @@ namespace PinballApi.Models.WPPR.v2.Rankings
     public class YouthRankingResult : RankingResult
     {
         [JsonProperty("current_wppr_rank")]
-        public override int CurrentWpprRank { get; set; }
+        public int CurrentWpprRank { get; set; }
     }
 }
