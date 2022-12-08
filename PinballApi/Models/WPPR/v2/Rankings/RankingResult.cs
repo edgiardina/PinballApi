@@ -36,7 +36,7 @@ namespace PinballApi.Models.WPPR.v2.Rankings
         public double WpprPoints { get; set; }
 
         [JsonProperty("current_rank")]
-        public virtual int CurrentWpprRank { get; set; }
+        public int CurrentRank { get; set; }
 
         [JsonProperty("country_rank")]
         public int CountryRank { get; set; }

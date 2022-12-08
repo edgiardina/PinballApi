@@ -283,6 +283,8 @@ namespace PinballApi.Tests
 
             Assert.That(ranking.TotalCount, Is.Positive);
             Assert.That(ranking.Rankings, Is.Not.Null);
+            //TODO: this is bugged and returns +1 endpoint
+            //Assert.That(ranking.Rankings.First().CountryRank, Is.EqualTo(1));
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
             Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
             Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
@@ -318,17 +320,34 @@ namespace PinballApi.Tests
             Assert.That(ranking.TournamentType, Is.EqualTo(tournamentType));
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-            //TODO: right now the women's ranking returns current_rank instead of current_wppr_rank, needs to be normalized.
-            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive); 
+            //TODO: Tournament Type : Women will not return current WpprRank yet.
+            //Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive); 
         }
 
         [Test]
-        public async Task PinballRankingApiV2_GetRankingYouth_ShouldReturnRanking()
+        [TestCase(TournamentType.Open)]
+        [TestCase(TournamentType.Women)]
+        public async Task PinballRankingApiV2_GetRankingWomenStartingAt100_ShouldReturnRanking(TournamentType tournamentType)
         {
-            var ranking = await rankingApi.GetRankingForYouth(1, 100);
+            var ranking = await rankingApi.GetRankingForWomen(tournamentType, 100);
+
+            Assert.That(ranking.ReturnCount, Is.Positive);
+            Assert.That(ranking.TournamentType, Is.EqualTo(tournamentType));
+            Assert.That(ranking.Rankings, Is.Not.Null);
+            Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
+            Assert.That(ranking.Rankings.First().CurrentRank, Is.EqualTo(100));
+        }
+
+        [Test]
+        [TestCase(1)]
+        [TestCase(100)]
+        public async Task PinballRankingApiV2_GetRankingYouth_ShouldReturnRanking(int startRank)
+        {
+            var ranking = await rankingApi.GetRankingForYouth(startRank, 100);
 
             Assert.That(ranking.ReturnCount, Is.Positive);
             Assert.That(ranking.Rankings, Is.Not.Null);
+            Assert.That(ranking.Rankings.First().CurrentRank, Is.EqualTo(startRank));
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
             Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
             Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
@@ -343,7 +362,19 @@ namespace PinballApi.Tests
             Assert.That(ranking.ReturnCount, Is.Positive);
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-//          Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
+            Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
+            Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetWpprRankingAtPosition100_ShouldReturnRanking()
+        {
+            var ranking = await rankingApi.GetWpprRanking(100);
+
+            Assert.That(ranking.ReturnCount, Is.Positive);
+            Assert.That(ranking.Rankings, Is.Not.Null);
+            Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
+            Assert.That(ranking.Rankings.First().CurrentRank, Is.EqualTo(100));
             Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
             Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
