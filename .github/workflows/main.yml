@@ -28,7 +28,7 @@ jobs:
       - name: Configure OPDB Secret  
         run: dotnet user-secrets set "OPDBToken" ${{secrets.OPDBTOKEN}} --project PinballApi.Tests/PinballApi.Tests.csproj
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
         
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v3
