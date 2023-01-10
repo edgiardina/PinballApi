@@ -23,7 +23,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
           source-url: https://nuget.pkg.github.com/PinballApi/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}
       - name: Install dependencies
         run: dotnet restore
       - name: Build
