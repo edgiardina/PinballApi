@@ -27,7 +27,7 @@ namespace PinballApi.Models.OPDB
         public int PhysicalMachine { get; set; }
 
         [JsonProperty("ipdb_id")]
-        public int IpdbId { get; set; }
+        public int? IpdbId { get; set; }
 
         [JsonProperty("manufacture_date")]
         public DateTime ManufactureDate { get; set; }

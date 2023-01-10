@@ -57,5 +57,17 @@ namespace PinballApi
                             .SetQueryParam("include_aliases", includeAliases ? 1 : 0)
                             .GetJsonAsync<IEnumerable<TypeAheadSearchResult>>();
         }
+
+        /// <summary>
+        /// Export all machines and aliases as a single JSON document. 
+        /// </summary>
+        /// <remarks>Note: This endpoint is rate limited and you will only be able to request the export once per hour.</remarks>
+        /// <returns></returns>
+        public async Task<IEnumerable<PinballMachine>> Export()
+        {
+            return await BaseRequest
+                            .AppendPathSegment("export")                           
+                            .GetJsonAsync<IEnumerable<PinballMachine>>();
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace PinballApi.Tests
         [SetUp]
         public void SetUp()
         {
-            var t = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var t = new ConfigurationBuilder().AddUserSecrets<Settings>().Build();
 
             var apiToken = t["OPDBToken"];
             OpdbApi = new OPDBApi(apiToken);
@@ -72,6 +72,14 @@ namespace PinballApi.Tests
             var machine = await OpdbApi.TypeAheadSearch("Addams");
 
             Assert.That(machine.Count(), Is.EqualTo(3));
+        }
+
+        [Test]
+        public async Task OPDBApi_Export_ShouldAllMachines()
+        {
+            var machine = await OpdbApi.Export();
+
+            Assert.That(machine.Count(), Is.GreaterThan(1000));
         }
     }
 }

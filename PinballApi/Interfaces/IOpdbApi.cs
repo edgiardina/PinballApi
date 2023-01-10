@@ -13,5 +13,6 @@ namespace PinballApi.Interfaces
         Task<PinballMachine> GetMachineInfo(string opdbId);
 
         Task<PinballMachine> GetMachineInfoByIpdbId(string ipdbId);
+        Task<IEnumerable<PinballMachine>> Export();
     }
 }
