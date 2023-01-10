@@ -24,9 +24,9 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Configure WPPR Secret
-        run: dotnet user-secrets set "WPPRKey" ${{secrets.WPPRKEY}}
+        run: dotnet user-secrets set "WPPRKey" ${{secrets.WPPRKEY}} --project PinballApi.Tests\PinballApi.Tests.csproj
       - name: Configure OPDB Secret  
-        run: dotnet user-secrets set "OPDBToken" ${{secrets.OPDBTOKEN}}
+        run: dotnet user-secrets set "OPDBToken" ${{secrets.OPDBTOKEN}} --project PinballApi.Tests\PinballApi.Tests.csproj
       - name: Test
         run: dotnet test --no-restore --verbosity normal
         
