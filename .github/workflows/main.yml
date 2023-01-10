@@ -23,6 +23,10 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
+      - name: Configure WPPR Secret
+        run: dotnet user-secrets set "WPPRKey" ${{secrets.WPPRKEY}}
+      - name: Configure OPDB Secret  
+        run: dotnet user-secrets set "OPDBToken" ${{secrets.OPDBTOKEN}}
       - name: Test
         run: dotnet test --no-restore --verbosity normal
         
