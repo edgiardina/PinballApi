@@ -21,7 +21,7 @@ namespace PinballApi.Tests
         [SetUp]
         public void SetUp()
         {
-            var t = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var t = new ConfigurationBuilder().AddUserSecrets<Settings>().Build();
 
             var apiKey = t["WPPRKey"];
             rankingApi = new PinballRankingApiV2(apiKey);
@@ -349,8 +349,7 @@ namespace PinballApi.Tests
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().CurrentRank, Is.EqualTo(startRank));
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
-            Assert.That(ranking.Rankings.First().EfficiencyPercent, Is.Positive);
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);            
             Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
 

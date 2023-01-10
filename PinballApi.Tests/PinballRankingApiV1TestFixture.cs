@@ -16,7 +16,7 @@ namespace PinballApi.Tests
         [SetUp]
         public void SetUp()
         {
-            var t = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var t = new ConfigurationBuilder().AddUserSecrets<Settings>().Build();
 
             var apiKey = t["WPPRKey"];
             rankingApi = new PinballRankingApiV1(apiKey);
