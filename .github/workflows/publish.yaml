@@ -39,7 +39,7 @@ jobs:
           # VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
 
           # Useful with external providers like Nerdbank.GitVersioning, ignores VERSION_FILE_PATH & VERSION_REGEX
-          # VERSION_STATIC: 1.0.0
+          VERSION_STATIC: 2.1.{{github.run_number}}
 
           # API key to authenticate with NuGet server
           NUGET_KEY: ${{secrets.NUGET_TOKEN}}
