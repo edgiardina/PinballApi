@@ -1,4 +1,4 @@
-name: build, test, package and deploy to nuget
+name: dotnet build & test
 
 on: [push]
 
@@ -18,10 +18,7 @@ jobs:
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-          source-url: https://nuget.pkg.github.com/PinballApi/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}
+          dotnet-version: ${{ matrix.dotnet-version }}      
       - name: Install dependencies
         run: dotnet restore
       - name: Build
@@ -36,9 +33,3 @@ jobs:
           path: TestResults-${{ matrix.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
-        
-      - run: dotnet build --configuration Release PinballApi
-      - name: Create the package
-        run: dotnet pack --configuration Release PinballApi
-      - name: Publish the package to GPR
-        run: dotnet nuget push <my project>/bin/Release/*.nupkg
