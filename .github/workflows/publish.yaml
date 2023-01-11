@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main # Default release branch, may also be named 'master' or 'develop'
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"  
 jobs:
   publish:
     name: build, pack & publish
@@ -14,6 +16,9 @@ jobs:
       #   uses: actions/setup-dotnet@v1
       #   with:
       #     dotnet-version: 3.1.200
+      
+      - name: Set VERSION variable from tag
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
       # Publish
       - name: publish on version change
@@ -39,7 +44,7 @@ jobs:
           # VERSION_REGEX: ^\s*<Version>(.*)<\/Version>\s*$
 
           # Useful with external providers like Nerdbank.GitVersioning, ignores VERSION_FILE_PATH & VERSION_REGEX
-          VERSION_STATIC: 2.1.${{github.run_number}}
+          VERSION_STATIC: ${VERSION}
 
           # API key to authenticate with NuGet server
           NUGET_KEY: ${{secrets.NUGET_TOKEN}}
