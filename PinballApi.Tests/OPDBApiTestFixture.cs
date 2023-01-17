@@ -74,7 +74,7 @@ namespace PinballApi.Tests
             Assert.That(machine.Count(), Is.EqualTo(3));
         }
 
-        [Test]
+        [Test, Ignore("Can cause 429 too many requests")]
         public async Task OPDBApi_Export_ShouldAllMachines()
         {
             var machine = await OpdbApi.Export();
