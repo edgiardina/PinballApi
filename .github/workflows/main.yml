@@ -28,7 +28,7 @@ jobs:
       - name: Configure OPDB Secret  
         run: dotnet user-secrets set "OPDBToken" ${{secrets.OPDBTOKEN}} --project PinballApi.Tests/PinballApi.Tests.csproj
       - name: Configure MAtchPlayApi Secret  
-        run: dotnet user-secrets set "MatchPlayApiToken" ${{secrets.MATCHPLAYAPITOKEN}} --project PinballApi.Tests/PinballApi.Tests.csproj
+        run: dotnet user-secrets set "MatchPlayApiToken" "${{secrets.MATCHPLAYAPITOKEN}}" --project PinballApi.Tests/PinballApi.Tests.csproj
       - name: Test
         run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
         
