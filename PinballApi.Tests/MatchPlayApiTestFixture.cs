@@ -27,8 +27,15 @@ namespace PinballApi.Tests
         {
             var dashboard = await matchPlayApi.GetDashboard();
 
-            Assert.That(dashboard.TournamentsOrganizing, Is.Not.Empty);
- 
+            Assert.That(dashboard.TournamentsOrganizing, Is.Not.Empty); 
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetArenas_ShouldReturnArenas()
+        {
+            var arenas = await matchPlayApi.GetArenas();
+
+            Assert.That(arenas, Is.Not.Empty);
         }
     }
 }

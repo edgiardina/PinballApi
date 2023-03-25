@@ -1,5 +1,6 @@
 ﻿using Flurl;
 using Flurl.Http;
+using Newtonsoft.Json.Linq;
 using PinballApi.Models.MatchPlay;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,16 @@ namespace PinballApi
             return await BaseRequest
                 .AppendPathSegment("dashboard")
                 .GetJsonAsync<Dashboard>();
+        }
+
+        public async Task<List<Arena>> GetArenas()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("arenas")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Arena>>();
         }
     }
 }
