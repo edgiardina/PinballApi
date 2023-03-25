@@ -27,9 +27,4 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="Swagger1.yaml">
-      <Generator>NSwagCodeGenerator</Generator>
-    </None>
-  </ItemGroup>
 </Project>
