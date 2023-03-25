@@ -10,5 +10,7 @@ namespace PinballApi.Tests
     {
         public string WPPRKey { get; set; }
         public string OPDBToken { get; set; }
+
+        public string MatchPlayApiToken { get; set; }
     }
 }
