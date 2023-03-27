@@ -37,5 +37,13 @@ namespace PinballApi.Tests
 
             Assert.That(arenas, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetGames_ShouldReturnGames()
+        {
+            var games = await matchPlayApi.GetGames(new List<int> { 97597 });
+
+            Assert.That(games, Is.Not.Empty);
+        }
     }
 }
