@@ -41,10 +41,10 @@ namespace PinballApi.Models.MatchPlay
         public object Description { get; set; }
 
         [JsonPropertyName("pointsMap")]
-        public List<List<int>> PointsMap { get; } = new List<List<int>>();
+        public List<List<decimal>> PointsMap { get; } = new List<List<decimal>>();
 
         [JsonPropertyName("tiebreakerPointsMap")]
-        public List<List<string>> TiebreakerPointsMap { get; } = new List<List<string>>();
+        public List<List<decimal>> TiebreakerPointsMap { get; } = new List<List<decimal>>();
 
         [JsonPropertyName("test")]
         public bool Test { get; set; }
@@ -68,7 +68,7 @@ namespace PinballApi.Models.MatchPlay
         public User Organizer { get; set; }
 
         [JsonPropertyName("location")]
-        public object Location { get; set; }
+        public Location Location { get; set; }
 
         [JsonPropertyName("seeding")]
         public string Seeding { get; set; }

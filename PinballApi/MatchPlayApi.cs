@@ -112,7 +112,7 @@ namespace PinballApi
         {
             var request = BaseRequest
                 .AppendPathSegment("players")
-                .SetQueryParam("page", page); ;
+                .SetQueryParam("page", page);
 
             if (players != null && players.Any())
             {
@@ -139,6 +139,31 @@ namespace PinballApi
                             .SetQueryParam("includeCounts", "true")
                             .GetJsonAsync<UserProfile>();
           
+        }
+
+
+        public async Task<List<User>> SearchForUser(string searchText)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("search")
+                .SetQueryParam("query", searchText)
+                .SetQueryParam("type", "users")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<User>>();
+        }
+
+        public async Task<List<Tournament>> SearchForTournaments(string searchText)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("search")
+                .SetQueryParam("query", searchText)
+                .SetQueryParam("type", "tournaments")
+                .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Tournament>>();
         }
 
 

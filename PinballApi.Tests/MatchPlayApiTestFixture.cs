@@ -70,5 +70,22 @@ namespace PinballApi.Tests
             Assert.That(profile, Is.Not.Null);
             Assert.That(profile.User.IfpaId == 16927);
         }
+
+        [Test]
+        public async Task MatchPlayApi_SearchForUser_ShouldReturnUser()
+        {
+            var userSearch = await matchPlayApi.SearchForUser("Giardina");
+
+            Assert.That(userSearch, Is.Not.Null);
+            Assert.That(userSearch.Count == 2);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_SearchForTournament_ShouldReturnTournament()
+        {
+            var tournamentSearch = await matchPlayApi.SearchForTournaments("SFPD Spring 2020");
+
+            Assert.That(tournamentSearch, Is.Not.Empty);
+        }
     }
 }

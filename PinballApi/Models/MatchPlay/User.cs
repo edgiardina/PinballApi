@@ -14,7 +14,7 @@ namespace PinballApi.Models.MatchPlay
         public string Name { get; set; }
 
         [JsonPropertyName("ifpaId")]
-        public int IfpaId { get; set; }
+        public int? IfpaId { get; set; }
 
         [JsonPropertyName("role")]
         public string Role { get; set; }
