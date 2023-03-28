@@ -5,24 +5,24 @@ using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.MatchPlay
 {
-    public class Arena
+    public class Player
     {
-        [JsonPropertyName("arenaId")]
-        public int ArenaId { get; set; }
+        [JsonPropertyName("playerId")]
+        public int PlayerId { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("ifpaId")]
+        public int? IfpaId { get; set; }
+
         [JsonPropertyName("status")]
         public Status Status { get; set; }
 
-        [JsonPropertyName("opdbId")]
-        public string OpdbId { get; set; }
-
-        [JsonPropertyName("categoryId")]
-        public int CategoryId { get; set; }
-
         [JsonPropertyName("organizerId")]
         public int OrganizerId { get; set; }
+
+        [JsonPropertyName("claimedBy")]
+        public int? ClaimedBy { get; set; }
     }
 }

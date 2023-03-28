@@ -53,5 +53,13 @@ namespace PinballApi.Tests
             
             Assert.That(locations, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetPlayers_ShouldReturnPlayers()
+        {
+            var players = await matchPlayApi.GetPlayers();
+
+            Assert.That(players, Is.Not.Empty);
+        }
     }
 }

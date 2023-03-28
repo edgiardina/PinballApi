@@ -31,7 +31,7 @@ namespace PinballApi
                 .GetJsonAsync<Dashboard>();
         }
 
-        public async Task<List<Arena>> GetArenas(ArenaStatus status = ArenaStatus.Active, List<string> arenaIds = null, int page = 1)
+        public async Task<List<Arena>> GetArenas(Status status = Status.Active, List<string> arenaIds = null, int page = 1)
         {
             var request = BaseRequest
                 .AppendPathSegment("arenas")
@@ -86,7 +86,7 @@ namespace PinballApi
                 .SelectToken("data", false).ToObject<List<Game>>();
         }
 
-        public async Task<List<Location>> GetLocations(LocationStatus? status = null, List<int> locationIds = null, int page = 1)
+        public async Task<List<Location>> GetLocations(Status? status = null, List<int> locationIds = null, int page = 1)
         {
             var request = BaseRequest
                 .AppendPathSegment("locations")
@@ -106,6 +106,28 @@ namespace PinballApi
 
             return JObject.Parse(json)
                 .SelectToken("data", false).ToObject<List<Location>>();
+        }
+
+        public async Task<List<Player>> GetPlayers(Status? status = null, List<int> players = null, int page = 1)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("players")
+                .SetQueryParam("page", page); ;
+
+            if (players != null && players.Any())
+            {
+                request = request.SetQueryParams("players", string.Join(",", players));
+            }
+
+            if (status.HasValue)
+            {
+                request = request.SetQueryParam("status", status.Value.ToString().ToLower());
+            }
+
+            var json = await request.GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Player>>();
         }
     }
 }

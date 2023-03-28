@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PinballApi.Models.MatchPlay
 {
-    public enum ArenaStatus
+    public enum Status
     {
         Active, 
         Inactive
