@@ -129,5 +129,18 @@ namespace PinballApi
             return JObject.Parse(json)
                 .SelectToken("data", false).ToObject<List<Player>>();
         }
+
+        public async Task<UserProfile> GetProfile(int playerId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("users")
+                            .AppendPathSegment(playerId)
+                            .SetQueryParam("includeIfpa", "true")
+                            .SetQueryParam("includeCounts", "true")
+                            .GetJsonAsync<UserProfile>();
+          
+        }
+
+
     }
 }

@@ -61,5 +61,14 @@ namespace PinballApi.Tests
 
             Assert.That(players, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetUserProfile_ShouldUserProfile()
+        {
+            var profile = await matchPlayApi.GetProfile(3259);
+
+            Assert.That(profile, Is.Not.Null);
+            Assert.That(profile.User.IfpaId == 16927);
+        }
     }
 }
