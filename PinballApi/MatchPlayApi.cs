@@ -36,9 +36,9 @@ namespace PinballApi
             var request = BaseRequest
                 .AppendPathSegment("arenas")
                 .SetQueryParam("status", status.ToString().ToLower())
-                .SetQueryParam("page", page);                     
+                .SetQueryParam("page", page);
 
-            if(arenaIds != null && arenaIds.Any())
+            if (arenaIds != null && arenaIds.Any())
             {
                 request = request.SetQueryParams("arenas", string.Join(",", arenaIds));
             }
@@ -55,12 +55,12 @@ namespace PinballApi
                 .AppendPathSegment("games")
                 .SetQueryParam("tournaments", string.Join(",", tournamentIds));
 
-            if(gameStatus.HasValue)
+            if (gameStatus.HasValue)
             {
                 request = request.SetQueryParam("status", gameStatus.Value.ToString().ToLower());
             }
 
-            if(bank.HasValue)
+            if (bank.HasValue)
             {
                 request = request.SetQueryParam("bank", bank.Value);
             }
@@ -75,7 +75,7 @@ namespace PinballApi
                 request = request.SetQueryParam("arena", arenaId.Value);
             }
 
-            if(playerId.HasValue) 
+            if (playerId.HasValue)
             {
                 request = request.SetQueryParam("player", playerId.Value);
             }
@@ -84,6 +84,28 @@ namespace PinballApi
 
             return JObject.Parse(json)
                 .SelectToken("data", false).ToObject<List<Game>>();
+        }
+
+        public async Task<List<Location>> GetLocations(LocationStatus? status = null, List<int> locationIds = null, int page = 1)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("locations")
+                .SetQueryParam("page", page); ;
+
+            if (locationIds != null && locationIds.Any())
+            {
+                request = request.SetQueryParams("locations", string.Join(",", locationIds));
+            }
+
+            if (status.HasValue)
+            {
+                request = request.SetQueryParam("status", status.Value.ToString().ToLower());
+            }
+
+            var json = await request.GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Location>>();
         }
     }
 }
