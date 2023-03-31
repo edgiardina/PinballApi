@@ -148,8 +148,7 @@ namespace PinballApi
                             .AppendPathSegment(playerId)
                             .SetQueryParam("includeIfpa", "true")
                             .SetQueryParam("includeCounts", "true")
-                            .GetJsonAsync<UserProfile>();
-          
+                            .GetJsonAsync<UserProfile>();          
         }
 
 
