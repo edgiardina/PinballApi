@@ -96,5 +96,58 @@ namespace PinballApi.Tests
 
             Assert.That(tournamentSearch, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetSeries_ShouldReturnSeries()
+        {
+            var series = await matchPlayApi.GetSeries();
+
+            Assert.That(series, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetSeries_ShouldReturnActiveSeries()
+        {
+            var series = await matchPlayApi.GetSeries(seriesStatus: Models.MatchPlay.SeriesStatus.Active);
+
+            Assert.That(series, Is.Not.Empty);
+            Assert.That(series.All(n => n.Status == Models.MatchPlay.SeriesStatus.Active));
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetSeries_ShouldReturnCompletedSeries()
+        {
+            var series = await matchPlayApi.GetSeries(seriesStatus: Models.MatchPlay.SeriesStatus.Completed);
+
+            Assert.That(series, Is.Not.Empty);
+            Assert.That(series.All(n => n.Status == Models.MatchPlay.SeriesStatus.Completed));
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetSeriesById_ShouldReturnSeries()
+        {
+            var series = await matchPlayApi.GetSeries(2175);
+
+            Assert.That(series, Is.Not.Null);
+            Assert.That(series.TournamentIds, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetSeriesAttendance_ShouldReturnSeriesAttendance()
+        {
+            var series = await matchPlayApi.GetSeriesAttendance(2216, 3);
+
+            Assert.That(series, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetSeriesStats_ShouldReturnSeriesStats()
+        {
+            var seriesStatId = 2216;
+            var series = await matchPlayApi.GetSeriesStats(seriesStatId);
+
+            Assert.That(series, Is.Not.Null);
+            Assert.That(series.Series.SeriesId, Is.EqualTo(seriesStatId));
+        }
     }
 }

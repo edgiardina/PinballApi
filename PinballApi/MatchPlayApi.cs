@@ -3,6 +3,7 @@ using Flurl.Http;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
 using PinballApi.Models.MatchPlay;
+using PinballApi.Models.MatchPlay.SeriesStats;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -175,6 +176,71 @@ namespace PinballApi
             return JObject.Parse(json)
                 .SelectToken("data", false).ToObject<List<Tournament>>();
         }
+
+        #region series
+        public async Task<List<Series>> GetSeries(int? ownerUserId = null, int? playedUserId = null, SeriesStatus? seriesStatus = null, int page = 1)
+        {
+            var request = BaseRequest
+                            .AppendPathSegment("series")
+                            .SetQueryParam("page", page);                       
+
+            if (seriesStatus.HasValue)
+            {
+                request = request.SetQueryParam("status", seriesStatus.Value.ToString().ToLower());
+            }
+
+            if (ownerUserId.HasValue)
+            {
+                request = request.SetQueryParam("owner", ownerUserId);
+            }
+
+            if (playedUserId.HasValue)
+            {
+                request = request.SetQueryParam("played", playedUserId);
+            }
+
+            var json = await request.GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Series>>();
+        }
+
+        public async Task<Series> GetSeries(int seriesId)
+        {
+            var json = await BaseRequest
+                           .AppendPathSegment("series")
+                           .AppendPathSegment(seriesId)
+                           .SetQueryParam("includeDetails", true)
+                           .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<Series>();
+        }
+
+        public async Task<List<Player>> GetSeriesAttendance(int seriesId, int count) 
+        {
+            var json = await BaseRequest
+                           .AppendPathSegment("series")
+                           .AppendPathSegment(seriesId)
+                           .AppendPathSegment("stats")
+                           .AppendPathSegment("attendance")
+                           .SetQueryParam("count", count)
+                           .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Player>>();
+        }
+
+        public async Task<SeriesStats> GetSeriesStats(int seriesId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("series")
+                            .AppendPathSegment(seriesId)
+                            .AppendPathSegment("stats")
+                            .GetJsonAsync<SeriesStats>();
+        }
+
+        #endregion
 
 
     }
