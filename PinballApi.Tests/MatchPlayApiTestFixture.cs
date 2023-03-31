@@ -63,6 +63,15 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task MatchPlayApi_GetMyProfile_ShouldMyProfile()
+        {
+            var profile = await matchPlayApi.GetMyProfile();
+
+            Assert.That(profile, Is.Not.Null);
+            Assert.That(profile.IfpaId == 16927);
+        }
+
+        [Test]
         public async Task MatchPlayApi_GetUserProfile_ShouldUserProfile()
         {
             var profile = await matchPlayApi.GetProfile(3259);
@@ -74,7 +83,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_SearchForUser_ShouldReturnUser()
         {
-            var userSearch = await matchPlayApi.SearchForUser("Giardina");
+            var userSearch = await matchPlayApi.SearchForUsers("Giardina");
 
             Assert.That(userSearch, Is.Not.Null);
             Assert.That(userSearch.Count == 2);

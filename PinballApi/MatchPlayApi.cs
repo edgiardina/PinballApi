@@ -130,6 +130,17 @@ namespace PinballApi
                 .SelectToken("data", false).ToObject<List<Player>>();
         }
 
+        public async Task<User> GetMyProfile()
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("users")
+                            .AppendPathSegment("profile")
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+               .SelectToken("data", false).ToObject<User>();
+        }
+
         public async Task<UserProfile> GetProfile(int playerId)
         {
             return await BaseRequest
@@ -142,7 +153,7 @@ namespace PinballApi
         }
 
 
-        public async Task<List<User>> SearchForUser(string searchText)
+        public async Task<List<User>> SearchForUsers(string searchText)
         {
             var json = await BaseRequest
                 .AppendPathSegment("search")
