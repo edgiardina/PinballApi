@@ -87,6 +87,40 @@ namespace PinballApi
                 .SelectToken("data", false).ToObject<List<Game>>();
         }
 
+        public async Task<IfpaEstimate> GetIfpaEstimate(int? touramentId = null, int? seriesId = null, List<int> ifpaIds = null, List<string> names = null)
+        {
+            if(touramentId.HasValue == false && seriesId.HasValue == false && ifpaIds == null && names == null)
+            {
+                throw new ArgumentException("Provide EITHER a tournament id OR a series id OR a list of ifpaIds/names.");
+            }
+
+            var request = BaseRequest
+                .AppendPathSegment("ifpa/wppr-estimator");
+
+            if(touramentId.HasValue)
+            {
+                request = request.SetQueryParam("tournamentId", touramentId.Value);
+            }
+
+            if (seriesId.HasValue)
+            {
+                request = request.SetQueryParam("seriesId", seriesId.Value);
+            }
+
+            if (ifpaIds != null && ifpaIds.Any())
+            {
+                request = request.SetQueryParam("ifpaIds", ifpaIds);
+            }
+
+            if (names != null && names.Any())
+            {
+                request = request.SetQueryParam("names", names);
+            }
+
+            var response = await request.PostAsync();
+            return await response.GetJsonAsync<IfpaEstimate>();
+        }
+
         public async Task<List<Location>> GetLocations(Status? status = null, List<int> locationIds = null, int page = 1)
         {
             var request = BaseRequest
@@ -242,6 +276,67 @@ namespace PinballApi
 
         #endregion
 
+        #region Ratings
+        public async Task<RatingComparison> ComparePlayers(List<int> playerIds = null, List<int> ifpaIds = null, List<int> userIds = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("ratings/compare");
 
+            if(playerIds != null && playerIds.Any())
+            {
+                if (playerIds.Count > 24)
+                    throw new ArgumentException($"{nameof(playerIds)} cannot have more than 24 items", nameof(playerIds));
+            }
+
+            if (ifpaIds != null && ifpaIds.Any())
+            {
+                if (ifpaIds.Count > 24)
+                    throw new ArgumentException($"{nameof(ifpaIds)} cannot have more than 24 items", nameof(ifpaIds));
+            }
+
+            if (userIds != null && userIds.Any())
+            {
+                if (userIds.Count > 24)
+                    throw new ArgumentException($"{nameof(userIds)} cannot have more than 24 items", nameof(userIds));
+            }
+
+            var response = await request.PostJsonAsync(
+                                new { 
+                                    ifpaIds = ifpaIds, 
+                                    playerIds = playerIds, 
+                                    userIds = userIds 
+                                });
+            return await response.GetJsonAsync<RatingComparison>();
+        }
+
+        public async Task<RatingProfile> GetRatingProfile(int id, RatingQueryType ratingQueryType)
+        {
+            return await BaseRequest
+                .AppendPathSegment("ratings")
+                .AppendPathSegment(ratingQueryType.ToString().ToLower())
+                .AppendPathSegment(id)
+                .GetJsonAsync<RatingProfile>();
+        }
+
+        public async Task<List<RatingPeriod>> GetRatingPeriods(int page = 1)
+        {
+            var json = await BaseRequest
+               .AppendPathSegment("rating-periods")
+               .SetQueryParam("page", page)
+               .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<RatingPeriod>>();
+        }
+
+        public async Task<SingleRatingPeriod> GetRatingPeriod(DateTime date)
+        {
+            return await BaseRequest
+                           .AppendPathSegment("rating-periods")
+                           .AppendPathSegment(date.ToString("yyyy-MM-dd"))
+                           .GetJsonAsync<SingleRatingPeriod>();
+        }
+
+        #endregion
     }
 }

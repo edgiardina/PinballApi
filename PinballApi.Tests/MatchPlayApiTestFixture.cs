@@ -149,5 +149,58 @@ namespace PinballApi.Tests
             Assert.That(series, Is.Not.Null);
             Assert.That(series.Series.SeriesId, Is.EqualTo(seriesStatId));
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetIfpaEstimate_ShouldReturnEstimate()
+        {
+            var estimate = await matchPlayApi.GetIfpaEstimate(touramentId: 80395);
+            Assert.That(estimate, Is.Not.Null); 
+        }
+
+        [Test]
+        public async Task MatchPlayApi_ComparePlayers_ShouldReturnComparison()
+        {        
+            var comparison = await matchPlayApi.ComparePlayers(ifpaIds: new List<int> { 16927, 2 });
+
+            Assert.That(comparison, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetRatingProfile_ShouldIfpaProfile()
+        {
+            var ifpaId = 16927;
+            var profile = await matchPlayApi.GetRatingProfile(ifpaId, Models.MatchPlay.RatingQueryType.Ifpa);
+
+            Assert.That(profile, Is.Not.Null);
+            Assert.That(profile.Rating.IfpaId, Is.EqualTo(ifpaId));
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetRatingProfile_ShouldUserProfile()
+        {
+            var ifpaId = 16927;
+            var profile = await matchPlayApi.GetRatingProfile(ifpaId, Models.MatchPlay.RatingQueryType.Users);
+
+            Assert.That(profile, Is.Not.Null);
+            Assert.That(profile.Rating.UserId, Is.EqualTo(ifpaId));
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetRatingPeriods_ShouldReturnPeriods()
+        {
+            var period = await matchPlayApi.GetRatingPeriods();
+
+            Assert.That(period, Is.Not.Null);
+            Assert.That(period, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetRatingPeriod_ShouldReturnPeriod()
+        {
+            var period = await matchPlayApi.GetRatingPeriod(new DateTime(2023,1,1));
+
+            Assert.That(period, Is.Not.Null);
+            Assert.That(period.Tournaments, Is.Not.Empty);
+        }
     }
 }
