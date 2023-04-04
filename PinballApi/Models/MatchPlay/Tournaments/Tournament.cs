@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace PinballApi.Models.MatchPlay
+namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class Tournament
     {
@@ -32,10 +33,16 @@ namespace PinballApi.Models.MatchPlay
         public int OrganizerId { get; set; }
 
         [JsonPropertyName("locationId")]
-        public object LocationId { get; set; }
+        public int? LocationId { get; set; }
+
+        [JsonPropertyName("location")]
+        public Location Location { get; set; }
 
         [JsonPropertyName("seriesId")]
-        public object SeriesId { get; set; }
+        public int? SeriesId { get; set; }
+
+        [JsonPropertyName("series")]
+        public Series Series { get; set; }
 
         [JsonPropertyName("description")]
         public object Description { get; set; }
@@ -55,6 +62,9 @@ namespace PinballApi.Models.MatchPlay
         [JsonPropertyName("scorekeeping")]
         public string Scorekeeping { get; set; }
 
+        [JsonProperty("scorekeepers")]
+        public List<Scorekeeper> Scorekeepers { get; set; }
+
         [JsonPropertyName("link")]
         public object Link { get; set; }
 
@@ -66,9 +76,6 @@ namespace PinballApi.Models.MatchPlay
 
         [JsonPropertyName("organizer")]
         public User Organizer { get; set; }
-
-        [JsonPropertyName("location")]
-        public Location Location { get; set; }
 
         [JsonPropertyName("seeding")]
         public string Seeding { get; set; }
@@ -99,5 +106,18 @@ namespace PinballApi.Models.MatchPlay
 
         [JsonPropertyName("scoring")]
         public string Scoring { get; set; }
+
+        [JsonProperty("arenas")]
+        public List<Arena> Arenas { get; set; }
+
+        [JsonProperty("players")]
+        public List<Player> Players { get; set; }
+
+        [JsonProperty("parentTournament")]
+        public ParentTournament ParentTournament { get; set; }
+
+        //TODO: include banks
+        //TODO: include rsvp configuration
+        //TODO: include playoffs
     }
 }

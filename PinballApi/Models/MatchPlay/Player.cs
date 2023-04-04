@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using PinballApi.Models.MatchPlay.Tournaments;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -24,5 +26,8 @@ namespace PinballApi.Models.MatchPlay
 
         [JsonPropertyName("claimedBy")]
         public int? ClaimedBy { get; set; }
+
+        [JsonProperty("tournamentPlayer")]
+        public TournamentPlayer TournamentPlayer { get; set; }
     }
 }

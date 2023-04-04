@@ -4,6 +4,7 @@ using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
 using PinballApi.Models.MatchPlay;
 using PinballApi.Models.MatchPlay.SeriesStats;
+using PinballApi.Models.MatchPlay.Tournaments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -327,7 +328,7 @@ namespace PinballApi
             if (ifpaIds != null && ifpaIds.Any())
             {
                 if (ifpaIds.Count > 24)
-                    throw new ArgumentException($"{nameof(ifpaIds)} cannot have more than 24 items", nameof(ifpaIds));                
+                    throw new ArgumentException($"{nameof(ifpaIds)} cannot have more than 24 items", nameof(ifpaIds));
             }
 
             if (userIds != null && userIds.Any())
@@ -383,10 +384,10 @@ namespace PinballApi
         {
             public GetCurrentRatingDataPayload(List<int> ifpaIds, List<int> userIds)
             {
-                if(userIds != null)
+                if (userIds != null)
                     this.userIds = string.Join(",", userIds);
 
-                if(ifpaIds != null)
+                if (ifpaIds != null)
                     this.ifpaIds = string.Join(",", ifpaIds);
             }
             public readonly string ifpaIds;
@@ -403,7 +404,7 @@ namespace PinballApi
                 .SetQueryParam("type", "tournaments")
                 .SetQueryParam("page", page);
 
-            if(ownerUserId.HasValue)
+            if (ownerUserId.HasValue)
             {
                 request = request.SetQueryParam("owner", ownerUserId);
             }
@@ -427,6 +428,28 @@ namespace PinballApi
 
             return JObject.Parse(json)
                 .SelectToken("data", false).ToObject<List<Tournament>>();
+        }
+
+        public async Task<Tournament> GetTournament(int tournamentId, bool includePlayers = false, bool includeArenas = false, bool includeBanks = false, bool includeScorekeepers = false, bool includeSeries = false,
+                                                    bool includeLocation = false, bool includeRsvpConfiguration = false, bool includeParent = false, bool includePlayoffs = false, bool includeShortcut = false)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .SetQueryParam("includePlayers", includePlayers)
+                            .SetQueryParam("includeArenas", includeArenas)
+                            .SetQueryParam("includeBanks", includeBanks)
+                            .SetQueryParam("includeScorekeepers", includeScorekeepers)
+                            .SetQueryParam("includeSeries", includeSeries)
+                            .SetQueryParam("includeLocation", includeLocation)
+                            .SetQueryParam("includeRsvpConfiguration", includeRsvpConfiguration)
+                            .SetQueryParam("includeParent", includeParent)
+                            .SetQueryParam("includePlayoffs", includePlayoffs)
+                            .SetQueryParam("includeShortcut", includeShortcut)
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                        .SelectToken("data", false).ToObject<Tournament>();
         }
         #endregion
     }

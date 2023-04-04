@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
+using PinballApi.Models.MatchPlay.Tournaments;
 
 namespace PinballApi.Models.MatchPlay
 {
