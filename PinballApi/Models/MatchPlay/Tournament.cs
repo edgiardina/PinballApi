@@ -14,7 +14,7 @@ namespace PinballApi.Models.MatchPlay
         public string Name { get; set; }
 
         [JsonPropertyName("status")]
-        public string Status { get; set; }
+        public TournamentStatus Status { get; set; }
 
         [JsonPropertyName("type")]
         public string Type { get; set; }

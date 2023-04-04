@@ -277,7 +277,7 @@ namespace PinballApi
 
         #endregion
 
-        #region Ratings
+        #region ratings
         public async Task<RatingComparison> ComparePlayers(List<int> playerIds = null, List<int> ifpaIds = null, List<int> userIds = null)
         {
             var request = BaseRequest
@@ -393,6 +393,41 @@ namespace PinballApi
             public readonly string userIds;
         }
 
+        #endregion
+
+        #region tournaments
+        public async Task<List<Tournament>> GetTournaments(int? ownerUserId = null, int? playedUserId = null, TournamentStatus? status = null, int? seriesId = null, int page = 1)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("tournaments")
+                .SetQueryParam("type", "tournaments")
+                .SetQueryParam("page", page);
+
+            if(ownerUserId.HasValue)
+            {
+                request = request.SetQueryParam("owner", ownerUserId);
+            }
+
+            if (playedUserId.HasValue)
+            {
+                request = request.SetQueryParam("played", playedUserId);
+            }
+
+            if (status.HasValue)
+            {
+                request = request.SetQueryParam("status", status.ToString().ToLower());
+            }
+
+            if (seriesId.HasValue)
+            {
+                request = request.SetQueryParam("series", seriesId);
+            }
+
+            var json = await request.GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Tournament>>();
+        }
         #endregion
     }
 }

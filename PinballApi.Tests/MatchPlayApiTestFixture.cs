@@ -225,5 +225,24 @@ namespace PinballApi.Tests
             Assert.That(history, Is.Not.Empty);
             Assert.True(history.Count == count);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetTournaments_ShouldReturnTournaments()
+        {
+            var tournaments = await matchPlayApi.GetTournaments();
+
+            Assert.That(tournaments, Is.Not.Null);
+            Assert.That(tournaments, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetCompletedTournaments_ShouldReturnTournaments()
+        {
+            var tournaments = await matchPlayApi.GetTournaments(status: Models.MatchPlay.TournamentStatus.Completed);
+
+            Assert.That(tournaments, Is.Not.Null);
+            Assert.That(tournaments, Is.Not.Empty);
+            Assert.True(tournaments.All(n => n.Status == Models.MatchPlay.TournamentStatus.Completed));
+        }
     }
 }
