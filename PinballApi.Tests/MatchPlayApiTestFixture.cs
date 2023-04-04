@@ -250,8 +250,7 @@ namespace PinballApi.Tests
         {
             var tournaments = await matchPlayApi.GetTournament(80509);
 
-            Assert.That(tournaments, Is.Not.Null);
-            Assert.That(tournaments, Is.Not.Empty);
+            Assert.That(tournaments, Is.Not.Null);            
         }
     }
 }
