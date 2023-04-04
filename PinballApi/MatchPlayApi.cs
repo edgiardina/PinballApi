@@ -7,6 +7,7 @@ using PinballApi.Models.MatchPlay.SeriesStats;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -89,7 +90,7 @@ namespace PinballApi
 
         public async Task<IfpaEstimate> GetIfpaEstimate(int? touramentId = null, int? seriesId = null, List<int> ifpaIds = null, List<string> names = null)
         {
-            if(touramentId.HasValue == false && seriesId.HasValue == false && ifpaIds == null && names == null)
+            if (touramentId.HasValue == false && seriesId.HasValue == false && ifpaIds == null && names == null)
             {
                 throw new ArgumentException("Provide EITHER a tournament id OR a series id OR a list of ifpaIds/names.");
             }
@@ -97,7 +98,7 @@ namespace PinballApi
             var request = BaseRequest
                 .AppendPathSegment("ifpa/wppr-estimator");
 
-            if(touramentId.HasValue)
+            if (touramentId.HasValue)
             {
                 request = request.SetQueryParam("tournamentId", touramentId.Value);
             }
@@ -183,7 +184,7 @@ namespace PinballApi
                             .AppendPathSegment(playerId)
                             .SetQueryParam("includeIfpa", "true")
                             .SetQueryParam("includeCounts", "true")
-                            .GetJsonAsync<UserProfile>();          
+                            .GetJsonAsync<UserProfile>();
         }
 
 
@@ -216,7 +217,7 @@ namespace PinballApi
         {
             var request = BaseRequest
                             .AppendPathSegment("series")
-                            .SetQueryParam("page", page);                       
+                            .SetQueryParam("page", page);
 
             if (seriesStatus.HasValue)
             {
@@ -251,7 +252,7 @@ namespace PinballApi
                 .SelectToken("data", false).ToObject<Series>();
         }
 
-        public async Task<List<Player>> GetSeriesAttendance(int seriesId, int count) 
+        public async Task<List<Player>> GetSeriesAttendance(int seriesId, int count)
         {
             var json = await BaseRequest
                            .AppendPathSegment("series")
@@ -282,7 +283,7 @@ namespace PinballApi
             var request = BaseRequest
                 .AppendPathSegment("ratings/compare");
 
-            if(playerIds != null && playerIds.Any())
+            if (playerIds != null && playerIds.Any())
             {
                 if (playerIds.Count > 24)
                     throw new ArgumentException($"{nameof(playerIds)} cannot have more than 24 items", nameof(playerIds));
@@ -300,13 +301,13 @@ namespace PinballApi
                     throw new ArgumentException($"{nameof(userIds)} cannot have more than 24 items", nameof(userIds));
             }
 
-            var response = await request.PostJsonAsync(
-                                new { 
-                                    ifpaIds = ifpaIds, 
-                                    playerIds = playerIds, 
-                                    userIds = userIds 
-                                });
-            return await response.GetJsonAsync<RatingComparison>();
+            return await request.PostJsonAsync(
+                                new
+                                {
+                                    ifpaIds = ifpaIds,
+                                    playerIds = playerIds,
+                                    userIds = userIds
+                                }).ReceiveJson<RatingComparison>();
         }
 
         public async Task<RatingProfile> GetRatingProfile(int id, RatingQueryType ratingQueryType)
@@ -316,6 +317,33 @@ namespace PinballApi
                 .AppendPathSegment(ratingQueryType.ToString().ToLower())
                 .AppendPathSegment(id)
                 .GetJsonAsync<RatingProfile>();
+        }
+
+
+        public async Task<List<Rating>> GetCurrentRatingData(List<int> ifpaIds = null, List<int> userIds = null, int page = 1)
+        {
+            GetCurrentRatingDataPayload data = new GetCurrentRatingDataPayload(ifpaIds, userIds);
+
+            if (ifpaIds != null && ifpaIds.Any())
+            {
+                if (ifpaIds.Count > 24)
+                    throw new ArgumentException($"{nameof(ifpaIds)} cannot have more than 24 items", nameof(ifpaIds));                
+            }
+
+            if (userIds != null && userIds.Any())
+            {
+                if (userIds.Count > 24)
+                    throw new ArgumentException($"{nameof(userIds)} cannot have more than 24 items", nameof(userIds));
+            }
+
+            var json = await BaseRequest
+                .AppendPathSegment("ratings")
+                .SetQueryParam("page", page)
+                .SendJsonAsync(HttpMethod.Get, data)
+                .ReceiveString();
+
+            return JObject.Parse(json)
+                    .SelectToken("data", false).ToObject<List<Rating>>();
         }
 
         public async Task<List<RatingPeriod>> GetRatingPeriods(int page = 1)
@@ -329,12 +357,40 @@ namespace PinballApi
                 .SelectToken("data", false).ToObject<List<RatingPeriod>>();
         }
 
+        public async Task<List<IfpaRatingHistory>> GetRatingHistoryByIfpaId(int ifpaId, int limit = 100, int page = 1)
+        {
+            var json = await BaseRequest
+               .AppendPathSegment("ifpa")
+               .AppendPathSegment(ifpaId)
+               .AppendPathSegment("rating-history")
+               .SetQueryParam("page", page)
+               .SetQueryParam("limit", limit)
+               .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<IfpaRatingHistory>>();
+        }
+
         public async Task<SingleRatingPeriod> GetRatingPeriod(DateTime date)
         {
             return await BaseRequest
                            .AppendPathSegment("rating-periods")
                            .AppendPathSegment(date.ToString("yyyy-MM-dd"))
                            .GetJsonAsync<SingleRatingPeriod>();
+        }
+
+        class GetCurrentRatingDataPayload
+        {
+            public GetCurrentRatingDataPayload(List<int> ifpaIds, List<int> userIds)
+            {
+                if(userIds != null)
+                    this.userIds = string.Join(",", userIds);
+
+                if(ifpaIds != null)
+                    this.ifpaIds = string.Join(",", ifpaIds);
+            }
+            public readonly string ifpaIds;
+            public readonly string userIds;
         }
 
         #endregion

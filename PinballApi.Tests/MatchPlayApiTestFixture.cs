@@ -202,5 +202,28 @@ namespace PinballApi.Tests
             Assert.That(period, Is.Not.Null);
             Assert.That(period.Tournaments, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetCurrentRatingData_ShouldReturnRatingData()
+        {
+            var ifpaId = 16927;
+            var period = await matchPlayApi.GetCurrentRatingData(ifpaIds: new List<int> { ifpaId, 2 });
+
+            Assert.That(period, Is.Not.Null);
+            Assert.That(period, Is.Not.Empty);
+            Assert.True(period.Any(n => n.IfpaId == ifpaId));
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetRatingHistoryByIfpaId_ShouldReturnRatingHistory()
+        {
+            var ifpaId = 16927;
+            var count = 20;
+            var history = await matchPlayApi.GetRatingHistoryByIfpaId(ifpaId, limit: count);
+
+            Assert.That(history, Is.Not.Null);
+            Assert.That(history, Is.Not.Empty);
+            Assert.True(history.Count == count);
+        }
     }
 }
