@@ -537,6 +537,37 @@ namespace PinballApi
                        .SelectToken("data", false).ToObject<Card>();
         }
 
+        //TODO: find out shape of Queue return
+        public async Task<Card> GetQueues(int tournamentId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("queues")
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                       .SelectToken("data", false).ToObject<Card>();
+        }
+
+        public async Task<MatchplayStats> GetMatchplayStats(int tournamentId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("stats/matchplay")
+                            .GetJsonAsync<MatchplayStats>();
+        }
+
+        public async Task<List<RoundStats>> GetRoundStats(int tournamentId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("stats/rounds")
+                            .GetJsonAsync<List<RoundStats>>();
+        }
+
         #endregion
     }
 }

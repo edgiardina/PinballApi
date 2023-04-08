@@ -306,5 +306,22 @@ namespace PinballApi.Tests
             Assert.That(card, Is.Not.Null);
             Assert.True(card.CardId == 9223);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetMatchplayStats_ShouldReturnMatchplayStats()
+        {
+            var stats = await matchPlayApi.GetMatchplayStats(100085);
+
+            Assert.That(stats, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetRoundStats_ShouldReturnRoundStats()
+        {
+            var stats = await matchPlayApi.GetRoundStats(100074);
+
+            Assert.That(stats, Is.Not.Null);
+            Assert.That(stats, Is.Not.Empty);
+        }
     }
 }
