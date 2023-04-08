@@ -482,7 +482,32 @@ namespace PinballApi
                             .AppendPathSegment(tournamentId)
                             .AppendPathSegment("single-player-games")
                             .GetStringAsync();
-            
+
+            return JObject.Parse(json)
+                       .SelectToken("data", false).ToObject<List<SinglePlayerGame>>();
+        }
+
+        public async Task<SinglePlayerGame> GetSinglePlayerGame(int tournamentId, int singlePlayerGameId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("single-player-games")
+                            .AppendPathSegment(singlePlayerGameId)
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                       .SelectToken("data", false).ToObject<SinglePlayerGame>();
+        }
+
+        public async Task<List<SinglePlayerGame>> GetTopFiveScoresByArena(int tournamentId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("single-player-games/top-scores")
+                            .GetStringAsync();
+
             return JObject.Parse(json)
                        .SelectToken("data", false).ToObject<List<SinglePlayerGame>>();
         }

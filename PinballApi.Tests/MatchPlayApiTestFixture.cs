@@ -270,5 +270,23 @@ namespace PinballApi.Tests
             Assert.That(singlePlayerGames, Is.Not.Null);
             Assert.That(singlePlayerGames, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetSinglePlayerGame_ShouldReturnSinglePlayerGame()
+        {
+            var singlePlayerGames = await matchPlayApi.GetSinglePlayerGame(97100, 1021912);
+
+            Assert.That(singlePlayerGames, Is.Not.Null);
+            Assert.True(singlePlayerGames.SinglePlayerGameId == 1021912);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetTop5Scores_ShouldReturnGetTop5Scores()
+        {
+            var singlePlayerGames = await matchPlayApi.GetTopFiveScoresByArena(97100);
+
+            Assert.That(singlePlayerGames, Is.Not.Null);
+            Assert.That(singlePlayerGames, Is.Not.Empty);
+        }
     }
 }
