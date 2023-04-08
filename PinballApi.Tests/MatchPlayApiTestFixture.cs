@@ -261,5 +261,14 @@ namespace PinballApi.Tests
 
             Assert.That(flipFrenzy, Is.Not.Null);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetSinglePlayerGames_ShouldReturnSinglePlayerGames()
+        {
+            var singlePlayerGames = await matchPlayApi.GetSinglePlayerGames(97100);
+
+            Assert.That(singlePlayerGames, Is.Not.Null);
+            Assert.That(singlePlayerGames, Is.Not.Empty);
+        }
     }
 }

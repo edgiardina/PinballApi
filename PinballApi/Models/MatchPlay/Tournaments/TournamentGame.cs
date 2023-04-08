@@ -20,7 +20,7 @@ namespace PinballApi.Models.MatchPlay.Tournaments
         public List<int?> ResultPositions { get; set; }
 
         [JsonProperty("resultPoints")]
-        public List<int?> ResultPoints { get; set; }
+        public List<float?> ResultPoints { get; set; }
 
         [JsonProperty("resultScores")]
         public List<long?> ResultScores { get; set; }

@@ -466,6 +466,27 @@ namespace PinballApi
                             .GetJsonAsync<FlipFrenzy>();
         }
 
+        public async Task<MaxMatchplay> GetMaxMatchplay(int tournamentId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("max-matchplay")
+                            .GetJsonAsync<MaxMatchplay>();
+        }
+
+        public async Task<List<SinglePlayerGame>> GetSinglePlayerGames(int tournamentId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("single-player-games")
+                            .GetStringAsync();
+            
+            return JObject.Parse(json)
+                       .SelectToken("data", false).ToObject<List<SinglePlayerGame>>();
+        }
+
         #endregion
     }
 }
