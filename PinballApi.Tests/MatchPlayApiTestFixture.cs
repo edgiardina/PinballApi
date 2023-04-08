@@ -288,5 +288,23 @@ namespace PinballApi.Tests
             Assert.That(singlePlayerGames, Is.Not.Null);
             Assert.That(singlePlayerGames, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetCards_ShouldReturnCards()
+        {
+            var cards = await matchPlayApi.GetCards(95537);
+
+            Assert.That(cards, Is.Not.Null);
+            Assert.That(cards, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetCard_ShouldReturnCard()
+        {
+            var card = await matchPlayApi.GetCard(95537, 9223);
+
+            Assert.That(card, Is.Not.Null);
+            Assert.True(card.CardId == 9223);
+        }
     }
 }

@@ -512,6 +512,31 @@ namespace PinballApi
                        .SelectToken("data", false).ToObject<List<SinglePlayerGame>>();
         }
 
+        public async Task<List<Card>> GetCards(int tournamentId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("cards")
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                       .SelectToken("data", false).ToObject<List<Card>>();
+        }
+
+        public async Task<Card> GetCard(int tournamentId, int cardId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("cards")
+                            .AppendPathSegment(cardId)
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                       .SelectToken("data", false).ToObject<Card>();
+        }
+
         #endregion
     }
 }
