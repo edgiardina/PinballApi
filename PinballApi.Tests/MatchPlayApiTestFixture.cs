@@ -252,5 +252,14 @@ namespace PinballApi.Tests
 
             Assert.That(tournaments, Is.Not.Null);            
         }
+
+
+        [Test]
+        public async Task MatchPlayApi_GetFlipFrenzy_ShouldReturnFlipFrenzy()
+        {
+            var flipFrenzy = await matchPlayApi.GetFlipFrenzy(99748);
+
+            Assert.That(flipFrenzy, Is.Not.Null);
+        }
     }
 }

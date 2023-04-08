@@ -451,6 +451,21 @@ namespace PinballApi
             return JObject.Parse(json)
                         .SelectToken("data", false).ToObject<Tournament>();
         }
+
+        public async Task<Tournament> GetAmazingRace(int tournamentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<FlipFrenzy> GetFlipFrenzy(int tournamentId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("frenzy")
+                            .GetJsonAsync<FlipFrenzy>();
+        }
+
         #endregion
     }
 }
