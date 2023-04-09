@@ -599,6 +599,31 @@ namespace PinballApi
                             .GetJsonAsync<List<ArenaStats>>();
         }
 
+        public async Task<List<MatchplayGames>> GetMatchplayGames(int tournamentId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("games")
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<MatchplayGames>>();
+        }
+
+        public async Task<MatchplayGames> GetMatchplayGame(int tournamentId, int gameId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("games")
+                            .AppendPathSegment(gameId)
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<MatchplayGames>();
+        }
+
         public async Task<List<BestGameStats>> GetBestGameStats(int tournamentId)
         {
             var json =  await BaseRequest
@@ -632,6 +657,27 @@ namespace PinballApi
                             .GetJsonAsync<BestGame>();
         }
 
+        public async Task<List<Round>> GetRounds(int tournamentId)
+        {
+            var json = await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("rounds")
+                            .GetStringAsync();
+
+
+            return JObject.Parse(json)
+                .SelectToken("data", false).ToObject<List<Round>>();
+        }
+
+        public async Task<List<Standing>> GetStandings(int tournamentId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("standings")
+                            .GetJsonAsync<List<Standing>>();
+        }
 
         #endregion
     }

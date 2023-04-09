@@ -325,6 +325,23 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task MatchPlayApi_GetMatchplayGames_ShouldReturnMatchplayGames()
+        {
+            var stats = await matchPlayApi.GetMatchplayGames(100085);
+
+            Assert.That(stats, Is.Not.Null);
+            Assert.That(stats, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetMatchplayGame_ShouldReturnMatchplayGame()
+        {
+            var stats = await matchPlayApi.GetMatchplayGame(100085, 2978054);
+
+            Assert.That(stats, Is.Not.Null);
+        }
+
+        [Test]
         public async Task MatchPlayApi_GetBestGameStats_ShouldReturnBestGameStats()
         {
             var stats = await matchPlayApi.GetBestGameStats(100138);
@@ -348,6 +365,24 @@ namespace PinballApi.Tests
             var stats = await matchPlayApi.GetBestGameDetails(100138, 84256);
 
             Assert.That(stats, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetRound_ShouldReturnRound()
+        {
+            var stats = await matchPlayApi.GetRounds(100074);
+
+            Assert.That(stats, Is.Not.Null);
+            Assert.That(stats, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetStandings_ShouldReturnStandings()
+        {
+            var stats = await matchPlayApi.GetStandings(50588);
+
+            Assert.That(stats, Is.Not.Null);
+            Assert.That(stats, Is.Not.Empty);
         }
 
     }
