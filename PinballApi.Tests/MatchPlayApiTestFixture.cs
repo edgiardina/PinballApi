@@ -318,10 +318,37 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetRoundStats_ShouldReturnRoundStats()
         {
-            var stats = await matchPlayApi.GetRoundStats(100074);
+            var stats = await matchPlayApi.GetMatchplayRoundStats(100074);
 
             Assert.That(stats, Is.Not.Null);
             Assert.That(stats, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task MatchPlayApi_GetBestGameStats_ShouldReturnBestGameStats()
+        {
+            var stats = await matchPlayApi.GetBestGameStats(100138);
+
+            Assert.That(stats, Is.Not.Null);
+            Assert.That(stats, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetBestGameSummary_ShouldReturnBestGameSummary()
+        {
+            var stats = await matchPlayApi.GetBestGameSummary(100138);
+
+            Assert.That(stats, Is.Not.Null);
+            Assert.That(stats, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task MatchPlayApi_GetBestGameDetails_ShouldReturnBestGameDetails()
+        {
+            var stats = await matchPlayApi.GetBestGameDetails(100138, 84256);
+
+            Assert.That(stats, Is.Not.Null);
+        }
+
     }
 }

@@ -559,7 +559,7 @@ namespace PinballApi
                             .GetJsonAsync<MatchplayStats>();
         }
 
-        public async Task<List<RoundStats>> GetRoundStats(int tournamentId)
+        public async Task<List<RoundStats>> GetMatchplayRoundStats(int tournamentId)
         {
             return await BaseRequest
                             .AppendPathSegment("tournaments")
@@ -567,6 +567,71 @@ namespace PinballApi
                             .AppendPathSegment("stats/rounds")
                             .GetJsonAsync<List<RoundStats>>();
         }
+
+        public async Task<List<ArenaStats>> GetMatchplayArenaStats(int tournamentId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("stats/arenas")
+                            .GetJsonAsync<List<ArenaStats>>();
+        }
+
+        public async Task<List<ArenaStats>> GetMatchplayPlayerStats(int tournamentId)
+        {
+            throw new NotImplementedException();
+
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("stats/players")
+                            .GetJsonAsync<List<ArenaStats>>();
+        }
+
+        public async Task<List<ArenaStats>> GetMatchplayMatchesStats(int tournamentId)
+        {
+            throw new NotImplementedException();
+
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("stats/matches")
+                            .GetJsonAsync<List<ArenaStats>>();
+        }
+
+        public async Task<List<BestGameStats>> GetBestGameStats(int tournamentId)
+        {
+            var json =  await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("stats/bestgame")
+                            .GetStringAsync();
+
+            return JObject.Parse(json)
+                .SelectToken("arenaData", false).ToObject<List<BestGameStats>>();
+        }
+
+
+        public async Task<List<BestGameSummary>> GetBestGameSummary(int tournamentId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("arenas/bgsummary")
+                            .GetJsonAsync<List<BestGameSummary>>();
+        }
+
+        public async Task<BestGame> GetBestGameDetails(int tournamentId, int arenaId)
+        {
+            return await BaseRequest
+                            .AppendPathSegment("tournaments")
+                            .AppendPathSegment(tournamentId)
+                            .AppendPathSegment("arenas")
+                            .AppendPathSegment(arenaId)
+                            .AppendPathSegment("bgdetails")
+                            .GetJsonAsync<BestGame>();
+        }
+
 
         #endregion
     }
