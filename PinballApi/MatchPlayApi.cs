@@ -540,6 +540,8 @@ namespace PinballApi
         //TODO: find out shape of Queue return
         public async Task<Card> GetQueues(int tournamentId)
         {
+            throw new NotImplementedException();
+
             var json = await BaseRequest
                             .AppendPathSegment("tournaments")
                             .AppendPathSegment(tournamentId)
@@ -577,20 +579,18 @@ namespace PinballApi
                             .GetJsonAsync<List<ArenaStats>>();
         }
 
-        public async Task<List<ArenaStats>> GetMatchplayPlayerStats(int tournamentId)
+        public async Task<PlayerStats> GetMatchplayPlayerStats(int tournamentId)
         {
-            throw new NotImplementedException();
-
             return await BaseRequest
                             .AppendPathSegment("tournaments")
                             .AppendPathSegment(tournamentId)
                             .AppendPathSegment("stats/players")
-                            .GetJsonAsync<List<ArenaStats>>();
+                            .GetJsonAsync<PlayerStats>();
         }
 
         public async Task<List<ArenaStats>> GetMatchplayMatchesStats(int tournamentId)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("This tournament does not have a definite duration. Give the tournament a specific duration.");
 
             return await BaseRequest
                             .AppendPathSegment("tournaments")

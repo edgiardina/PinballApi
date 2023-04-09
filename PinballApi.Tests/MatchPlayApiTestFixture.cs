@@ -334,6 +334,14 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task MatchPlayApi_GetMatchplayPlayerStats_ShouldReturnMatchplayPlayerStats()
+        {
+            var stats = await matchPlayApi.GetMatchplayPlayerStats(100085);
+
+            Assert.That(stats, Is.Not.Null);
+        }
+
+        [Test]
         public async Task MatchPlayApi_GetMatchplayGame_ShouldReturnMatchplayGame()
         {
             var stats = await matchPlayApi.GetMatchplayGame(100085, 2978054);
