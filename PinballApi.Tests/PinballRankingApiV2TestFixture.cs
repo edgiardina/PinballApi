@@ -180,71 +180,6 @@ namespace PinballApi.Tests
             Assert.That(series.SeriesCode, Is.EqualTo("NACS"));
         }
 
-
-        [Test, Ignore("Right now, NACS api endpoint is in flux for Womens CS and Australia CS")]
-        public async Task PinballRankingApiV2_NacsStandings_ShouldReturnStandings()
-        {
-            int year = 2019;
-
-            var player = await rankingApi.GetNacsStandings(year);
-
-            Assert.That(player.Count, Is.Positive);
-
-            //OH SHIT IF THIS FAILS ED SUCKS AT PINBALL
-            Assert.That(player.Single(n => n.StateProvinceName == "Rhode Island").CurrentLeader.PlayerId, Is.EqualTo(EdGiardinaPlayerId));
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_NacsStateProvinceStandings_ShouldReturnStandings()
-        {
-            string stateAbbrv = "RI";
-            int year = 2019;
-
-            var player = await rankingApi.GetNacsStateProvinceStandings(stateAbbrv, year);
-
-            Assert.That(player.PlayerStandings.Count, Is.Positive);
-            Assert.That(player.PlayerStandings.All(n => n.PlayerId > 0), Is.True);
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_NacsPastWinners_ShouldReturnWinners()
-        {
-            string stateAbbrv = "RI";
-
-            var winners = await rankingApi.GetNacsPastWinners();
-
-            Assert.That(winners.Count, Is.Positive);
-            Assert.That(winners.Single(n => n.StateProvince == "Rhode Island").Winners.Any(n => n.PlayerId == EdGiardinaPlayerId), Is.True);
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_NacsTournamentCard_ShouldReturnCard()
-        {
-            string stateAbbrv = "RI";
-            int year = 2019;
-
-            var card = await rankingApi.GetNacsTournamentCard(year, EdGiardinaPlayerId, stateAbbrv);
-
-            Assert.That(card.StateProvince, Is.EqualTo(stateAbbrv));
-            Assert.That(card.Year, Is.EqualTo(year));
-        }
-
-        [Test]
-        public async Task PinballRankingApiV2_NacsStatistics_ShouldReturnStatistics()
-        {
-            int year = 2019;
-
-            var player = await rankingApi.GetNacsStatistics(year);
-
-            Assert.That(player.Statistics.StateProvinceCount, Is.Positive);
-            Assert.That(player.Statistics.CanadaPlayerCount, Is.Positive);
-            Assert.That(player.Statistics.NationalsPrizeValue, Is.Positive);
-            Assert.That(player.Statistics.TotalPlayerCount, Is.Positive);
-            Assert.That(player.Statistics.USAPlayerCount, Is.Positive);
-            Assert.That(player.Statistics.CanadaPlayerCount, Is.Positive);
-            Assert.That(player.Year, Is.EqualTo(year));
-        }
-
         [Test]
         public async Task PinballRankingApiV2_GetRankingCountries_ShouldReturnCountries()
         {
@@ -387,13 +322,26 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_GetTournament_ShouldReturnTournament()
         {
-            var tournamentId = 25586;
+            var tournamentId = 69374;
 
             var tournament = await rankingApi.GetTournament(tournamentId);
 
             Assert.That(tournament.TournamentId, Is.EqualTo(tournamentId));
             Assert.That(tournament.EventWeight, Is.Positive);
         }
+
+        [Test]
+        public async Task PinballRankingApiV2_GetTournament_ShouldReturnTournament2()
+        {
+            var tournamentId = 60498;
+
+            var tournament = await rankingApi.GetTournament(tournamentId);
+
+            Assert.That(tournament.TournamentId, Is.EqualTo(tournamentId));
+            Assert.That(tournament.EventWeight, Is.Positive);
+        }
+
+
 
         [Test]
         public async Task PinballRankingApiV2_GetRelatedTournaments_ShouldReturnRelatedTournament()

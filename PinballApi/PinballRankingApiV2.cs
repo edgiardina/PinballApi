@@ -278,62 +278,7 @@ namespace PinballApi
             return await request.GetJsonAsync<SeriesWinners>();
         }
 
-        #endregion
-
-        #region NACS
-        [Obsolete("Use Series functions instead of Nacs functions")]
-        public async Task<List<NacsStandings>> GetNacsStandings(int year)
-        {
-            var json = await BaseRequest
-                .AppendPathSegment("nacs/standings")
-                .SetQueryParam("year", year)
-                .GetStringAsync();
-
-            return JObject.Parse(json)
-                .SelectToken("standings", false).ToObject<List<NacsStandings>>();
-        }
-        [Obsolete("Use Series functions instead of Nacs functions")]
-        public async Task<NacsStateProvinceStandings> GetNacsStateProvinceStandings(string stateProvinceAbbreviation, int year)
-        {
-            return await BaseRequest
-                .AppendPathSegment("nacs/standings")            
-                .AppendPathSegment(stateProvinceAbbreviation)
-                .SetQueryParam("year", year)
-                .GetJsonAsync<NacsStateProvinceStandings>();
-        }
-        [Obsolete("Use Series functions instead of Nacs functions")]
-        public async Task<NacsStatisticsByYear> GetNacsStatistics(int year)
-        {
-            return await BaseRequest
-                    .AppendPathSegment("nacs/stats")
-                    .SetQueryParam("year", year)
-                    .GetJsonAsync<NacsStatisticsByYear>();
-        }
-        [Obsolete("Use Series functions instead of Nacs functions")]
-        public async Task<List<NacsPastWinners>> GetNacsPastWinners()
-        {
-            var json = await BaseRequest
-                .AppendPathSegment("nacs/winners")
-                .GetStringAsync();
-
-            return JObject.Parse(json)
-                .SelectToken("results", false).ToObject<List<NacsPastWinners>>();
-        }
-        [Obsolete("Use Series functions instead of Nacs functions")]
-        public async Task<NacsTournamentCard> GetNacsTournamentCard(int year, int playerId, string stateProvinceAbbreviation)
-        {
-            return await BaseRequest
-                .AppendPathSegment("nacs/tournament_card")
-                .SetQueryParams(new
-                {
-                    year,
-                    player_id = playerId,
-                    location_code = stateProvinceAbbreviation
-                })
-                .GetJsonAsync<NacsTournamentCard>();
-        }
-
-        #endregion       
+        #endregion   
 
         #region Rankings
 

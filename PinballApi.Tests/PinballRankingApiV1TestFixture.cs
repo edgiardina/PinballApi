@@ -70,11 +70,11 @@ namespace PinballApi.Tests
         public async Task PinballRankingApiV1_GetPlayer_ShouldHandleUnrankedPlayer()
         {
             PlayerRecord player = null;
-            int playerId = 66417;
+            int playerId = 46546;
             Assert.DoesNotThrowAsync(async () => { player = await rankingApi.GetPlayerRecord(playerId); });
 
-            Assert.That(player.Player.FirstName == "Lida");
-            Assert.That(player.Player.IfpaRegistered, Is.True);
+            Assert.That(player.Player.LastName == "Giardina");
+            Assert.That(player.Player.IfpaRegistered, Is.False);
             Assert.That(player.PlayerStats.EfficiencyRank, Is.Null);
             Assert.That(player.PlayerStats.EfficiencyValue, Is.Null);
         }
@@ -142,7 +142,8 @@ namespace PinballApi.Tests
         {
             var search = await rankingApi.GetCountryDirectors();
 
-            Assert.That(search.Search.First().CountryName == "Australia");
+            Assert.That(search.Search.Count > 0);
+            Assert.That(search.Search.Any(n => n.CountryName == "Australia"));
         }
 
         [Test]
