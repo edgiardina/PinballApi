@@ -17,7 +17,7 @@ namespace PinballApi
     public class MatchPlayApi
     {
         protected readonly string ApiToken;
-        protected IFlurlRequest BaseRequest => $"https://next.matchplay.events/api/"
+        protected IFlurlRequest BaseRequest => $"https://app.matchplay.events/api/"
                                                               .WithOAuthBearerToken(ApiToken)
                                                               .WithHeader("Content-Type", "application/json")
                                                               .WithHeader("Accept", "application/json");
