@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using PinballApi.Models.WPPR.v2.Players;
 using System;
 
@@ -6,28 +6,28 @@ namespace PinballApi.Models.WPPR.v2.Nacs
 {
     public class NacsStandings
     {
-        [JsonProperty("stateprov")]
+        [JsonPropertyName("stateprov")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("stateprov_name")]
+        [JsonPropertyName("stateprov_name")]
         public string StateProvinceName { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("prize_value")]
+        [JsonPropertyName("prize_value")]
         public double PrizeValue { get; set; }
 
-        [JsonProperty("total_player_count")]
+        [JsonPropertyName("total_player_count")]
         public int TotalPlayerCount { get; set; }
 
-        [JsonProperty("unique_player_count")]
+        [JsonPropertyName("unique_player_count")]
         public int UniquePlayerCount { get; set; }
 
-        [JsonProperty("tournament_count")]
+        [JsonPropertyName("tournament_count")]
         public int TournamentCount { get; set; }
 
-        [JsonProperty("current_leader")]
+        [JsonPropertyName("current_leader")]
         public Player CurrentLeader { get; set; }
     }
 }

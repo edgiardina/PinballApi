@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,13 +7,13 @@ namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class TournamentResults
     {
-        [JsonProperty("tournament_id")]
+        [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("ranking_system")]
+        [JsonPropertyName("ranking_system")]
         public string RankingSystem { get; set; }
 
-        [JsonProperty("results")]
+        [JsonPropertyName("results")]
         public List<TournamentResult> Results { get; set; }
     }
 }

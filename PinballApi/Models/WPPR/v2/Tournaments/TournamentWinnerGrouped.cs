@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 
@@ -6,19 +6,19 @@ namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class TournamentWinnerGrouped
     {        
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("profile_photo", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("profile_photo")]
         public Uri ProfilePhoto { get; set; }
 
-        [JsonProperty("events")]
+        [JsonPropertyName("events")]
         public List<TournamentEvent> Events { get; set; }
     }
 }

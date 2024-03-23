@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,16 +7,16 @@ namespace PinballApi.Models.WPPR.v2.Series
 {
     public class SeriesOverallResults
     {
-        [JsonProperty("series_code")]
+        [JsonPropertyName("series_code")]
         public string SeriesCode { get; set; }
 
-        [JsonProperty("year")]
+        [JsonPropertyName("year")]
         public int Year { get; set; }
 
-        [JsonProperty("championship_prize_fund")]
+        [JsonPropertyName("championship_prize_fund")]
         public double ChampionshipPrizeFund { get; set; }
 
-        [JsonProperty("overall_results")]
+        [JsonPropertyName("overall_results")]
         public List<SeriesOverallResult> OverallResults { get; set; }
     }
 }

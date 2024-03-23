@@ -1,18 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using PinballApi.Models.WPPR.v2.Calendar;
 using System;
+using System.Text.Json;
 
 namespace PinballApi.Converters
 {
-
-    internal class DistanceTypeConverter : JsonConverter
+    internal class DistanceTypeConverter : JsonConverter<DistanceType>
     {
-        public override bool CanConvert(Type t) => t == typeof(DistanceType) || t == typeof(DistanceType?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        public override DistanceType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
+            var value = reader.GetString();
             if (value == "m")
             {
                 return DistanceType.Miles;
@@ -25,29 +22,20 @@ namespace PinballApi.Converters
             throw new Exception("Cannot unmarshal type DistanceType");
         }
 
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, DistanceType value, JsonSerializerOptions options)
         {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (DistanceType)untypedValue;
             if (value == DistanceType.Miles)
             {
-                serializer.Serialize(writer, "m");
+                writer.WriteStringValue("m");
                 return;
             }
 
             if (value == DistanceType.Kilometers)
             {
-                serializer.Serialize(writer, "k");
+                writer.WriteStringValue("k");
                 return;
             }
             throw new Exception("Cannot marshal type DistanceType");
         }
-
-        public static readonly DistanceTypeConverter Singleton = new DistanceTypeConverter();
     }
-
 }

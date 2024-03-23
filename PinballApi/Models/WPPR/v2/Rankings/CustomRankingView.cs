@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v2.Rankings
 {
     public class CustomRankingView
     {
-        [JsonProperty("view_id")]
+        [JsonPropertyName("view_id")]
         public int ViewId { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
     }
 }

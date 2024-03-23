@@ -1,7 +1,7 @@
 ﻿using Flurl;
 using Flurl.Http;
-using Microsoft.VisualBasic;
-using Newtonsoft.Json.Linq;
+using Flurl.Http.Configuration;
+using PinballApi.Converters;
 using PinballApi.Models.MatchPlay;
 using PinballApi.Models.MatchPlay.SeriesStats;
 using PinballApi.Models.MatchPlay.Tournaments;
@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PinballApi
@@ -17,10 +19,21 @@ namespace PinballApi
     public class MatchPlayApi
     {
         protected readonly string ApiToken;
+
+        protected readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            NumberHandling = JsonNumberHandling.AllowReadingFromString
+        };
+
         protected IFlurlRequest BaseRequest => $"https://app.matchplay.events/api/"
-                                                              .WithOAuthBearerToken(ApiToken)
-                                                              .WithHeader("Content-Type", "application/json")
-                                                              .WithHeader("Accept", "application/json");
+                                                    .WithOAuthBearerToken(ApiToken)
+                                                    .WithHeader("Content-Type", "application/json")
+                                                    .WithHeader("Accept", "application/json")
+                                                    .WithSettings(settings =>
+                                                    {
+                                                        settings.JsonSerializer = new DefaultJsonSerializer(JsonSerializerOptions);
+                                                    });
 
         public MatchPlayApi(string apiToken)
         {
@@ -48,8 +61,7 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Arena>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Arena>>(JsonSerializerOptions);
         }
 
         public async Task<List<Game>> GetGames(List<int> tournamentIds, int? playerId = null, int? arenaId = null, int? round = null, int? bank = null, GameStatus? gameStatus = null)
@@ -85,8 +97,7 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Game>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Game>>(JsonSerializerOptions);
         }
 
         public async Task<IfpaEstimate> GetIfpaEstimate(int? touramentId = null, int? seriesId = null, List<int> ifpaIds = null, List<string> names = null)
@@ -141,8 +152,7 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Location>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Location>>(JsonSerializerOptions);
         }
 
         public async Task<List<Player>> GetPlayers(Status? status = null, List<int> players = null, int page = 1)
@@ -163,8 +173,7 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Player>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Player>>(JsonSerializerOptions);
         }
 
         public async Task<User> GetMyProfile()
@@ -174,8 +183,7 @@ namespace PinballApi
                             .AppendPathSegment("profile")
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-               .SelectToken("data", false).ToObject<User>();
+            return JsonNode.Parse(json)["data"].Deserialize<User>(JsonSerializerOptions);
         }
 
         public async Task<UserProfile> GetProfile(int playerId)
@@ -197,8 +205,7 @@ namespace PinballApi
                 .SetQueryParam("type", "users")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<User>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<User>>(JsonSerializerOptions);
         }
 
         public async Task<List<Tournament>> SearchForTournaments(string searchText)
@@ -209,8 +216,7 @@ namespace PinballApi
                 .SetQueryParam("type", "tournaments")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Tournament>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Tournament>>(JsonSerializerOptions);
         }
 
         #region series
@@ -237,8 +243,7 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Series>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Series>>(JsonSerializerOptions);
         }
 
         public async Task<Series> GetSeries(int seriesId)
@@ -249,8 +254,7 @@ namespace PinballApi
                            .SetQueryParam("includeDetails", true)
                            .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<Series>();
+            return JsonNode.Parse(json)["data"].Deserialize<Series>(JsonSerializerOptions);
         }
 
         public async Task<List<Player>> GetSeriesAttendance(int seriesId, int count)
@@ -263,8 +267,7 @@ namespace PinballApi
                            .SetQueryParam("count", count)
                            .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Player>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Player>>(JsonSerializerOptions);
         }
 
         public async Task<SeriesStats> GetSeriesStats(int seriesId)
@@ -343,8 +346,7 @@ namespace PinballApi
                 .SendJsonAsync(HttpMethod.Get, data)
                 .ReceiveString();
 
-            return JObject.Parse(json)
-                    .SelectToken("data", false).ToObject<List<Rating>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Rating>>(JsonSerializerOptions);
         }
 
         public async Task<List<RatingPeriod>> GetRatingPeriods(int page = 1)
@@ -354,8 +356,7 @@ namespace PinballApi
                .SetQueryParam("page", page)
                .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<RatingPeriod>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<RatingPeriod>>(JsonSerializerOptions);
         }
 
         public async Task<List<IfpaRatingHistory>> GetRatingHistoryByIfpaId(int ifpaId, int limit = 100, int page = 1)
@@ -368,8 +369,7 @@ namespace PinballApi
                .SetQueryParam("limit", limit)
                .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<IfpaRatingHistory>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<IfpaRatingHistory>>(JsonSerializerOptions);
         }
 
         public async Task<SingleRatingPeriod> GetRatingPeriod(DateTime date)
@@ -426,8 +426,7 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Tournament>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Tournament>>(JsonSerializerOptions);
         }
 
         public async Task<Tournament> GetTournament(int tournamentId, bool includePlayers = false, bool includeArenas = false, bool includeBanks = false, bool includeScorekeepers = false, bool includeSeries = false,
@@ -448,8 +447,7 @@ namespace PinballApi
                             .SetQueryParam("includeShortcut", includeShortcut)
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                        .SelectToken("data", false).ToObject<Tournament>();
+            return JsonNode.Parse(json)["data"].Deserialize<Tournament>(JsonSerializerOptions);
         }
 
         public async Task<Tournament> GetAmazingRace(int tournamentId)
@@ -483,8 +481,7 @@ namespace PinballApi
                             .AppendPathSegment("single-player-games")
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                       .SelectToken("data", false).ToObject<List<SinglePlayerGame>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<SinglePlayerGame>>(JsonSerializerOptions);
         }
 
         public async Task<SinglePlayerGame> GetSinglePlayerGame(int tournamentId, int singlePlayerGameId)
@@ -496,8 +493,7 @@ namespace PinballApi
                             .AppendPathSegment(singlePlayerGameId)
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                       .SelectToken("data", false).ToObject<SinglePlayerGame>();
+            return JsonNode.Parse(json)["data"].Deserialize<SinglePlayerGame>(JsonSerializerOptions);
         }
 
         public async Task<List<SinglePlayerGame>> GetTopFiveScoresByArena(int tournamentId)
@@ -508,8 +504,7 @@ namespace PinballApi
                             .AppendPathSegment("single-player-games/top-scores")
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                       .SelectToken("data", false).ToObject<List<SinglePlayerGame>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<SinglePlayerGame>>(JsonSerializerOptions);
         }
 
         public async Task<List<Card>> GetCards(int tournamentId)
@@ -520,8 +515,7 @@ namespace PinballApi
                             .AppendPathSegment("cards")
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                       .SelectToken("data", false).ToObject<List<Card>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Card>>(JsonSerializerOptions);
         }
 
         public async Task<Card> GetCard(int tournamentId, int cardId)
@@ -533,8 +527,7 @@ namespace PinballApi
                             .AppendPathSegment(cardId)
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                       .SelectToken("data", false).ToObject<Card>();
+            return JsonNode.Parse(json)["data"].Deserialize<Card>(JsonSerializerOptions);
         }
 
         //TODO: find out shape of Queue return
@@ -548,8 +541,7 @@ namespace PinballApi
                             .AppendPathSegment("queues")
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                       .SelectToken("data", false).ToObject<Card>();
+            return JsonNode.Parse(json)["data"].Deserialize<Card>();
         }
 
         public async Task<MatchplayStats> GetMatchplayStats(int tournamentId)
@@ -607,8 +599,7 @@ namespace PinballApi
                             .AppendPathSegment("games")
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<MatchplayGames>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<MatchplayGames>>(JsonSerializerOptions);
         }
 
         public async Task<MatchplayGames> GetMatchplayGame(int tournamentId, int gameId)
@@ -620,20 +611,16 @@ namespace PinballApi
                             .AppendPathSegment(gameId)
                             .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<MatchplayGames>();
+            return JsonNode.Parse(json)["data"].Deserialize<MatchplayGames>(JsonSerializerOptions);
         }
 
-        public async Task<List<BestGameStats>> GetBestGameStats(int tournamentId)
+        public async Task<BestGameStats> GetBestGameStats(int tournamentId)
         {
-            var json =  await BaseRequest
+            return await BaseRequest
                             .AppendPathSegment("tournaments")
                             .AppendPathSegment(tournamentId)
                             .AppendPathSegment("stats/bestgame")
-                            .GetStringAsync();
-
-            return JObject.Parse(json)
-                .SelectToken("arenaData", false).ToObject<List<BestGameStats>>();
+                            .GetJsonAsync<BestGameStats>();
         }
 
 
@@ -666,8 +653,7 @@ namespace PinballApi
                             .GetStringAsync();
 
 
-            return JObject.Parse(json)
-                .SelectToken("data", false).ToObject<List<Round>>();
+            return JsonNode.Parse(json)["data"].Deserialize<List<Round>>(JsonSerializerOptions);
         }
 
         public async Task<List<Standing>> GetStandings(int tournamentId)

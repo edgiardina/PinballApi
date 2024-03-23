@@ -1,57 +1,61 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v1.Players;
 using System;
 using System.Collections.Generic;
+using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Players
 {
     public class Player
     {
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("stateprov")]
+        [JsonPropertyName("stateprov")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("initials")]
+        [JsonPropertyName("initials")]
         public string Initials { get; set; }
 
-        [JsonProperty("age")]
+        [JsonPropertyName("age")]
+        [JsonConverter(typeof(EmptyStringNullableIntDescriptiveConverter))]
         public int? Age { get; set; }
 
-        [JsonProperty("gender")]
-        public Gender? Gender { get; set; }
+        [JsonPropertyName("womens_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
+        public bool WomensFlag { get; set; }
 
-        [JsonProperty("excluded_flag")]
+        [JsonPropertyName("excluded_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool ExcludedFlag { get; set; }
 
-        [JsonProperty("ifpa_registered")]
+        [JsonPropertyName("ifpa_registered")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool IfpaRegistered { get; set; }
 
-
-        [JsonProperty("profile_photo")]
+        [JsonPropertyName("profile_photo")]
         public Uri ProfilePhoto { get; set; }
 
-        [JsonProperty("player_stats")]
+        [JsonPropertyName("player_stats")]
         public PlayerStats PlayerStats { get; set; }
 
-        [JsonProperty("series")]
+        [JsonPropertyName("series")]
         public List<ChampionshipSeries> ChampionshipSeries { get; set; }
     }
 }

@@ -42,21 +42,21 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithGender()
+        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithWomensFlag()
         {
-            var playerId = 37763;
+            var playerId = 61534;
             var player = await rankingApi.GetPlayer(playerId);
 
-            Assert.That(player.Gender, Is.Null);
+            Assert.That(player.WomensFlag, Is.True);
         }
 
         [Test]
-        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithEmptyGender()
+        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithoutWomensFlag()
         {
             var playerId = 16927;
             var player = await rankingApi.GetPlayer(playerId);
 
-            Assert.That(player.Gender, Is.Null);
+            Assert.That(player.WomensFlag, Is.False);
         }
 
         [Test]

@@ -1,26 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 
 namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class TournamentSearchFilter
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("country")]
+        [JsonPropertyName("country")]
         public string Country { get; set; }
 
-        [JsonProperty("stateprov")]
+        [JsonPropertyName("stateprov")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("start_date")]
+        [JsonPropertyName("start_date")]
         public DateTime? StartDate { get; set; }
 
-        [JsonProperty("end_date")]
+        [JsonPropertyName("end_date")]
         public DateTime? EndDate { get; set; }
 
-        [JsonProperty("ranking_type")]
+        [JsonPropertyName("ranking_type")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public RankingType? RankingType { get; set; }
     }
 }

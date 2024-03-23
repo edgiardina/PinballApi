@@ -1,23 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Calendar
 {
     public class CalendarDistanceSearchFilter
     {
-        [JsonProperty("address")]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
 
-        [JsonProperty("latitude")]
+        [JsonPropertyName("latitude")]
         public double Latitude { get; set; }
 
-        [JsonProperty("longitude")]
+        [JsonPropertyName("longitude")]
         public double Longitude { get; set; }
 
-        [JsonProperty("distance")]
+        [JsonPropertyName("distance")]
         public int Distance { get; set; }
 
-        [JsonProperty("distance_type")]
+        [JsonPropertyName("distance_type")]
         [JsonConverter(typeof(DistanceTypeConverter))]
         public DistanceType DistanceType { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,34 +7,34 @@ namespace PinballApi.Models.WPPR.v2.Series
 {
     public class RegionStanding
     {
-        [JsonProperty("series_rank")]
+        [JsonPropertyName("series_rank")]
         public int SeriesRank { get; set; }
 
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("player_name")]
+        [JsonPropertyName("player_name")]
         public string PlayerName { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("stateprov_code")]
+        [JsonPropertyName("stateprov_code")]
         public string StateprovCode { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("wppr_points")]
+        [JsonPropertyName("wppr_points")]
         public double WpprPoints { get; set; }
 
-        [JsonProperty("event_count")]
+        [JsonPropertyName("event_count")]
         public int EventCount { get; set; }
 
-        [JsonProperty("win_count")]
+        [JsonPropertyName("win_count")]
         public int WinCount { get; set; }
     }
 }

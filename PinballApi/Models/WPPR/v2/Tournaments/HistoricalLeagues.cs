@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class HistoricalLeagues
     {
-        [JsonProperty("total_entries")]
+        [JsonPropertyName("total_entries")]
         public int TotalEntries { get; set; }
 
-        [JsonProperty("league_state")]
+        [JsonPropertyName("league_state")]
         public LeagueState LeagueState { get; set; }
 
-        [JsonProperty("leagues")]
+        [JsonPropertyName("leagues")]
         public IList<HistoricalLeague> Leagues { get; set; }
     }
 }

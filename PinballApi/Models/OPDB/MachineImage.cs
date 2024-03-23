@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,19 +8,19 @@ namespace PinballApi.Models.OPDB
 {
     public class MachineImage
     {
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("primary")]
+        [JsonPropertyName("primary")]
         public bool Primary { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("urls")]
+        [JsonPropertyName("urls")]
         public MachineImageUrl Urls { get; set; }
 
-        [JsonProperty("sizes")]
+        [JsonPropertyName("sizes")]
         public Sizes Sizes { get; set; }
     }
 }

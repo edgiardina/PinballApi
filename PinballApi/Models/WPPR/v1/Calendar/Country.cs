@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v1.Calendar
 {
     public class Country
     {
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
     }
 }

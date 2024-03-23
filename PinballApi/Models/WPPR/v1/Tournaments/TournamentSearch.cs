@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v1.Tournaments
 {
     public class TournamentSearch
     {
-        [JsonProperty("search")]
+        [JsonPropertyName("search")]
         public string Search { get; set; }
 
-        [JsonProperty("tournament")]
+        [JsonPropertyName("tournament")]
         public List<TournamentSearchItem> Tournament { get; set; }
     }
 }

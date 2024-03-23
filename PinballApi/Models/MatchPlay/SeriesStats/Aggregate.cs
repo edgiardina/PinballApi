@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,22 +7,22 @@ namespace PinballApi.Models.MatchPlay.SeriesStats
 {
     public class Aggregate
     {
-        [JsonProperty("sum")]
+        [JsonPropertyName("sum")]
         public int Sum { get; set; }
 
-        [JsonProperty("max")]
+        [JsonPropertyName("max")]
         public int Max { get; set; }
 
-        [JsonProperty("min")]
+        [JsonPropertyName("min")]
         public int Min { get; set; }
 
-        [JsonProperty("mean")]
+        [JsonPropertyName("mean")]
         public decimal Mean { get; set; }
 
-        [JsonProperty("median")]
+        [JsonPropertyName("median")]
         public decimal Median { get; set; }
 
-        [JsonProperty("count")]
+        [JsonPropertyName("count")]
         public int Count { get; set; }
     }
 }

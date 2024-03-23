@@ -1,40 +1,40 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v2.Rankings
 {
     public class CustomRankingViewResult
     {
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("stateprov")]
+        [JsonPropertyName("stateprov")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("wppr_rank")]
+        [JsonPropertyName("wppr_rank")]
         public int? WpprRank { get; set; }
 
-        [JsonProperty("wppr_points")]
+        [JsonPropertyName("wppr_points")]
         public double WpprPoints { get; set; }
 
-        [JsonProperty("event_count")]
+        [JsonPropertyName("event_count")]
         public int EventCount { get; set; }
 
-        [JsonProperty("position")]
+        [JsonPropertyName("position")]
         public int Position { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,61 +8,61 @@ namespace PinballApi.Models.OPDB
 {
     public class PinballMachine
     {
-        [JsonProperty("opdb_id")]
+        [JsonPropertyName("opdb_id")]
         public string OpdbId { get; set; }
 
-        [JsonProperty("is_machine")]
+        [JsonPropertyName("is_machine")]
         public bool IsMachine { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("common_name")]
+        [JsonPropertyName("common_name")]
         public string CommonName { get; set; }
 
-        [JsonProperty("shortname")]
+        [JsonPropertyName("shortname")]
         public string Shortname { get; set; }
 
-        [JsonProperty("physical_machine")]
+        [JsonPropertyName("physical_machine")]
         public int PhysicalMachine { get; set; }
 
-        [JsonProperty("ipdb_id")]
+        [JsonPropertyName("ipdb_id")]
         public int? IpdbId { get; set; }
 
-        [JsonProperty("manufacture_date")]
+        [JsonPropertyName("manufacture_date")]
         public DateTime ManufactureDate { get; set; }
 
-        [JsonProperty("manufacturer")]
+        [JsonPropertyName("manufacturer")]
         public Manufacturer Manufacturer { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("display")]
+        [JsonPropertyName("display")]
         public string Display { get; set; }
 
-        [JsonProperty("player_count")]
+        [JsonPropertyName("player_count")]
         public int PlayerCount { get; set; }
 
-        [JsonProperty("features")]
+        [JsonPropertyName("features")]
         public List<string> Features { get; set; }
 
-        [JsonProperty("keywords")]
+        [JsonPropertyName("keywords")]
         public List<string> Keywords { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("created_at")]
+        [JsonPropertyName("created_at")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("updated_at")]
+        [JsonPropertyName("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
-        [JsonProperty("images")]
+        [JsonPropertyName("images")]
         public List<MachineImage> Images { get; set; }
 
-        [JsonProperty("is_alias")]
+        [JsonPropertyName("is_alias")]
         public bool? IsAlias { get; set; }
     }
 }

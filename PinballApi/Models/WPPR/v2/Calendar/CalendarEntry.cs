@@ -1,62 +1,64 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
+using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Calendar
 {
     public class CalendarEntry
     {
-        [JsonProperty("tournament_id")]
+        [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("tournament_name")]
+        [JsonPropertyName("tournament_name")]
         public string TournamentName { get; set; }
 
-        [JsonProperty("event_name")]
+        [JsonPropertyName("event_name")]
         public string EventName { get; set; }
 
-        [JsonProperty("address1")]
+        [JsonPropertyName("address1")]
         public string Address1 { get; set; }
 
-        [JsonProperty("address2")]
+        [JsonPropertyName("address2")]
         public string Address2 { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("stateprov")]
+        [JsonPropertyName("stateprov")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("postal_code")]
+        [JsonPropertyName("postal_code")]
         public string PostalCode { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("latitude")]
+        [JsonPropertyName("latitude")]
         public string Latitude { get; set; }
 
-        [JsonProperty("longitude")]
+        [JsonPropertyName("longitude")]
         public string Longitude { get; set; }
 
-        [JsonProperty("website")]
+        [JsonPropertyName("website")]
         public Uri Website { get; set; }
 
-        [JsonProperty("start_date")]
+        [JsonPropertyName("start_date")]
         public DateTimeOffset StartDate { get; set; }
 
-        [JsonProperty("end_date")]
+        [JsonPropertyName("end_date")]
         public DateTimeOffset EndDate { get; set; }
 
-        [JsonProperty("director_name")]
+        [JsonPropertyName("director_name")]
         public string DirectorName { get; set; }
 
-        [JsonProperty("details")]
+        [JsonPropertyName("details")]
         public string Details { get; set; }
 
-        [JsonProperty("private_flag")]
+        [JsonPropertyName("private_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool PrivateFlag { get; set; }
     }
 }

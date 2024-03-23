@@ -1,115 +1,120 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class Tournament
     {
-        [JsonProperty("tournament_id")]        
+        [JsonPropertyName("tournament_id")]        
         public int TournamentId { get; set; }
 
-        [JsonProperty("tournament_name")]
+        [JsonPropertyName("tournament_name")]
         public string TournamentName { get; set; }
 
-        [JsonProperty("tournament_type")]
+        [JsonPropertyName("tournament_type")]
         public string TournamentType { get; set; }
 
-        [JsonProperty("prestige_flag")]        
+        [JsonPropertyName("prestige_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool PrestigeFlag { get; set; }
 
-        [JsonProperty("private_flag")]        
+        [JsonPropertyName("private_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool PrivateFlag { get; set; }
 
-        [JsonProperty("address1")]
+        [JsonPropertyName("address1")]
         public string Address1 { get; set; }
 
-        [JsonProperty("address2")]
+        [JsonPropertyName("address2")]
         public string Address2 { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("state")]
+        [JsonPropertyName("state")]
         public string State { get; set; }
 
-        [JsonProperty("postal_code")]
+        [JsonPropertyName("postal_code")]
         public string PostalCode { get; set; }
 
-        [JsonProperty("latitude")]
+        [JsonPropertyName("latitude")]
         public double Latitude { get; set; }
 
-        [JsonProperty("intitude")]
+        [JsonPropertyName("intitude")]
         public double Longitude { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("contact_name")]
+        [JsonPropertyName("contact_name")]
         public string ContactName { get; set; }
 
-        [JsonProperty("website")]
+        [JsonPropertyName("website")]
         public Uri Website { get; set; }
 
-        [JsonProperty("event_name")]
+        [JsonPropertyName("event_name")]
         public string EventName { get; set; }
 
-        [JsonProperty("event_start_date")]
+        [JsonPropertyName("event_start_date")]
         public DateTime EventStartDate { get; set; }
 
-        [JsonProperty("event_end_date")]
+        [JsonPropertyName("event_end_date")]
         public DateTime EventEndDate { get; set; }
 
-        [JsonProperty("event_weight")]
+        [JsonPropertyName("event_weight")]
         public double EventWeight { get; set; }
 
-        [JsonProperty("ratings_strength")]
+        [JsonPropertyName("ratings_strength")]
         public double RatingsStrength { get; set; }
 
-        [JsonProperty("rankings_strength")]
+        [JsonPropertyName("rankings_strength")]
         public double RankingsStrength { get; set; }
 
-        [JsonProperty("base_value")]
+        [JsonPropertyName("base_value")]
         public double BaseValue { get; set; }
 
-        [JsonProperty("tournament_percentage_grade")]
+        [JsonPropertyName("tournament_percentage_grade")]
         public double TournamentPercentageGrade { get; set; }
 
-        [JsonProperty("tournament_value")]
+        [JsonPropertyName("tournament_value")]
         public double TournamentValue { get; set; }
 
-        [JsonProperty("details")]
+        [JsonPropertyName("details")]
         public string Details { get; set; }
 
-        [JsonProperty("games_to_win")]
+        [JsonPropertyName("games_to_win")]
         public int GamesToWin { get; set; }
 
-        [JsonProperty("qualify_flag")]
-        
+        [JsonPropertyName("qualify_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool QualifyFlag { get; set; }
 
-        [JsonProperty("qualify_hours")]
+        [JsonPropertyName("qualify_hours")]
         public int QualifyHours { get; set; }
 
-        [JsonProperty("unlimited_qualifying_flag")]        
+        [JsonPropertyName("unlimited_qualifying_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool UnlimitedQualifyingFlag { get; set; }
 
-        [JsonProperty("eligible_player_count")]
+        [JsonPropertyName("eligible_player_count")]
         public int EligiblePlayerCount { get; set; }
 
-        [JsonProperty("player_count")]
+        [JsonPropertyName("player_count")]
         public int PlayerCount { get; set; }
 
-        [JsonProperty("ranking_system")]
+        [JsonPropertyName("ranking_system")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public RankingType RankingType { get; set; }
 
-        [JsonProperty("event_count")]
+        [JsonPropertyName("event_count")]
         public int EventCount { get; set; }
 
-        [JsonProperty("events")]
+        [JsonPropertyName("events")]
         public List<TournamentEvent> Events { get; set; }
     }
 }

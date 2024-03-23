@@ -1,15 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
 
 namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class ArenaCount
     {
-        [JsonProperty("playerId")]
+        [JsonPropertyName("playerId")]
         public int PlayerId { get; set; }
 
         [JsonExtensionData]

@@ -12,12 +12,12 @@ namespace PinballApi.Models.MatchPlay
         public RatingPeriod RatingPeriod { get; set; }
 
         [JsonPropertyName("tournaments")]
-        public List<Tournament> Tournaments { get; } = new List<Tournament>();
+        public List<Tournament> Tournaments { get; set; }
 
         [JsonPropertyName("challenges")]
-        public List<Challenge> Challenges { get; } = new List<Challenge>();
+        public List<Challenge> Challenges { get; set; }
 
         [JsonPropertyName("extEvents")]
-        public List<ExternalEvent> ExternalEvents { get; } = new List<ExternalEvent>();
+        public List<ExternalEvent> ExternalEvents { get; set; }
     }
 }

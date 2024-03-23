@@ -14,7 +14,7 @@ namespace PinballApi.Models.MatchPlay
         public List<string> UnresolvedNames { get; } = new List<string>();
 
         [JsonPropertyName("baseValue")]
-        public int BaseValue { get; set; }
+        public double BaseValue { get; set; }
 
         [JsonPropertyName("ratingValue")]
         public double RatingValue { get; set; }

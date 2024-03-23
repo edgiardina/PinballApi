@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,40 +7,40 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class SinglePlayerGame
     {
-        [JsonProperty("singlePlayerGameId")]
+        [JsonPropertyName("singlePlayerGameId")]
         public int SinglePlayerGameId { get; set; }
 
-        [JsonProperty("arenaId")]
+        [JsonPropertyName("arenaId")]
         public int ArenaId { get; set; }
 
-        [JsonProperty("tournamentId")]
+        [JsonPropertyName("tournamentId")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("playerId")]
+        [JsonPropertyName("playerId")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("scorekeeperId")]
+        [JsonPropertyName("scorekeeperId")]
         public int ScorekeeperId { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("points")]
+        [JsonPropertyName("points")]
         public float Points { get; set; }
 
-        [JsonProperty("score")]
+        [JsonPropertyName("score")]
         public ulong Score { get; set; }
 
-        [JsonProperty("bestGame")]
+        [JsonPropertyName("bestGame")]
         public bool BestGame { get; set; }
 
-        [JsonProperty("index")]
+        [JsonPropertyName("index")]
         public int? Index { get; set; }
 
-        [JsonProperty("createdAt")]
+        [JsonPropertyName("createdAt")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("updatedAt")]
+        [JsonPropertyName("updatedAt")]
         public DateTime UpdatedAt { get; set; }
     }
 }

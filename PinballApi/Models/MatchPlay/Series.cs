@@ -15,6 +15,7 @@ namespace PinballApi.Models.MatchPlay
         public string Name { get; set; }
 
         [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public SeriesStatus Status { get; set; }
 
         [JsonPropertyName("organizerId")]
@@ -33,6 +34,6 @@ namespace PinballApi.Models.MatchPlay
         public object EstimatedTgp { get; set; }
 
         [JsonPropertyName("tournamentIds")]
-        public List<int> TournamentIds { get; } = new List<int>();
+        public List<int> TournamentIds { get; set; }
     }
 }

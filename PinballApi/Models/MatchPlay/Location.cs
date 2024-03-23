@@ -20,6 +20,7 @@ namespace PinballApi.Models.MatchPlay
         public int OrganizerId { get; set; }
 
         [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Status Status { get; set; }
 
         [JsonPropertyName("address")]

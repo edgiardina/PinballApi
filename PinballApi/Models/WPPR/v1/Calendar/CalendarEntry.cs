@@ -1,44 +1,44 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 
 namespace PinballApi.Models.WPPR.v1.Calendar
 {
     public class CalendarEntry
     {
-        [JsonProperty("calendar_id")]
+        [JsonPropertyName("calendar_id")]
         public int CalendarId { get; set; }
 
-        [JsonProperty("tournament_id")]
+        [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("tournament_name")]
+        [JsonPropertyName("tournament_name")]
         public string TournamentName { get; set; }
 
-        [JsonProperty("event_name")]
+        [JsonPropertyName("event_name")]
         public string EventName { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("state")]
+        [JsonPropertyName("state")]
         public string State { get; set; }
 
-        [JsonProperty("country")]
+        [JsonPropertyName("country")]
         public string Country { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("average_players")]
+        [JsonPropertyName("average_players")]
         public string AveragePlayers { get; set; }
 
-        [JsonProperty("average_points")]
+        [JsonPropertyName("average_points")]
         public string AveragePoints { get; set; }
 
-        [JsonProperty("start_date")]
+        [JsonPropertyName("start_date")]
         public DateTime StartDate { get; set; }
 
-        [JsonProperty("end_date")]
+        [JsonPropertyName("end_date")]
         public DateTime EndDate { get; set; }
     }
 }

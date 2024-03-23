@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace PinballApi.Models.WPPR.v1.Calendar
 {
     public class CalendarSearch
     {
-        [JsonProperty("calendar")]
+        [JsonPropertyName("calendar")]
         public List<CalendarDetails> Calendar { get; set; }
 
-        [JsonProperty("total_entries")]
+        [JsonPropertyName("total_entries")]
         public int TotalEntries { get; set; }
     }
 }

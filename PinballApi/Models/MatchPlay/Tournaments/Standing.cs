@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,40 +7,40 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class Standing
     {
-        [JsonProperty("playerId")]
+        [JsonPropertyName("playerId")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("position")]
+        [JsonPropertyName("position")]
         public int Position { get; set; }
 
-        [JsonProperty("points")]
+        [JsonPropertyName("points")]
         public float Points { get; set; }
 
-        [JsonProperty("pointsWithTiebreaker")]
+        [JsonPropertyName("pointsWithTiebreaker")]
         public float? PointsWithTiebreaker { get; set; }
 
-        [JsonProperty("gamesPlayed")]
+        [JsonPropertyName("gamesPlayed")]
         public int GamesPlayed { get; set; }
 
-        [JsonProperty("strikeCount")]
+        [JsonPropertyName("strikeCount")]
         public int? StrikeCount { get; set; }
 
-        [JsonProperty("adjustment")]
+        [JsonPropertyName("adjustment")]
         public int? Adjustment { get; set; }
 
-        [JsonProperty("frenzyWins")]
+        [JsonPropertyName("frenzyWins")]
         public int? FrenzyWins { get; set; }
 
-        [JsonProperty("frenzyLosses")]
+        [JsonPropertyName("frenzyLosses")]
         public int? FrenzyLosses { get; set; }
 
-        [JsonProperty("tiebreakers")]
+        [JsonPropertyName("tiebreakers")]
         public List<float> Tiebreakers { get; set; }
 
-        [JsonProperty("activeGames")]
+        [JsonPropertyName("activeGames")]
         public List<string> ActiveGames { get; set; }
 
-        [JsonProperty("activeGameColor")]
+        [JsonPropertyName("activeGameColor")]
         public string ActiveGameColor { get; set; }
     }
 }

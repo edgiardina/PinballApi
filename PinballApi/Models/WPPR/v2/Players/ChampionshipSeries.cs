@@ -1,22 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.v2.WPPR
 {
     public class ChampionshipSeries
     {
-        [JsonProperty("region_code")]
+        [JsonPropertyName("region_code")]
         public string RegionCode { get; set; }
 
-        [JsonProperty("series_code")]
+        [JsonPropertyName("series_code")]
         public string SeriesCode { get; set; }
 
-        [JsonProperty("series_rank")]
+        [JsonPropertyName("series_rank")]
         public int Rank { get; set; }
 
-        [JsonProperty("total_points")]
+        [JsonPropertyName("total_points")]
         public double TotalPoints { get; set; }
 
-        [JsonProperty("year")]
+        [JsonPropertyName("year")]
         public int Year { get; set; }
     }
 }

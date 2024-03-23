@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,16 +7,16 @@ namespace PinballApi.Models.MatchPlay
 {
     public class Scorekeeper
     {
-        [JsonProperty("scorekeeperId")]
+        [JsonPropertyName("scorekeeperId")]
         public int ScorekeeperId { get; set; }
 
-        [JsonProperty("tournamentId")]
+        [JsonPropertyName("tournamentId")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("userId")]
+        [JsonPropertyName("userId")]
         public int UserId { get; set; }
 
-        [JsonProperty("user")]
+        [JsonPropertyName("user")]
         public User User { get; set; }
     }
 }

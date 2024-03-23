@@ -182,7 +182,7 @@ namespace PinballApi.Tests
         {
             var tournamentList = await rankingApi.GetTournamentList(count: 10);
 
-            Assert.AreEqual(tournamentList.Tournament.Count, 10);
+            Assert.That(tournamentList.Tournament.Count, Is.EqualTo(10));
         }
 
         [Test]

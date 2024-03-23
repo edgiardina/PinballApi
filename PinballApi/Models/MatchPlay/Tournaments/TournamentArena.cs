@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,16 +7,17 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class TournamentArena
     {
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Status Status { get; set; }
 
-        [JsonProperty("preferred")]
+        [JsonPropertyName("preferred")]
         public object Preferred { get; set; }
 
-        [JsonProperty("scorbitVenuemachineId")]
+        [JsonPropertyName("scorbitVenuemachineId")]
         public object ScorbitVenuemachineId { get; set; }
 
-        [JsonProperty("scorbitronInstalled")]
+        [JsonPropertyName("scorbitronInstalled")]
         public object ScorbitronInstalled { get; set; }
     }
 }

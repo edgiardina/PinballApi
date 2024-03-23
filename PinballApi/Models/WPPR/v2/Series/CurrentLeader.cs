@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v2.Series
 {
     public class CurrentLeader
     {
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("player_name")]
+        [JsonPropertyName("player_name")]
         public string PlayerName { get; set; }
     }
 }

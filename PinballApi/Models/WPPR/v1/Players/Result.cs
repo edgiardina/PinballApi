@@ -1,38 +1,38 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 
 namespace PinballApi.Models.WPPR.v1.Players
 {
     public class Result
     {
-        [JsonProperty("tournament_name")]
+        [JsonPropertyName("tournament_name")]
         public string TournamentName { get; set; }
 
-        [JsonProperty("tournament_id")]
+        [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("periodic_flag")]
+        [JsonPropertyName("periodic_flag")]
         public string PeriodicFlag { get; set; }
 
-        [JsonProperty("wppr_state")]
+        [JsonPropertyName("wppr_state")]
         public string WpprState { get; set; }
 
-        [JsonProperty("event_name")]
+        [JsonPropertyName("event_name")]
         public string EventName { get; set; }
 
-        [JsonProperty("event_date")]
+        [JsonPropertyName("event_date")]
         public DateTime EventDate { get; set; }
 
-        [JsonProperty("position")]
+        [JsonPropertyName("position")]
         public int Position { get; set; }
 
-        [JsonProperty("original_points")]
+        [JsonPropertyName("original_points")]
         public double OriginalPoints { get; set; }
 
-        [JsonProperty("current_points")]
+        [JsonPropertyName("current_points")]
         public double CurrentPoints { get; set; }
 
 

@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class PlayerStats
     {
-        [JsonProperty("positionCounts")]
+        [JsonPropertyName("positionCounts")]
         public List<PositionCount> PositionCounts { get; set; }
 
-        [JsonProperty("arenaCounts")]
+        [JsonPropertyName("arenaCounts")]
         public List<ArenaCount> ArenaCounts { get; set; }
 
-        [JsonProperty("opponentCounts")]
+        [JsonPropertyName("opponentCounts")]
         public List<OpponentCount> OpponentCounts { get; set; }
     }
 }

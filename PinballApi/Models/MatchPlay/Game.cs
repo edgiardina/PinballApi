@@ -36,6 +36,7 @@ namespace PinballApi.Models.MatchPlay
         public int? ScorekeeperId { get; set; }
 
         [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public GameStatus Status { get; set; }
 
         [JsonPropertyName("startedAt")]

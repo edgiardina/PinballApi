@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,37 +7,37 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class Card
     {
-        [JsonProperty("cardId")]
+        [JsonPropertyName("cardId")]
         public int CardId { get; set; }
 
-        [JsonProperty("tournamentId")]
+        [JsonPropertyName("tournamentId")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("playerId")]
+        [JsonPropertyName("playerId")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("bestGame")]
+        [JsonPropertyName("bestGame")]
         public bool BestGame { get; set; }
 
-        [JsonProperty("createdAt")]
+        [JsonPropertyName("createdAt")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("updatedAt")]
+        [JsonPropertyName("updatedAt")]
         public DateTime UpdatedAt { get; set; }
 
-        [JsonProperty("singlePlayerGames")]
+        [JsonPropertyName("singlePlayerGames")]
         public List<SinglePlayerGame> SinglePlayerGames { get; set; }
 
-        [JsonProperty("singlePlayerGameIds")]
+        [JsonPropertyName("singlePlayerGameIds")]
         public List<int> SinglePlayerGameIds { get; set; }
 
-        [JsonProperty("arenaIds")]
+        [JsonPropertyName("arenaIds")]
         public List<int> ArenaIds { get; set; }
 
-        [JsonProperty("points")]
+        [JsonPropertyName("points")]
         public int Points { get; set; }
     }
 }

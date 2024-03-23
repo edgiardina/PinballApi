@@ -1,43 +1,46 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PinballApi.Converters;
 
 namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class Round
     {
-        [JsonProperty("roundId")]
+        [JsonPropertyName("roundId")]
         public int RoundId { get; set; }
 
-        [JsonProperty("tournamentId")]
+        [JsonPropertyName("tournamentId")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("arenaId")]
+        [JsonPropertyName("arenaId")]
         public int? ArenaId { get; set; }
 
-        [JsonProperty("score")]
+        [JsonPropertyName("score")]
         public ulong? Score { get; set; }
 
-        [JsonProperty("index")]
+        [JsonPropertyName("index")]
         public int Index { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("duration")]
+        [JsonPropertyName("duration")]
         public int? Duration { get; set; }
 
-        [JsonProperty("createdAt")]
+        [JsonPropertyName("createdAt")]
+        [JsonConverter(typeof(NonISODateTimeConverter))]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("completedAt")]
+        [JsonPropertyName("completedAt")]
+        [JsonConverter(typeof(NonISODateTimeConverter))]
         public DateTime? CompletedAt { get; set; }
 
-        [JsonProperty("games")]
+        [JsonPropertyName("games")]
         public List<MatchplayGames> Games { get; set; }
     }
 }
