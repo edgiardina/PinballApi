@@ -39,6 +39,8 @@ namespace PinballApi.Tests
             Assert.That(player.PlayerStats.EfficiencyRank, Is.Not.Null);
             Assert.That(player.PlayerStats.EfficiencyValue, Is.Not.Null);
             Assert.That(player.PlayerStats.HighestRankDate.HasValue, Is.True);
+            Assert.That(player.PlayerStats.CurrentWpprRank, Is.GreaterThan(0));
+            Assert.That(player.PlayerStats.CurrentWpprValue, Is.GreaterThan(0));
         }
 
         [Test]

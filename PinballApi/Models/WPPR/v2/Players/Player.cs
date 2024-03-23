@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using PinballApi.Models.v2.WPPR;
-using PinballApi.Models.WPPR.v1.Players;
 using System;
 using System.Collections.Generic;
 using PinballApi.Converters;
