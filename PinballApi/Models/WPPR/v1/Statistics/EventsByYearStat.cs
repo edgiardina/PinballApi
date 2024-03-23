@@ -1,22 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v1.Statistics
 {
     public class EventsByYearStat
     {
-        [JsonProperty("Year")]
+        [JsonPropertyName("Year")]
         public int Year { get; set; }
 
-        [JsonProperty("country_count")]
+        [JsonPropertyName("country_count")]
         public int CountryCount { get; set; }
 
-        [JsonProperty("periodic_count")]
+        [JsonPropertyName("periodic_count")]
         public int PeriodicCount { get; set; }
 
-        [JsonProperty("count")]
+        [JsonPropertyName("count")]
         public int Count { get; set; }
 
-        [JsonProperty("stats_rank")]
+        [JsonPropertyName("stats_rank")]
         public int StatsRank { get; set; }
     }
 }

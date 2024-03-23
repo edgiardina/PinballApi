@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Tournaments
@@ -8,38 +8,40 @@ namespace PinballApi.Models.WPPR.v2.Tournaments
         /// <summary>
         /// Is null if player is suppressed.
         /// </summary> 
-        [JsonProperty("player_id")]        
+        [JsonPropertyName("player_id")]
+        [JsonConverter(typeof(EmptyStringNullableIntDescriptiveConverter))]
         public int? PlayerId { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("position")]
+        [JsonPropertyName("position")]
         public int Position { get; set; }
 
-        [JsonProperty("points")]
+        [JsonPropertyName("points")]
         public double Points { get; set; }
 
-        [JsonProperty("wppr_rank")]
+        [JsonPropertyName("wppr_rank")]
         public int WpprRank { get; set; }
 
-        [JsonProperty("ratings_value")]
-        [JsonConverter(typeof(DoubleWithNullDescriptiveConverter), "Not Rated")]
+        [JsonPropertyName("ratings_value")]
+        [JsonConverter(typeof(NotRatedNullableDescriptiveConverter))]
         public double? RatingsValue { get; set; }
 
-        [JsonProperty("excluded_flag")]
+        [JsonPropertyName("excluded_flag")]
+        [JsonConverter(typeof(BooleanConverter))]
         public bool ExcludedFlag { get; set; }
 
-        [JsonProperty("player_tournament_count")]
+        [JsonPropertyName("player_tournament_count")]
         public int PlayerTournamentCount { get; set; }
     }
 }

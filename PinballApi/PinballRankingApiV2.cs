@@ -2,22 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Linq;
-using PinballApi.Models.WPPR.v2.Nacs;
 using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
 using PinballApi.Models.WPPR.v2.Directors;
 using PinballApi.Models.WPPR.v2.Stats;
 using PinballApi.Models.WPPR.v2.Series;
+using PinballApi.Interfaces;
+using System.Runtime.Serialization;
+using System.Text.Json.Nodes;
+using System.Text.Json;
+using Flurl;
 
 namespace PinballApi
 {
-    public class PinballRankingApiV2 : BasePinballRankingApi
+    public class PinballRankingApiV2 : BasePinballRankingApi, IPinballRankingApiV2
     {
         protected override PinballRankingApiVersion ApiVersion => PinballRankingApiVersion.v2;
 
@@ -37,10 +39,9 @@ namespace PinballApi
                     .AppendPathSegment(playerId)
                     .GetStringAsync();
 
-                return JObject.Parse(json)
-                    .SelectToken("player", false).ToObject<List<Player>>().First();
+                return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions).First();
             }
-            catch (FlurlHttpException ex) when (ex.InnerException is JsonSerializationException)
+            catch (FlurlHttpException ex) when (ex.InnerException is JsonException)
             {
                 //Indicates null values which may mean invalid playerId
                 return null;
@@ -59,8 +60,7 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("player", false).ToObject<List<Player>>();
+            return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions);
         }
 
         public async Task<PlayerResults> GetPlayerResults(int playerId, RankingType rankingType = RankingType.Main, ResultType resultType = ResultType.Active)
@@ -145,7 +145,7 @@ namespace PinballApi
                 request = request.SetQueryParam("tourpos", searchFilter.Tourpos);
             }
 
-            if (request.QueryParams.Count == 1)
+            if (request.Url.QueryParams.Count == 1)
                 throw new ArgumentOutOfRangeException("Expected at least one value in the provided searchFilter was not null or empty.");
 
             return await request.GetJsonAsync<PlayerSearch>();
@@ -158,11 +158,10 @@ namespace PinballApi
         public async Task<List<Series>> GetSeries()
         {
             var json = await BaseRequest
-                  .AppendPathSegment("series/list")                  
+                  .AppendPathSegment("series/list")
                   .GetStringAsync();
 
-            return JObject.Parse(json)
-             .SelectToken("series", false).ToObject<List<Series>>();
+            return JsonNode.Parse(json)["series"].Deserialize<List<Series>>(JsonSerializerOptions);
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace PinballApi
                 .AppendPathSegment(seriesCode.ToUpper())
                 .AppendPathSegment("overall_standings");
 
-            if(year.HasValue)
+            if (year.HasValue)
             {
                 request.SetQueryParam("year", year.Value);
             }
@@ -199,7 +198,7 @@ namespace PinballApi
                 .AppendPathSegment("series")
                 .AppendPathSegment(seriesCode.ToUpper())
                 .AppendPathSegment("standings")
-                .SetQueryParam("region_code", region);              
+                .SetQueryParam("region_code", region);
 
             if (year.HasValue)
             {
@@ -222,7 +221,7 @@ namespace PinballApi
                 .AppendPathSegment("series")
                 .AppendPathSegment(seriesCode.ToUpper())
                 .AppendPathSegment("tournaments")
-                .SetQueryParam("region_code", region);                
+                .SetQueryParam("region_code", region);
 
             if (year.HasValue)
             {
@@ -268,7 +267,7 @@ namespace PinballApi
             var request = BaseRequest
                 .AppendPathSegment("series")
                 .AppendPathSegment(seriesCode.ToUpper())
-                .AppendPathSegment("past_winners");  
+                .AppendPathSegment("past_winners");
 
             if (!string.IsNullOrEmpty(region))
             {
@@ -387,8 +386,7 @@ namespace PinballApi
                     .AppendPathSegment(tournamentId)
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("tournament", false).ToObject<Models.WPPR.v2.Tournaments.Tournament>();
+            return JsonNode.Parse(json)["tournament"].Deserialize<Models.WPPR.v2.Tournaments.Tournament>(JsonSerializerOptions);
         }
 
         public async Task<List<Models.WPPR.v2.Tournaments.Tournament>> GetRelatedTournaments(int tournamentId)
@@ -399,8 +397,7 @@ namespace PinballApi
                     .AppendPathSegment("related")
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("tournament", false).ToObject<List<Models.WPPR.v2.Tournaments.Tournament>>();
+            return JsonNode.Parse(json)["tournament"].Deserialize<List<Models.WPPR.v2.Tournaments.Tournament>>(JsonSerializerOptions);
         }
 
         public async Task<TournamentResults> GetTournamentResults(int tournamentId)
@@ -420,8 +417,7 @@ namespace PinballApi
                     .AppendPathSegment("winners/list")
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("winners", false).ToObject<List<Models.WPPR.v2.Tournaments.TournamentWinner>>();
+            return JsonNode.Parse(json)["winners"].Deserialize<List<Models.WPPR.v2.Tournaments.TournamentWinner>>(JsonSerializerOptions);
         }
 
         public async Task<List<TournamentWinnerGrouped>> GetTournamentWinnersGrouped(int tournamentId)
@@ -432,8 +428,7 @@ namespace PinballApi
                 .AppendPathSegment("winners/group")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("winners", false).ToObject<List<TournamentWinnerGrouped>>();
+            return JsonNode.Parse(json)["winners"].Deserialize<List<TournamentWinnerGrouped>>(JsonSerializerOptions);
         }
 
         public async Task<TournamentSearch> GetTournamentBySearch(TournamentSearchFilter searchFilter)
@@ -477,7 +472,7 @@ namespace PinballApi
                 request = request.SetQueryParam("rank_type", searchFilter.RankingType.Value.ToString());
             }
 
-            if (request.QueryParams.Count == 1)
+            if (request.Url.QueryParams.Count == 1)
                 throw new ArgumentOutOfRangeException("Expected at least one value in the provided searchFilter was not null or empty.");
 
             return await request.GetJsonAsync<TournamentSearch>();
@@ -493,8 +488,7 @@ namespace PinballApi
                     .AppendPathSegment("director/nacs")
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("nacs_directors", false).ToObject<List<Director>>();
+            return JsonNode.Parse(json)["nacs_directors"].Deserialize<List<Director>>(JsonSerializerOptions);
         }
 
         public async Task<List<Director>> GetCountryDirectors()
@@ -503,8 +497,7 @@ namespace PinballApi
                     .AppendPathSegment("director/country")
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("country_directors", false).ToObject<List<Director>>();
+            return JsonNode.Parse(json)["country_directors"].Deserialize<List<Director>>(JsonSerializerOptions);
         }
 
         public async Task<List<Director>> GetDirectorList()
@@ -513,8 +506,7 @@ namespace PinballApi
                     .AppendPathSegment("director/list")
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("country_directors", false).ToObject<List<Director>>();
+            return JsonNode.Parse(json)["country_directors"].Deserialize<List<Director>>(JsonSerializerOptions);
         }
 
         public async Task<List<Director>> GetDirector(int directorId)
@@ -524,8 +516,7 @@ namespace PinballApi
                     .AppendPathSegment(directorId)
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("country_directors", false).ToObject<List<Director>>();
+            return JsonNode.Parse(json)["country_directors"].Deserialize<List<Director>>(JsonSerializerOptions);
         }
 
         #endregion
@@ -537,8 +528,7 @@ namespace PinballApi
                     .AppendPathSegment("stats/overall")
                     .GetStringAsync();
 
-            return JObject.Parse(json)
-            .SelectToken("stats", false).ToObject<OverallStatistics>();
+            return JsonNode.Parse(json)["stats"].Deserialize<OverallStatistics>();
         }
 
         public async Task<List<EventsByYearStatistics>> GetEventsByYearStatistics()
@@ -547,8 +537,7 @@ namespace PinballApi
                 .AppendPathSegment("stats/events_by_year")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<EventsByYearStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<EventsByYearStatistics>>(JsonSerializerOptions);
         }
 
         public async Task<List<LargestTournamentStatistics>> GetLargestTournamentStatistics()
@@ -557,8 +546,7 @@ namespace PinballApi
                 .AppendPathSegment("stats/largest_tournaments")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<LargestTournamentStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<LargestTournamentStatistics>>(JsonSerializerOptions);
         }
 
         public async Task<List<LucrativeTournamentStatistics>> GetLucrativeTournamentStatistics()
@@ -567,8 +555,7 @@ namespace PinballApi
                 .AppendPathSegment("stats/lucrative_tournaments")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<LucrativeTournamentStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<LucrativeTournamentStatistics>>(JsonSerializerOptions);
         }
 
         public async Task<List<PlayersByYearStatistics>> GetPlayersByYearStatistics()
@@ -577,8 +564,7 @@ namespace PinballApi
                 .AppendPathSegment("stats/players_by_year")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<PlayersByYearStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByYearStatistics>>(JsonSerializerOptions);
         }
 
         public async Task<List<PlayersByStateStatistics>> GetPlayersByStateStatistics()
@@ -587,8 +573,7 @@ namespace PinballApi
                 .AppendPathSegment("stats/state_players")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<PlayersByStateStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByStateStatistics>>(JsonSerializerOptions);
         }
 
         public async Task<List<TournamentsByStateStatistics>> GetTournamentsByStateStatistics()
@@ -597,8 +582,7 @@ namespace PinballApi
                 .AppendPathSegment("stats/state_tournaments")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<TournamentsByStateStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<TournamentsByStateStatistics>>(JsonSerializerOptions);
         }
 
         public async Task<List<PlayersByCountryStatistics>> GetPlayersByCountryStatistics()
@@ -607,8 +591,7 @@ namespace PinballApi
                 .AppendPathSegment("stats/country_players")
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<PlayersByCountryStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByCountryStatistics>>(JsonSerializerOptions);
         }
 
         ///stats/points_given_period
@@ -621,8 +604,7 @@ namespace PinballApi
                 .SetQueryParam("limit", limit)
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<PlayersPointsByGivenPeriodStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersPointsByGivenPeriodStatistics>>(JsonSerializerOptions);
         }
 
         ////stats/events_attended_period
@@ -635,8 +617,7 @@ namespace PinballApi
                 .SetQueryParam("limit", limit)
                 .GetStringAsync();
 
-            return JObject.Parse(json)
-                .SelectToken("stats", false).ToObject<List<PlayersEventsAttendedByGivenPeriodStatistics>>();
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersEventsAttendedByGivenPeriodStatistics>>(JsonSerializerOptions);
         }
 
         #endregion

@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 
 namespace PinballApi.Models.WPPR.v2.Players
 {
     public class RatingHistory
     {
-        [JsonProperty("rating_date")]
+        [JsonPropertyName("rating_date")]
         public DateTime RatingDate { get; set; }
 
-        [JsonProperty("rating")]
+        [JsonPropertyName("rating")]
         public double Rating { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +15,7 @@ namespace PinballApi.Models.MatchPlay.Tournaments
         public string Name { get; set; }
 
         [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public TournamentStatus Status { get; set; }
 
         [JsonPropertyName("type")]
@@ -62,7 +63,7 @@ namespace PinballApi.Models.MatchPlay.Tournaments
         [JsonPropertyName("scorekeeping")]
         public string Scorekeeping { get; set; }
 
-        [JsonProperty("scorekeepers")]
+        [JsonPropertyName("scorekeepers")]
         public List<Scorekeeper> Scorekeepers { get; set; }
 
         [JsonPropertyName("link")]
@@ -107,13 +108,13 @@ namespace PinballApi.Models.MatchPlay.Tournaments
         [JsonPropertyName("scoring")]
         public string Scoring { get; set; }
 
-        [JsonProperty("arenas")]
+        [JsonPropertyName("arenas")]
         public List<Arena> Arenas { get; set; }
 
-        [JsonProperty("players")]
+        [JsonPropertyName("players")]
         public List<Player> Players { get; set; }
 
-        [JsonProperty("parentTournament")]
+        [JsonPropertyName("parentTournament")]
         public ParentTournament ParentTournament { get; set; }
 
         //TODO: include banks

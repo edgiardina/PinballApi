@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v2.Players
 {
     public class FinishPosition
     {
-        [JsonProperty("player_1")]
+        [JsonPropertyName("player_1")]
         public int PlayerOne { get; set; }
-        [JsonProperty("player_2")]
+        [JsonPropertyName("player_2")]
         public int PlayerTwo { get; set; }
     }
 }

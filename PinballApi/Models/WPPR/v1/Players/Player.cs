@@ -1,42 +1,42 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v1.Players
 {
     public class Player
     {
-        [JsonProperty("player_id")]
-        public string PlayerId { get; set; }
+        [JsonPropertyName("player_id")]
+        public int PlayerId { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("state")]
+        [JsonPropertyName("state")]
         public string State { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("initials")]
+        [JsonPropertyName("initials")]
         public string Initials { get; set; }
 
-        [JsonProperty("age")]
+        [JsonPropertyName("age")]
         public string Age { get; set; }
 
-        [JsonProperty("excluded_flag")]
+        [JsonPropertyName("excluded_flag")]
         [JsonConverter(typeof(YesNoConverter))]
         public bool ExcludedFlag { get; set; }
 
-        [JsonProperty("ifpa_registered")]
+        [JsonPropertyName("ifpa_registered")]
         [JsonConverter(typeof(YesNoConverter))]
         public bool IfpaRegistered { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,10 +7,10 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class MatchplayStats
     {
-        [JsonProperty("avgGamesPerPlayer")]
+        [JsonPropertyName("avgGamesPerPlayer")]
         public int AvgGamesPerPlayer { get; set; }
 
-        [JsonProperty("totalGames")]
+        [JsonPropertyName("totalGames")]
         public int TotalGames { get; set; }
     }
 }

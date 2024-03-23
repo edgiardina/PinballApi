@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class FlipFrenzy
     {
-        [JsonProperty("games")]
+        [JsonPropertyName("games")]
         public List<TournamentGame> Games { get; set; }
 
-        [JsonProperty("queue")]
+        [JsonPropertyName("queue")]
         public List<Queue> Queue { get; set; }
 
-        [JsonProperty("avgQueueDuration")]
+        [JsonPropertyName("avgQueueDuration")]
         public int AvgQueueDuration { get; set; }
     }
 }

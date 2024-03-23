@@ -1,23 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Nacs
 {
     public class NacsTournamentCard
     {
-        [JsonProperty("year")]
+        [JsonPropertyName("year")]
         public int Year { get; set; }
 
-        [JsonProperty("stateprov_code")]
+        [JsonPropertyName("stateprov_code")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("stateprov_name")]
+        [JsonPropertyName("stateprov_name")]
         public string StateProvinceName { get; set; }
 
-        [JsonProperty("player_name")]
+        [JsonPropertyName("player_name")]
         public string PlayerName { get; set; }
 
-        [JsonProperty("nacs_tournament_card")]
+        [JsonPropertyName("nacs_tournament_card")]
         public List<NacsTournamentCardRecord> NacsTournamentCardRecords { get; set; }
     }
 }

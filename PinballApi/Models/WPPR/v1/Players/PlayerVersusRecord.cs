@@ -1,25 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v1.Players
 {
     public class PlayerVersusRecord
     {
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("win_count")]
+        [JsonPropertyName("win_count")]
         public int WinCount { get; set; }
 
-        [JsonProperty("loss_count")]
+        [JsonPropertyName("loss_count")]
         public int LossCount { get; set; }
 
-        [JsonProperty("tie_count")]
+        [JsonPropertyName("tie_count")]
         public int TieCount { get; set; }
     }
 }

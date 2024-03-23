@@ -1,20 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v1.Calendar
 {
     public class CalendarList
     {
-        [JsonProperty("calendar")]
+        [JsonPropertyName("calendar")]
         public List<CalendarEntry> Calendar { get; set; }
 
-        [JsonProperty("total_entries")]
+        [JsonPropertyName("total_entries")]
         public int TotalEntries { get; set; }
 
-        [JsonProperty("available_months")]
+        [JsonPropertyName("available_months")]
         public List<Month> AvailableMonths { get; set; }
 
-        [JsonProperty("available_countries")]
+        [JsonPropertyName("available_countries")]
         public List<Country> AvailableCountries { get; set; }
     }
 }

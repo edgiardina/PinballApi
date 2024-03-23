@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,19 +8,19 @@ namespace PinballApi.Models.OPDB
 {
     public class TypeAheadSearchResult
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("supplementary")]
+        [JsonPropertyName("supplementary")]
         public string Supplementary { get; set; }
 
-        [JsonProperty("display")]
+        [JsonPropertyName("display")]
         public string Display { get; set; }
     }
 }

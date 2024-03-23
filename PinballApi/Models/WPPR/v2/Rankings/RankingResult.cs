@@ -1,68 +1,70 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
+using PinballApi.Converters;
 
 namespace PinballApi.Models.WPPR.v2.Rankings
 {
     public class RankingResult
     {
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("first_name")]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [JsonProperty("last_name")]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [JsonProperty("age")]
+        [JsonPropertyName("age")]
+        [JsonConverter(typeof(EmptyStringNullableIntDescriptiveConverter))]
         public int? Age { get; set; }
 
-        [JsonProperty("profile_photo")]
+        [JsonPropertyName("profile_photo")]
         public Uri ProfilePhoto { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("stateprov")]
+        [JsonPropertyName("stateprov")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("wppr_points")]
+        [JsonPropertyName("wppr_points")]
         public double WpprPoints { get; set; }
 
-        [JsonProperty("current_rank")]
+        [JsonPropertyName("current_rank")]
         public int CurrentRank { get; set; }
 
-        [JsonProperty("country_rank")]
+        [JsonPropertyName("country_rank")]
         public int CountryRank { get; set; }
 
-        [JsonProperty("last_month_rank")]
+        [JsonPropertyName("last_month_rank")]
         public int LastMonthRank { get; set; }
 
-        [JsonProperty("rating_value")]
+        [JsonPropertyName("rating_value")]
         public double RatingValue { get; set; }
 
-        [JsonProperty("rating_deviation")]
+        [JsonPropertyName("rating_deviation")]
         public int RatingDeviation { get; set; }
 
-        [JsonProperty("efficiency_percent")]
+        [JsonPropertyName("efficiency_percent")]
         public double? EfficiencyPercent { get; set; }
 
-        [JsonProperty("event_count")]
+        [JsonPropertyName("event_count")]
         public int EventCount { get; set; }
 
-        [JsonProperty("best_finish")]
+        [JsonPropertyName("best_finish")]
         public string BestFinish { get; set; }
 
-        [JsonProperty("best_finish_position")]
+        [JsonPropertyName("best_finish_position")]
         public int BestFinishPosition { get; set; }
 
-        [JsonProperty("best_tournament_id")]
+        [JsonPropertyName("best_tournament_id")]
         public int BestTournamentId { get; set; }
     }
 }

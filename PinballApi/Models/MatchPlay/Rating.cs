@@ -11,10 +11,10 @@ namespace PinballApi.Models.MatchPlay
         public int RatingId { get; set; }
 
         [JsonPropertyName("userId")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         [JsonPropertyName("ifpaId")]
-        public int IfpaId { get; set; }
+        public int? IfpaId { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }

@@ -1,26 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 
 namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class TournamentEvent
     {
-        [JsonProperty("tournament_id")]
+        [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("event_name")]
+        [JsonPropertyName("event_name")]
         public string EventName { get; set; }
 
-        [JsonProperty("event_start_date")]
+        [JsonPropertyName("event_start_date")]
         public DateTime EventStartDate { get; set; }
 
-        [JsonProperty("event_end_date")]
+        [JsonPropertyName("event_end_date")]
         public DateTime EventEndDate { get; set; }
 
-        [JsonProperty("year")]
+        [JsonPropertyName("year")]
         public int Year { get; set; }
 
-        [JsonProperty("year_count")]
+        [JsonPropertyName("year_count")]
         public int YearCount { get; set; }
     }
 }

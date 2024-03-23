@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v1.Players
 {
     public class PlayerResult
     {
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("results_count")]
+        [JsonPropertyName("results_count")]
         public int ResultsCount { get; set; }
 
-        [JsonProperty("results")]
+        [JsonPropertyName("results")]
         public IList<Result> Results { get; set; }
     }
 }

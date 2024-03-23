@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,19 +7,21 @@ namespace PinballApi.Models.WPPR.v2.Players
 {
     public class PlayerResults
     {
-        [JsonProperty("player_id")]
+        [JsonPropertyName("player_id")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("results_type")]
+        [JsonPropertyName("results_type")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public ResultType ResultsType { get; set; }
 
-        [JsonProperty("results_count")]
+        [JsonPropertyName("results_count")]
         public int ResultsCount { get; set; }
 
-        [JsonProperty("rank_type")]
+        [JsonPropertyName("rank_type")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public RankingType RankingType { get; set; }
 
-        [JsonProperty("results")]
+        [JsonPropertyName("results")]
         public List<PlayerResult> Results { get; set; }
     }
 }

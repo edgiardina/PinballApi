@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <PackageId>PinballApi</PackageId>
     <Authors>Ed Giardina</Authors>
     <Description>PinballApi - .NET API for pinball data. Includes API Client wrappers in .NET for the IFPA, OPDB, IPDB and MatchPlay.</Description>
@@ -14,14 +14,12 @@
     <UserSecretsId>6b0ade4e-d0d7-4f70-bb1a-40974634001d</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Flurl" Version="3.0.6" />
-    <PackageReference Include="Flurl.Http" Version="3.2.4" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
-    <PackageReference Include="JsonSubTypes" Version="1.9.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="RestSharp" Version="108.0.2" />
-    <PackageReference Include="System.Text.Json" Version="6.0.5" />
+    <PackageReference Include="Flurl" Version="4.0.0" />
+    <PackageReference Include="Flurl.Http" Version="4.0.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
+    <PackageReference Include="Polly" Version="8.3.1" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

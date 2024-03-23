@@ -1,20 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v1.Rankings
 {
     public class RankingList
     {
-        [JsonProperty("total_count")]
+        [JsonPropertyName("total_count")]
         public string TotalCount { get; set; }
 
-        [JsonProperty("sub_category")]
+        [JsonPropertyName("sub_category")]
         public string SubCategory { get; set; }
 
-        [JsonProperty("rank_country_name")]
+        [JsonPropertyName("rank_country_name")]
         public string RankCountryName { get; set; }
 
-        [JsonProperty("rankings")]
+        [JsonPropertyName("rankings")]
         public List<Ranking> Rankings { get; set; }
     }
 }

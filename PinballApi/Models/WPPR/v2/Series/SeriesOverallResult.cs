@@ -1,28 +1,28 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v2.Series
 {
     public class SeriesOverallResult
     {
-        [JsonProperty("region_code")]
+        [JsonPropertyName("region_code")]
         public string RegionCode { get; set; }
 
-        [JsonProperty("region_name")]
+        [JsonPropertyName("region_name")]
         public string RegionName { get; set; }
 
-        [JsonProperty("player_count")]
+        [JsonPropertyName("player_count")]
         public int PlayerCount { get; set; }
 
-        [JsonProperty("unique_player_count")]
+        [JsonPropertyName("unique_player_count")]
         public int UniquePlayerCount { get; set; }
 
-        [JsonProperty("tournament_count")]
+        [JsonPropertyName("tournament_count")]
         public int TournamentCount { get; set; }
 
-        [JsonProperty("current_leader")]
+        [JsonPropertyName("current_leader")]
         public CurrentLeader CurrentLeader { get; set; }
 
-        [JsonProperty("prize_fund")]
+        [JsonPropertyName("prize_fund")]
         public double PrizeFund { get; set; }
     }
 }

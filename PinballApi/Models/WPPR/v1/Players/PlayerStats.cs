@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using PinballApi.Converters;
 using System;
 
@@ -6,62 +6,62 @@ namespace PinballApi.Models.WPPR.v1.Players
 {
     public class PlayerStats
     {
-        [JsonProperty("current_wppr_rank")]
+        [JsonPropertyName("current_wppr_rank")]
         public int CurrentWpprRank { get; set; }
 
-        [JsonProperty("last_month_rank")]
+        [JsonPropertyName("last_month_rank")]
         public int LastMonthRank { get; set; }
 
-        [JsonProperty("last_year_rank")]
+        [JsonPropertyName("last_year_rank")]
         public int LastYearRank { get; set; }
 
-        [JsonProperty("highest_rank")]
+        [JsonPropertyName("highest_rank")]
         public int HighestRank { get; set; }
 
-        [JsonProperty("highest_rank_date")]
-        [JsonConverter(typeof(NullableDateConverter))]
+        [JsonPropertyName("highest_rank_date")]
         public DateTime? HighestRankDate { get; set; }
 
-        [JsonProperty("current_wppr_points")]
+        [JsonPropertyName("current_wppr_value")]
         public double CurrentWpprValue { get; set; }
 
-        [JsonProperty("all_time_wppr_points")]
+        [JsonPropertyName("wppr_points_all_time")]
         public double WpprPointsAllTime { get; set; }
 
-        [JsonProperty("best_finish")]
+        [JsonPropertyName("best_finish")]
         public int BestFinish { get; set; }
 
-        [JsonProperty("best_finish_count")]
+        [JsonPropertyName("best_finish_count")]
         public int BestFinishCount { get; set; }
 
-        [JsonProperty("average_finish")]
+        [JsonPropertyName("average_finish")]
         public int AverageFinish { get; set; }
 
-        [JsonProperty("average_finish_last_year")]
+        [JsonPropertyName("average_finish_last_year")]
         public int AverageFinishLastYear { get; set; }
 
-        [JsonProperty("total_events_all_time")]
+        [JsonPropertyName("total_events_all_time")]
         public int TotalEventsAllTime { get; set; }
 
-        [JsonProperty("total_active_events")]
+        [JsonPropertyName("total_active_events")]
         public int TotalActiveEvents { get; set; }
 
-        [JsonProperty("total_events_away")]
+        [JsonPropertyName("total_events_away")]
         public int TotalEventsAway { get; set; }
 
         //TODO: These four properties fail to load if you view a suppressed player. 
-        [JsonProperty("ratings_rank")]
-        [JsonConverter(typeof(IntegerWithNullDescriptiveConverter), "Not Ranked")]
+        [JsonPropertyName("ratings_rank")]
+        [JsonConverter(typeof(NotRankedNullableDescriptiveConverter))]
         public int? RatingsRank { get; set; }
 
-        [JsonProperty("ratings_value")]
+        [JsonPropertyName("ratings_value")]
         public double? RatingsValue { get; set; }
 
-        [JsonProperty("efficiency_rank")]
-        [JsonConverter(typeof(IntegerWithNullDescriptiveConverter), "Not Ranked")]
+        [JsonPropertyName("efficiency_rank")]
+        [JsonConverter(typeof(NotRankedNullableDescriptiveConverter))]
         public int? EfficiencyRank { get; set; }
 
-        [JsonProperty("efficiency_value")]
+        [JsonPropertyName("efficiency_value")]
+        [JsonConverter(typeof(EmptyStringNullableDoubleDescriptiveConverter))]
         public double? EfficiencyValue { get; set; }
     }
 

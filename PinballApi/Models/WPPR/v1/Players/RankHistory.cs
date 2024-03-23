@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 
 namespace PinballApi.Models.WPPR.v1.Players
 {
     public class RankHistory
     {
-        [JsonProperty("rank_date")]
+        [JsonPropertyName("rank_date")]
         public DateTime RankDate { get; set; }
 
-        [JsonProperty("rank_position")]
+        [JsonPropertyName("rank_position")]
         public int RankPosition { get; set; }
 
-        [JsonProperty("wppr_points")]
+        [JsonPropertyName("wppr_points")]
         public double WpprPoints { get; set; }
     }
 }

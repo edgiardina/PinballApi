@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v2.Nacs
 {
     public class NacsPayout
     {
-        [JsonProperty("position")]
+        [JsonPropertyName("position")]
         public int Position { get; set; }
 
-        [JsonProperty("prize_value")]
+        [JsonPropertyName("prize_value")]
         public double PrizeValue { get; set; }
     }
 }

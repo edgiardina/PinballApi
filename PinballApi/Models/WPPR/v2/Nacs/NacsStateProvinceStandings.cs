@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Nacs
 {
     public class NacsStateProvinceStandings
     {
-        [JsonProperty("standings")]
+        [JsonPropertyName("standings")]
         public List<PlayerStanding> PlayerStandings { get; set; }
 
-        [JsonProperty("stats")]
+        [JsonPropertyName("stats")]
         public List<NacsStateProvinceStatistics> Statistics { get; set; }
 
-        [JsonProperty("payouts")]
+        [JsonPropertyName("payouts")]
         public List<NacsPayout> Payouts { get; set; }
     }
 }

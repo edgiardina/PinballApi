@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.v2.Nacs
 {
     public class NacsStatisticsByYear
     {
-        [JsonProperty("year")]        
+        [JsonPropertyName("year")]        
         public int Year { get; set; }
 
-        [JsonProperty("stats")]
+        [JsonPropertyName("stats")]
         public NacsStatistics Statistics { get; set; }
 
     }

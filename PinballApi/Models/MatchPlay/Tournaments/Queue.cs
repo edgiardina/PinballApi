@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,28 +7,28 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class Queue
     {
-        [JsonProperty("queueId")]
+        [JsonPropertyName("queueId")]
         public int QueueId { get; set; }
 
-        [JsonProperty("tournamentId")]
+        [JsonPropertyName("tournamentId")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("arenaId")]
+        [JsonPropertyName("arenaId")]
         public int? ArenaId { get; set; }
 
-        [JsonProperty("roundId")]
+        [JsonPropertyName("roundId")]
         public int? RoundId { get; set; }
 
-        [JsonProperty("playerId")]
+        [JsonPropertyName("playerId")]
         public int PlayerId { get; set; }
 
-        [JsonProperty("index")]
+        [JsonPropertyName("index")]
         public int Index { get; set; }
 
-        [JsonProperty("createdAt")]
+        [JsonPropertyName("createdAt")]
         public DateTime CreatedAt { get; set; }
 
-        [JsonProperty("completedAt")]
+        [JsonPropertyName("completedAt")]
         public DateTime? CompletedAt { get; set; }
     }
 }

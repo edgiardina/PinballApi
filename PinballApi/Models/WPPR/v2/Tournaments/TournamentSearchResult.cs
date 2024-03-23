@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,34 +7,34 @@ namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public class TournamentSearchResult
     {
-        [JsonProperty("tournament_id")]
+        [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("tournament_name")]
+        [JsonPropertyName("tournament_name")]
         public string TournamentName { get; set; }
 
-        [JsonProperty("event_name")]
+        [JsonPropertyName("event_name")]
         public string EventName { get; set; }
 
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("stateprov")]
+        [JsonPropertyName("stateprov")]
         public string StateProvince { get; set; }
 
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
 
-        [JsonProperty("country_name")]
+        [JsonPropertyName("country_name")]
         public string CountryName { get; set; }
 
-        [JsonProperty("event_type")]
+        [JsonPropertyName("event_type")]
         public string EventType { get; set; }
 
-        [JsonProperty("event_start_date")]
+        [JsonPropertyName("event_start_date")]
         public DateTime EventStartDate { get; set; }
 
-        [JsonProperty("event_end_date")]
+        [JsonPropertyName("event_end_date")]
         public DateTime EventEndDate { get; set; }
     }
 }

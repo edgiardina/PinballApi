@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,67 +7,67 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class MatchplayGames
     {
-        [JsonProperty("gameId")]
+        [JsonPropertyName("gameId")]
         public int GameId { get; set; }
 
-        [JsonProperty("roundId")]
+        [JsonPropertyName("roundId")]
         public int RoundId { get; set; }
 
-        [JsonProperty("tournamentId")]
+        [JsonPropertyName("tournamentId")]
         public int TournamentId { get; set; }
 
-        [JsonProperty("arenaId")]
+        [JsonPropertyName("arenaId")]
         public int ArenaId { get; set; }
 
-        [JsonProperty("bankId")]
+        [JsonPropertyName("bankId")]
         public object BankId { get; set; }
 
-        [JsonProperty("index")]
+        [JsonPropertyName("index")]
         public int Index { get; set; }
 
-        [JsonProperty("set")]
+        [JsonPropertyName("set")]
         public int Set { get; set; }
 
-        [JsonProperty("playerIdAdvantage")]
+        [JsonPropertyName("playerIdAdvantage")]
         public object PlayerIdAdvantage { get; set; }
 
-        [JsonProperty("scorekeeperId")]
+        [JsonPropertyName("scorekeeperId")]
         public int ScorekeeperId { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("startedAt")]
+        [JsonPropertyName("startedAt")]
         public DateTime StartedAt { get; set; }
 
-        [JsonProperty("duration")]
+        [JsonPropertyName("duration")]
         public int Duration { get; set; }
 
-        [JsonProperty("bye")]
+        [JsonPropertyName("bye")]
         public bool Bye { get; set; }
 
-        [JsonProperty("players")]
+        [JsonPropertyName("players")]
         public List<Player> Players { get; set; }
 
-        [JsonProperty("playerIds")]
+        [JsonPropertyName("playerIds")]
         public List<int> PlayerIds { get; set; }
 
-        [JsonProperty("userIds")]
+        [JsonPropertyName("userIds")]
         public List<int?> UserIds { get; set; }
 
-        [JsonProperty("resultPositions")]
+        [JsonPropertyName("resultPositions")]
         public List<int> ResultPositions { get; set; }
 
-        [JsonProperty("resultPoints")]
+        [JsonPropertyName("resultPoints")]
         public List<float> ResultPoints { get; set; }
 
-        [JsonProperty("resultScores")]
+        [JsonPropertyName("resultScores")]
         public List<ulong?> ResultScores { get; set; }
 
-        [JsonProperty("arena")]
+        [JsonPropertyName("arena")]
         public Arena Arena { get; set; }
 
-        [JsonProperty("suggestions")]
+        [JsonPropertyName("suggestions")]
         public List<Suggestion> Suggestions { get; set; }
     }
 }

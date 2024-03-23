@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Calendar
 {
     public class CalendarSearch
     {
-        [JsonProperty("search_filter")]
+        [JsonPropertyName("search_filter")]
         public CalendarSearchFilter SearchFilter { get; set; }
 
-        [JsonProperty("calendar")]
+        [JsonPropertyName("calendar")]
         public List<CalendarEntry> CalendarEntries { get; set; }
     }
 }

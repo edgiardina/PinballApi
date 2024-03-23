@@ -1,22 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.MatchPlay
 {
     public class IfpaRatingHistory
     {
-        [JsonProperty("ratingRevisionId")]
+        [JsonPropertyName("ratingRevisionId")]
         public int RatingRevisionId { get; set; }
 
-        [JsonProperty("ratingId")]
+        [JsonPropertyName("ratingId")]
         public int RatingId { get; set; }
 
-        [JsonProperty("ratingPeriod")]
+        [JsonPropertyName("ratingPeriod")]
         public string RatingPeriod { get; set; }
 
-        [JsonProperty("rating")]
+        [JsonPropertyName("rating")]
         public int Rating { get; set; }
 
-        [JsonProperty("rd")]
+        [JsonPropertyName("rd")]
         public int Rd { get; set; }
     }
 }
