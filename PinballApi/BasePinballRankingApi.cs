@@ -16,10 +16,15 @@ namespace PinballApi
         protected readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
-            NumberHandling = JsonNumberHandling.AllowReadingFromString
+            NumberHandling = JsonNumberHandling.AllowReadingFromString,
+            Converters =
+            {
+                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false)
+            }
+
         };
 
-        protected IFlurlRequest BaseRequest => $"https://api.ifpapinball.com/{ApiVersion}/"
+        protected virtual IFlurlRequest BaseRequest => $"https://api.ifpapinball.com/{ApiVersion}/"
                                       .SetQueryParams(new { api_key = ApiKey })
                                       .WithSettings(settings =>
                                       {
