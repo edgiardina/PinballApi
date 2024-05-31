@@ -25,7 +25,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_TournamentSearch_GetSearchByLatLong()
         {
-            var result = await rankingApi.TournamentSearch(41.8240, -71.4128, 150, Models.WPPR.v2.Calendar.DistanceType.Miles);
+            var result = await rankingApi.TournamentSearch(41.8240, -71.4128, 150, Models.WPPR.v2.Calendar.DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1));
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.TotalResults, Is.GreaterThan(0));

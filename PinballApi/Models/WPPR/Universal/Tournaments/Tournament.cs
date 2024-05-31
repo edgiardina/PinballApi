@@ -70,7 +70,7 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments
         public RankingSystem RankingSystem { get; set; }
 
         [JsonPropertyName("preregistration_date")]
-        [JsonConverter(typeof(NullableDateTimeConverter))]
+        [JsonConverter(typeof(NullableDateConverter))]
         public DateTimeOffset? PreregistrationDate { get; set; }
 
         [JsonPropertyName("player_count")]

@@ -33,8 +33,6 @@ namespace PinballApi
 
         protected override PinballRankingApiVersion ApiVersion => PinballRankingApiVersion.Universal;
 
-
-
         public async Task<TournamentSearch> TournamentSearch(double? latitude = null, double? longitude = null, int? radius = null, DistanceType? distanceType = null, string name = null, string country = null, string stateprov = null, DateTime? startDate = null, DateTime? endDate = null, RankingSystem? rankingSystem = null, int? startPosition = null,
             int? totalReturn = null, TournamentSearchSortMode? tournamentSearchSortMode = null, TournamentSearchSortOrder? tournamentSearchSortOrder = null, string directorName = null,
             bool? preRegistration = null, bool? onlyWithResults = null, double? minimumPoints = null, double? maximumPoints = null, bool? pointFilter = null)
@@ -69,7 +67,7 @@ namespace PinballApi
             if (endDate.HasValue)
                 request = request.SetQueryParam("end_date", endDate.Value.ToString("yyyy-MM-dd"));
 
-            if (rankingSystem.HasValue && (rankingSystem == RankingSystem.Main || rankingSystem == RankingSystem.Women))
+            if (rankingSystem.HasValue)
                 request = request.SetQueryParam("rank_type", rankingSystem.Value.ToString().ToUpper());
 
             if(radius.HasValue)

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace PinballApi.Converters
 {
-    internal class NullableDateTimeConverter : JsonConverter<DateTimeOffset?>
+    internal class NullableDateConverter : JsonConverter<DateTimeOffset?>
     {
-        private const string DefaultDateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK";
+        private const string DefaultDateTimeFormat = "yyyy-MM-dd";
 
         public override DateTimeOffset? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
