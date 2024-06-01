@@ -380,7 +380,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApiV2_GetTournamentResults_NotYetSubmitted_ShouldReturnTournamentResults()
         {
-            var tournamentId = 78596;
+            var tournamentId = 77937;
 
             var tournament = await rankingApi.GetTournamentResults(tournamentId);
 
