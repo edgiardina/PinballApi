@@ -375,6 +375,18 @@ namespace PinballApi.Tests
             Assert.That(tournament.Results.Count, Is.Positive);
         }
 
+        // 
+        //78596
+        [Test]
+        public async Task PinballRankingApiV2_GetTournamentResults_NotYetSubmitted_ShouldReturnTournamentResults()
+        {
+            var tournamentId = 77937;
+
+            var tournament = await rankingApi.GetTournamentResults(tournamentId);
+
+            Assert.That(tournament.Results.Count, Is.Positive);
+        }
+
 
         [Test]
         public async Task PinballRankingApiV2_GetTournamentResults_ShouldReturnTournamentWinners()

@@ -60,5 +60,12 @@ namespace PinballApi.Models.WPPR.v2.Calendar
         [JsonPropertyName("private_flag")]
         [JsonConverter(typeof(BooleanConverter))]
         public bool PrivateFlag { get; set; }
+
+        [JsonPropertyName("ranking_system")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public RankingType RankingSystem { get; set; }
+
+        [JsonPropertyName("distance")]
+        public long Distance { get; set; }
     }
 }

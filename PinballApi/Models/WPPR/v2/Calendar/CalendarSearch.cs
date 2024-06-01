@@ -3,12 +3,24 @@ using System.Collections.Generic;
 
 namespace PinballApi.Models.WPPR.v2.Calendar
 {
-    public class CalendarSearch
+    public partial class CalendarSearch
     {
-        [JsonPropertyName("search_filter")]
-        public CalendarSearchFilter SearchFilter { get; set; }
+        [JsonPropertyName("search_distance")]
+        public long SearchDistance { get; set; }
+
+        [JsonPropertyName("distance_type")]
+        public string DistanceType { get; set; }
+
+        [JsonPropertyName("latitude")]
+        public string Latitude { get; set; }
+
+        [JsonPropertyName("longitude")]
+        public string Longitude { get; set; }
 
         [JsonPropertyName("calendar")]
-        public List<CalendarEntry> CalendarEntries { get; set; }
+        public CalendarEntry[] Calendar { get; set; }
+
+        [JsonPropertyName("total_entries")]
+        public long TotalEntries { get; set; }
     }
 }
