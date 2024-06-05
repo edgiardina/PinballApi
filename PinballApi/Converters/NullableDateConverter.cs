@@ -15,7 +15,7 @@ namespace PinballApi.Converters
 
         public override DateTimeOffset? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if(reader.GetString() == "0000-00-00")
+            if(reader.GetString() == "0000-00-00" || string.IsNullOrWhiteSpace(reader.GetString()))
                 return null;
 
             return DateTimeOffset.ParseExact(reader.GetString(),

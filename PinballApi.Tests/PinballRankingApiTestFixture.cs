@@ -34,5 +34,16 @@ namespace PinballApi.Tests
             Assert.That(result.SearchFilter.Radius, Is.EqualTo(150));
             Assert.That(result.SearchFilter.DistanceUnit, Is.EqualTo("m"));
         }
+
+        [Test]
+        public async Task PinballRankingApi_TournamentSearch_GetSearchById()
+        {
+            int tourneyId = 78504;
+            var result = await rankingApi.GetTournament(tourneyId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TournamentId, Is.EqualTo(tourneyId));
+
+        }
     }
 }
