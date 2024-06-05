@@ -14,18 +14,18 @@ namespace PinballApi.Models.MatchPlay
         public DateTime PeriodDate { get; set; }
 
         [JsonPropertyName("tournamentCount")]
-        public int TournamentCount { get; set; }
+        public int? TournamentCount { get; set; }
 
         [JsonPropertyName("challengeCount")]
-        public int ChallengeCount { get; set; }
+        public int? ChallengeCount { get; set; }
 
         [JsonPropertyName("extEventCount")]
-        public int ExtEventCount { get; set; }
+        public int? ExtEventCount { get; set; }
 
         [JsonPropertyName("resultCount")]
-        public int ResultCount { get; set; }
+        public int? ResultCount { get; set; }
 
         [JsonPropertyName("playerCount")]
-        public int PlayerCount { get; set; }
+        public int? PlayerCount { get; set; }
     }
 }

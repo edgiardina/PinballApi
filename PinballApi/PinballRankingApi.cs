@@ -2,18 +2,13 @@
 using Flurl;
 using PinballApi.Models.WPPR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Flurl.Http.Configuration;
 using PinballApi.Interfaces;
-using PinballApi.Models.WPPR.Universal.Tournaments;
-using PinballApi.Models.WPPR.v2;
-using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.v2.Calendar;
-using PinballApi.Models.WPPR.v1.Calendar;
 using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using PinballApi.Models.WPPR.Universal.Tournaments;
 
 namespace PinballApi
 {
@@ -124,6 +119,14 @@ namespace PinballApi
                 request = request.SetQueryParam("director_name", directorName);
 
             return await request.GetJsonAsync<TournamentSearch>();
+        }
+
+        public async Task<Models.WPPR.Universal.Tournaments.Tournament> GetTournament(int tournamentId)
+        {
+            var request = BaseRequest
+                .AppendPathSegment($"tournament/{tournamentId}");
+
+            return await request.GetJsonAsync<Models.WPPR.Universal.Tournaments.Tournament>();
         }
     }
 }
