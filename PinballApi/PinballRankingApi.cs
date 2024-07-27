@@ -8,7 +8,12 @@ using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.v2.Calendar;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
-using PinballApi.Models.WPPR.Universal.Tournaments;
+using PinballApi.Models.WPPR.Universal.Rankings;
+using PinballApi.Models.WPPR.Universal.Players;
+using System.Text.Json.Nodes;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Linq;
 
 namespace PinballApi
 {
@@ -27,6 +32,8 @@ namespace PinballApi
                               });
 
         protected override PinballRankingApiVersion ApiVersion => PinballRankingApiVersion.Universal;
+
+        #region Tournaments
 
         public async Task<TournamentSearch> TournamentSearch(double? latitude = null, double? longitude = null, int? radius = null, DistanceType? distanceType = null, string name = null, string country = null, string stateprov = null, DateTime? startDate = null, DateTime? endDate = null, RankingSystem? rankingSystem = null, int? startPosition = null,
             int? totalReturn = null, TournamentSearchSortMode? tournamentSearchSortMode = null, TournamentSearchSortOrder? tournamentSearchSortOrder = null, string directorName = null,
@@ -124,9 +131,45 @@ namespace PinballApi
         public async Task<Models.WPPR.Universal.Tournaments.Tournament> GetTournament(int tournamentId)
         {
             var request = BaseRequest
-                .AppendPathSegment($"tournament/{tournamentId}");
+                .AppendPathSegment("tournament")
+                .AppendPathSegment(tournamentId);
 
             return await request.GetJsonAsync<Models.WPPR.Universal.Tournaments.Tournament>();
         }
+
+        #endregion
+
+        #region Rankings
+
+        public async Task<RankingSearch> RankingSearch(RankingType rankingType, RankingSystem rankingSystem)
+        {
+            if (rankingSystem != RankingSystem.Main && rankingSystem != RankingSystem.Women)
+                throw new ArgumentException("Ranking search does not support any other Ranking System besides Main/Open and Women");
+
+            var rankingSystemString = rankingSystem == RankingSystem.Main ? "open" : rankingSystem.ToString().ToLower();
+
+            var request = BaseRequest
+                .AppendPathSegment("rankings")
+                .AppendPathSegment(rankingType.ToString().ToLower()) 
+                .AppendPathSegment(rankingSystemString);
+
+            return await request.GetJsonAsync<RankingSearch>();
+        }
+
+        #endregion
+
+        #region Players
+
+        public async Task<Player> GetPlayer(int playerId)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("player")
+                .AppendPathSegment(playerId)
+                .GetStringAsync();
+
+             return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions).First();
+        }
+
+        #endregion
     }
 }
