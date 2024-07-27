@@ -1,9 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using PinballApi.Models.MatchPlay.Tournaments;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.MatchPlay
 {
