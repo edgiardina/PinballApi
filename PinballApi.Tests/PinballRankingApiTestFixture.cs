@@ -56,5 +56,14 @@ namespace PinballApi.Tests
             Assert.That(result.Rankings.Count, Is.GreaterThan(0));
             Assert.That(result.RankingType, Is.EqualTo(Models.WPPR.Universal.Rankings.RankingType.Pro));
         }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerSearch_GetPlayerId()
+        {
+            var result = await rankingApi.GetPlayer(5363);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(5363));
+        }
     }
 }

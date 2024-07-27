@@ -8,8 +8,12 @@ using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.v2.Calendar;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
-using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.Universal.Rankings;
+using PinballApi.Models.WPPR.Universal.Players;
+using System.Text.Json.Nodes;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Linq;
 
 namespace PinballApi
 {
@@ -127,7 +131,8 @@ namespace PinballApi
         public async Task<Models.WPPR.Universal.Tournaments.Tournament> GetTournament(int tournamentId)
         {
             var request = BaseRequest
-                .AppendPathSegment($"tournament/{tournamentId}");
+                .AppendPathSegment("tournament")
+                .AppendPathSegment(tournamentId);
 
             return await request.GetJsonAsync<Models.WPPR.Universal.Tournaments.Tournament>();
         }
@@ -144,11 +149,25 @@ namespace PinballApi
             var rankingSystemString = rankingSystem == RankingSystem.Main ? "open" : rankingSystem.ToString().ToLower();
 
             var request = BaseRequest
-                .AppendPathSegment("rankings/")
+                .AppendPathSegment("rankings")
                 .AppendPathSegment(rankingType.ToString().ToLower()) 
                 .AppendPathSegment(rankingSystemString);
 
             return await request.GetJsonAsync<RankingSearch>();
+        }
+
+        #endregion
+
+        #region Players
+
+        public async Task<Player> GetPlayer(int playerId)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("player")
+                .AppendPathSegment(playerId)
+                .GetStringAsync();
+
+             return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions).First();
         }
 
         #endregion
