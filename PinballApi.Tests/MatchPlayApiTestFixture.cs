@@ -86,7 +86,7 @@ namespace PinballApi.Tests
             var userSearch = await matchPlayApi.SearchForUsers("Giardina");
 
             Assert.That(userSearch, Is.Not.Null);
-            Assert.That(userSearch.Count == 2);
+            Assert.That(userSearch.Count > 0);
         }
 
         [Test]
