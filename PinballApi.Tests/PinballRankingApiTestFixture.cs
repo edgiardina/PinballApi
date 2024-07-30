@@ -65,5 +65,17 @@ namespace PinballApi.Tests
             Assert.That(result, Is.Not.Null);
             Assert.That(result.PlayerId, Is.EqualTo(5363));
         }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerSearch_GetPlayerByName()
+        {
+            var result = await rankingApi.PlayerSearch("Raymond Davidson");
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Results, Is.Not.Null);
+            Assert.That(result.Results.Count, Is.GreaterThan(0));
+            Assert.That(result.Results.First().FirstName, Is.EqualTo("Raymond"));
+            Assert.That(result.Results.First().LastName, Is.EqualTo("Davidson"));
+        }
     }
 }

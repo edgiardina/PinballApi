@@ -14,6 +14,7 @@ using System.Text.Json.Nodes;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
+using PinballApi.Models.WPPR.Universal.Players.Search;
 
 namespace PinballApi
 {
@@ -168,6 +169,25 @@ namespace PinballApi
                 .GetStringAsync();
 
              return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions).First();
+        }
+
+        public async Task<PlayerSearch> PlayerSearch(string name = null, string country = null)
+        {
+            if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(country))
+                throw new ArgumentException("Name or Country must be provided");
+
+            var request = BaseRequest
+                .AppendPathSegment("player/search");
+
+            if (!string.IsNullOrEmpty(name))
+                request = request
+                .SetQueryParam("name", name);
+
+            if (!string.IsNullOrEmpty(country))
+                request = request
+                .SetQueryParam("country", country);
+
+            return await request.GetJsonAsync<PlayerSearch>();
         }
 
         #endregion
