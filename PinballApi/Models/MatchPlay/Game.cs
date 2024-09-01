@@ -17,7 +17,7 @@ namespace PinballApi.Models.MatchPlay
         public int TournamentId { get; set; }
 
         [JsonPropertyName("arenaId")]
-        public int ArenaId { get; set; }
+        public int? ArenaId { get; set; }
 
         [JsonPropertyName("bankId")]
         public int? BankId { get; set; }

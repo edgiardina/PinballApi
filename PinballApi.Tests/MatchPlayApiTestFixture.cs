@@ -47,6 +47,14 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task MatchPlayApi_GetGames_ByRound_ShouldReturnGames()
+        {
+            var games = await matchPlayApi.GetGames(new List<int> { 155787 }, round: 712941);
+
+            Assert.That(games, Is.Not.Empty);
+        }
+
+        [Test]
         public async Task MatchPlayApi_GetLocations_ShouldReturnLocations()
         {
             var locations = await matchPlayApi.GetLocations();
