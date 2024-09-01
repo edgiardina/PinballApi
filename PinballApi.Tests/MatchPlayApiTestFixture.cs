@@ -406,7 +406,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetGame_ShouldReturnGame()
         {
-            var stats = await matchPlayApi.GetGame(100085, 2978054);
+            var stats = await matchPlayApi.GetGame(155787, 4729300);
 
             Assert.That(stats, Is.Not.Null);
         }

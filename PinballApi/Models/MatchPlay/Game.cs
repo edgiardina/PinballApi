@@ -54,7 +54,7 @@ namespace PinballApi.Models.MatchPlay
         public List<int?> UserIds { get; set; }
 
         [JsonPropertyName("resultPositions")]
-        public List<int> ResultPositions { get; set; }
+        public List<int?> ResultPositions { get; set; }
 
         [JsonPropertyName("resultPoints")]
         public List<string> ResultPoints { get; set; }
