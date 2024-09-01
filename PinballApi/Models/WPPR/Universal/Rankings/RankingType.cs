@@ -2,6 +2,8 @@
 {
     public enum RankingType
     {
-        Pro
+        Pro,
+        Wppr,
+        Youth
     }
 }

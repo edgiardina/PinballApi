@@ -142,8 +142,15 @@ namespace PinballApi
 
         #region Rankings
 
-        public async Task<RankingSearch> RankingSearch(RankingType rankingType, RankingSystem rankingSystem)
+        public async Task<RankingCountries> GetRankingCountries()
         {
+            var request = BaseRequest
+                .AppendPathSegment("rankings/country_list");
+
+            return await request.GetJsonAsync<RankingCountries>();
+        }
+
+        public async Task<RankingSearch> RankingSearch(RankingSystem rankingSystem, RankingType rankingType = RankingType.Wppr)        {
             if (rankingSystem != RankingSystem.Main && rankingSystem != RankingSystem.Women)
                 throw new ArgumentException("Ranking search does not support any other Ranking System besides Main/Open and Women");
 
@@ -151,8 +158,10 @@ namespace PinballApi
 
             var request = BaseRequest
                 .AppendPathSegment("rankings")
-                .AppendPathSegment(rankingType.ToString().ToLower()) 
-                .AppendPathSegment(rankingSystemString);
+                .AppendPathSegment(rankingType.ToString().ToLower());
+
+            if (rankingType == RankingType.Pro)
+                request.AppendPathSegment(rankingSystemString);
 
             return await request.GetJsonAsync<RankingSearch>();
         }

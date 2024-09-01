@@ -395,5 +395,12 @@ namespace PinballApi.Tests
             Assert.That(stats, Is.Not.Empty);
         }
 
+        [Test]
+        public async Task MatchPlayApi_GetGame_ShouldReturnGame()
+        {
+            var stats = await matchPlayApi.GetGame(100085, 2978054);
+
+            Assert.That(stats, Is.Not.Null);
+        }
     }
 }

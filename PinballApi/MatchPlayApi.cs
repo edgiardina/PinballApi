@@ -100,6 +100,18 @@ namespace PinballApi
             return JsonNode.Parse(json)["data"].Deserialize<List<Game>>(JsonSerializerOptions);
         }
 
+        public async Task<Game> GetGame(int tournamentId, int gameId)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("tournaments")
+                .AppendPathSegment(tournamentId)
+                .AppendPathSegment("games")
+                .AppendPathSegment(gameId)
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["data"].Deserialize<Game>(JsonSerializerOptions);
+        }
+
         public async Task<IfpaEstimate> GetIfpaEstimate(int? touramentId = null, int? seriesId = null, List<int> ifpaIds = null, List<string> names = null)
         {
             if (touramentId.HasValue == false && seriesId.HasValue == false && ifpaIds == null && names == null)
