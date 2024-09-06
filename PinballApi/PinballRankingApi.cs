@@ -168,10 +168,13 @@ namespace PinballApi
             return await request.GetJsonAsync<RankingSearch>();
         }
 
-        public async Task<ProRankingSearch> ProRankingSearch(RankingSystem rankingSystem)
+        public async Task<ProRankingSearch> ProRankingSearch(RankingSystem rankingSystem = RankingSystem.Open)
         {
             if (rankingSystem == RankingSystem.Youth)
                 throw new ArgumentException("Youth Pro Rankings are not supported");
+
+            if(rankingSystem == RankingSystem.Main)
+                rankingSystem = RankingSystem.Open;
 
             var request = BaseRequest
                             .AppendPathSegment("rankings")

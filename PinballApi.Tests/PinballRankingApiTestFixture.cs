@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Rankings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,14 +49,27 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task PinballRankingApi_RankingSearch_GetRankingsByType()
+        public async Task PinballRankingApi_RankingSearch_GetRankingsByType([Values] RankingType type)
         {
-            var result = await rankingApi.RankingSearch(Models.WPPR.Universal.Rankings.RankingType.Wppr);
+            Assume.That(type, Is.Not.EqualTo(RankingType.Pro));
+
+            var result = await rankingApi.RankingSearch(type);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Rankings, Is.Not.Null);
             Assert.That(result.Rankings.Count, Is.GreaterThan(0));
-            Assert.That(result.RankingType, Is.EqualTo(Models.WPPR.Universal.Rankings.RankingType.Wppr));
+            Assert.That(result.RankingType, Is.EqualTo(type));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_ProRankingSearch_GetRankings([Values] RankingSystem system)
+        {
+            var result = await rankingApi.ProRankingSearch(system);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Rankings, Is.Not.Null);
+            Assert.That(result.Rankings.Count, Is.GreaterThan(0));
+            Assert.That(result.RankingType, Is.EqualTo(RankingType.Pro));
         }
 
         [Test]

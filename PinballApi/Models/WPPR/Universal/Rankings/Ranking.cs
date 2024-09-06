@@ -34,7 +34,6 @@ namespace PinballApi.Models.WPPR.Universal.Rankings
         public string City { get; set; }
 
         [JsonPropertyName("current_rank")]
-        [JsonConverter(typeof(LongIntegerFromStringConverter))]
         public long CurrentRank { get; set; }
 
         [JsonPropertyName("pro_points")]
