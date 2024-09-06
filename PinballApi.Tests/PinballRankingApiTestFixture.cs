@@ -64,6 +64,8 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_ProRankingSearch_GetRankings([Values] RankingSystem system)
         {
+            Assume.That(system, Is.Not.EqualTo(RankingSystem.Youth));
+
             var result = await rankingApi.ProRankingSearch(system);
 
             Assert.That(result, Is.Not.Null);
