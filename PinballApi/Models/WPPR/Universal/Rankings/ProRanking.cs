@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.Universal.Rankings
 {
-    public class Ranking
+    public class ProRanking
     {
         [JsonPropertyName("player_id")]
         [JsonConverter(typeof(LongIntegerFromStringConverter))]
@@ -14,7 +14,6 @@ namespace PinballApi.Models.WPPR.Universal.Rankings
         public string Name { get; set; }
 
         [JsonPropertyName("age")]
-        [JsonConverter(typeof(EmptyStringNullableIntDescriptiveConverter))]
         public int? Age { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

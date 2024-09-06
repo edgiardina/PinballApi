@@ -49,12 +49,12 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_RankingSearch_GetRankingsByType()
         {
-            var result = await rankingApi.RankingSearch(Models.WPPR.Universal.RankingSystem.Main, Models.WPPR.Universal.Rankings.RankingType.Pro);
+            var result = await rankingApi.RankingSearch(Models.WPPR.Universal.Rankings.RankingType.Wppr);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Rankings, Is.Not.Null);
             Assert.That(result.Rankings.Count, Is.GreaterThan(0));
-            Assert.That(result.RankingType, Is.EqualTo(Models.WPPR.Universal.Rankings.RankingType.Pro));
+            Assert.That(result.RankingType, Is.EqualTo(Models.WPPR.Universal.Rankings.RankingType.Wppr));
         }
 
         [Test]
