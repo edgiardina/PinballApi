@@ -66,14 +66,14 @@ namespace PinballApi
 
             if (startDate.HasValue)
                 request = request.SetQueryParam("start_date", startDate.Value.ToString("yyyy-MM-dd"));
-            
+
             if (endDate.HasValue)
                 request = request.SetQueryParam("end_date", endDate.Value.ToString("yyyy-MM-dd"));
 
             if (rankingSystem.HasValue)
                 request = request.SetQueryParam("rank_type", rankingSystem.Value.ToString().ToUpper());
 
-            if(radius.HasValue)
+            if (radius.HasValue)
                 request = request.SetQueryParam("radius", radius);
 
             if (startPosition.HasValue)
@@ -101,14 +101,14 @@ namespace PinballApi
 
             if (pointFilter.HasValue)
             {
-                if(pointFilter == true)
+                if (pointFilter == true)
                     request = request.SetQueryParam("point_filter", "Y");
                 else
                     request = request.SetQueryParam("point_filter", "N");
             }
 
             if (preRegistration.HasValue)
-            {                
+            {
                 if (preRegistration == true)
                     request = request.SetQueryParam("preregistration", "Y");
                 else
@@ -150,20 +150,38 @@ namespace PinballApi
             return await request.GetJsonAsync<RankingCountries>();
         }
 
-        public async Task<RankingSearch> RankingSearch(RankingSystem rankingSystem, RankingType rankingType = RankingType.Wppr)        {
-            if (rankingSystem != RankingSystem.Main && rankingSystem != RankingSystem.Women)
-                throw new ArgumentException("Ranking search does not support any other Ranking System besides Main/Open and Women");
-
-            var rankingSystemString = rankingSystem == RankingSystem.Main ? "open" : rankingSystem.ToString().ToLower();
+        public async Task<RankingSearch> RankingSearch(RankingType rankingType, RankingSystem rankingSystem = RankingSystem.Open)
+        {
+            if(rankingType == RankingType.Pro)
+                throw new ArgumentException("Use Pro Ranking Search method for Pro Rankings");     
 
             var request = BaseRequest
                 .AppendPathSegment("rankings")
                 .AppendPathSegment(rankingType.ToString().ToLower());
 
-            if (rankingType == RankingType.Pro)
-                request.AppendPathSegment(rankingSystemString);
+            if (rankingType == RankingType.Women)
+            {
+                request = request.AppendPathSegment(rankingSystem == RankingSystem.Women ? "restricted" : "open");
+            }
+                
 
             return await request.GetJsonAsync<RankingSearch>();
+        }
+
+        public async Task<ProRankingSearch> ProRankingSearch(RankingSystem rankingSystem = RankingSystem.Open)
+        {
+            if (rankingSystem == RankingSystem.Youth)
+                throw new ArgumentException("Youth Pro Rankings are not supported");
+
+            if(rankingSystem == RankingSystem.Main)
+                rankingSystem = RankingSystem.Open;
+
+            var request = BaseRequest
+                            .AppendPathSegment("rankings")
+                            .AppendPathSegment("pro")
+                            .AppendPathSegment(rankingSystem.ToString().ToLower());
+
+            return await request.GetJsonAsync<ProRankingSearch>();
         }
 
         #endregion
@@ -177,7 +195,7 @@ namespace PinballApi
                 .AppendPathSegment(playerId)
                 .GetStringAsync();
 
-             return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions).First();
+            return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions).First();
         }
 
         public async Task<PlayerSearch> PlayerSearch(string name = null, string country = null)

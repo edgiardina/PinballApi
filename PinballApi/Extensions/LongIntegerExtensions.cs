@@ -2,9 +2,9 @@
 
 namespace PinballApi.Extensions
 {
-    public static class IntegerExtensions
+    public static class LongIntegerExtensions
     {
-        public static string OrdinalSuffix(this int number)
+        public static string OrdinalSuffix(this long number)
         {
             var ones = number % 10;
             var tens = Math.Floor(number / 10f) % 10;

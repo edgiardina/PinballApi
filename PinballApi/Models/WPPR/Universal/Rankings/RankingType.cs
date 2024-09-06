@@ -4,6 +4,7 @@
     {
         Pro,
         Wppr,
-        Youth
+        Youth,
+        Women
     }
 }
