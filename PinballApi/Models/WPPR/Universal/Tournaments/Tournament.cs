@@ -121,7 +121,7 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments
 
         [JsonPropertyName("ranking_system")]
         [JsonConverter(typeof(RankingSystemConverter))]
-        public RankingSystem RankingSystem { get; set; }
+        public TournamentType RankingSystem { get; set; }
 
         [JsonPropertyName("details")]
         public string Details { get; set; }

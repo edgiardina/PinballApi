@@ -10,7 +10,7 @@ namespace PinballApi.Models.WPPR.Universal.Rankings
         public RankingType RankingType { get; set; }
 
         [JsonPropertyName("tournament_type")]
-        public RankingSystem RankingSystem { get; set; }
+        public TournamentType RankingSystem { get; set; }
 
         [JsonPropertyName("start_position")]
         public int StartPosition { get; set; }

@@ -9,16 +9,16 @@ using PinballApi.Models.WPPR.Universal;
 
 namespace PinballApi.Converters
 {
-    public class RankingSystemConverter : JsonConverter<RankingSystem>
+    public class RankingSystemConverter : JsonConverter<TournamentType>
     {
-        public override RankingSystem Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override TournamentType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var enumString = reader.GetString().ToLower();
             enumString = UppercaseFirst(enumString);
-            return (RankingSystem)Enum.Parse(typeToConvert, enumString, ignoreCase: true);
+            return (TournamentType)Enum.Parse(typeToConvert, enumString, ignoreCase: true);
         }
 
-        public override void Write(Utf8JsonWriter writer, RankingSystem value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, TournamentType value, JsonSerializerOptions options)
         {
             writer.WriteStringValue(value.ToString());
         }
