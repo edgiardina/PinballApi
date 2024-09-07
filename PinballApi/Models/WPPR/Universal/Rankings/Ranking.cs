@@ -32,9 +32,9 @@ namespace PinballApi.Models.WPPR.Universal.Rankings
         public string BestFinish { get; set; }
 
         [JsonPropertyName("best_finish_position")]
-        public string BestFinishPosition { get; set; }
+        public int BestFinishPosition { get; set; }
 
         [JsonPropertyName("best_tournament_id")]
-        public string BestTournamentId { get; set; }
+        public long BestTournamentId { get; set; }
     }
 }

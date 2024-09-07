@@ -53,7 +53,9 @@ namespace PinballApi.Tests
         {
             Assume.That(type, Is.Not.EqualTo(RankingType.Pro));
 
-            var result = await rankingApi.RankingSearch(type);
+            var code = "US";
+
+            var result = await rankingApi.RankingSearch(type, countryCode: code);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Rankings, Is.Not.Null);
@@ -62,9 +64,9 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task PinballRankingApi_ProRankingSearch_GetRankings([Values] RankingSystem system)
+        public async Task PinballRankingApi_ProRankingSearch_GetRankings([Values] TournamentType system)
         {
-            Assume.That(system, Is.Not.EqualTo(RankingSystem.Youth));
+            Assume.That(system, Is.Not.EqualTo(TournamentType.Youth));
 
             var result = await rankingApi.ProRankingSearch(system);
 
@@ -82,6 +84,12 @@ namespace PinballApi.Tests
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Country, Is.Not.Null);
             Assert.That(result.Country.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetRankingByCountry_ShouldThrowIfCountryCodeIsNullOrEmpty()
+        {
+            Assert.ThrowsAsync<ArgumentException>(async () => await rankingApi.RankingSearch(RankingType.Country));
         }
 
         [Test]

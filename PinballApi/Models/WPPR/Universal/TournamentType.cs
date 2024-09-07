@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PinballApi.Models.WPPR.Universal
 {
-    public enum RankingSystem
+    public enum TournamentType
     {
         Main,
         Open,
