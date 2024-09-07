@@ -1,63 +1,40 @@
-﻿using PinballApi.Converters;
-using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.Universal.Rankings
 {
-    public class Ranking
+    public class Ranking : BaseRanking
     {
-        [JsonPropertyName("player_id")]
-        [JsonConverter(typeof(LongIntegerFromStringConverter))]
-        public long PlayerId { get; set; }
+        [JsonPropertyName("wppr_points")]
+        public string WpprPoints { get; set; }
 
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
+        [JsonPropertyName("total_wins_last_3_years")]
+        public string TotalWinsLast3Years { get; set; }
 
-        [JsonPropertyName("age")]
-        [JsonConverter(typeof(EmptyStringNullableIntDescriptiveConverter))]
-        public int? Age { get; set; }
+        [JsonPropertyName("top_3_last_3_years")]
+        public string Top3Last3Years { get; set; }
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        [JsonPropertyName("profile_photo")]
-        public Uri ProfilePhoto { get; set; }
+        [JsonPropertyName("top_10_last_3_years")]
+        public string Top10Last3Years { get; set; }
 
-        [JsonPropertyName("country_name")]
-        public string CountryName { get; set; }
+        [JsonPropertyName("last_month_rank")]
+        public string LastMonthRank { get; set; }
 
-        [JsonPropertyName("country_code")]
-        public string CountryCode { get; set; }
+        [JsonPropertyName("rating_value")]
+        public string RatingValue { get; set; }
 
-        [JsonPropertyName("stateprov")]
-        public string Stateprov { get; set; }
+        [JsonPropertyName("rating_deviation")]
+        public string RatingDeviation { get; set; }
 
-        [JsonPropertyName("city")]
-        public string City { get; set; }
+        [JsonPropertyName("event_count")]
+        public string EventCount { get; set; }
 
-        [JsonPropertyName("current_rank")]
-        public long CurrentRank { get; set; }
+        [JsonPropertyName("best_finish")]
+        public string BestFinish { get; set; }
 
-        [JsonPropertyName("pro_points")]
-        public double ProPoints { get; set; }
+        [JsonPropertyName("best_finish_position")]
+        public string BestFinishPosition { get; set; }
 
-        [JsonPropertyName("orginal_wppr_points")]
-        public double OrginalWpprPoints { get; set; }
-
-        [JsonPropertyName("efficiency_percent")]
-        public double EfficiencyPercent { get; set; }
-
-        [JsonPropertyName("adj_efficiency_percent")]
-        public double AdjEfficiencyPercent { get; set; }
-
-        [JsonPropertyName("excess_percent")]
-        public double ExcessPercent { get; set; }
-
-        [JsonPropertyName("wpprtunity")]
-        public double Wpprtunity { get; set; }
-
-        [JsonPropertyName("wppr_adjustment")]
-        public double WpprAdjustment { get; set; }
-
-        [JsonPropertyName("sos_percent")]
-        public double SosPercent { get; set; }
+        [JsonPropertyName("best_tournament_id")]
+        public string BestTournamentId { get; set; }
     }
 }
