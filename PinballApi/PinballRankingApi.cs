@@ -150,20 +150,25 @@ namespace PinballApi
             return await request.GetJsonAsync<RankingCountries>();
         }
 
-        public async Task<RankingSearch> RankingSearch(RankingType rankingType, RankingSystem rankingSystem = RankingSystem.Open)
+        public async Task<RankingSearch> RankingSearch(RankingType rankingType, RankingSystem rankingSystem = RankingSystem.Open, int count = 100, int startPosition = 1)
         {
-            if(rankingType == RankingType.Pro)
-                throw new ArgumentException("Use Pro Ranking Search method for Pro Rankings");     
+            if (rankingType == RankingType.Pro)
+                throw new ArgumentException("Use Pro Ranking Search method for Pro Rankings");
 
             var request = BaseRequest
                 .AppendPathSegment("rankings")
-                .AppendPathSegment(rankingType.ToString().ToLower());
+                .AppendPathSegment(rankingType.ToString().ToLower())
+                .SetQueryParams(new
+                {
+                    start_pos = startPosition,
+                    count
+                });
 
             if (rankingType == RankingType.Women)
             {
                 request = request.AppendPathSegment(rankingSystem == RankingSystem.Women ? "restricted" : "open");
             }
-                
+
 
             return await request.GetJsonAsync<RankingSearch>();
         }
@@ -173,7 +178,7 @@ namespace PinballApi
             if (rankingSystem == RankingSystem.Youth)
                 throw new ArgumentException("Youth Pro Rankings are not supported");
 
-            if(rankingSystem == RankingSystem.Main)
+            if (rankingSystem == RankingSystem.Main)
                 rankingSystem = RankingSystem.Open;
 
             var request = BaseRequest
