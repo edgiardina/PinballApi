@@ -36,7 +36,7 @@ namespace PinballApi
 
         #region Tournaments
 
-        public async Task<TournamentSearch> TournamentSearch(double? latitude = null, double? longitude = null, int? radius = null, DistanceType? distanceType = null, string name = null, string country = null, string stateprov = null, DateTime? startDate = null, DateTime? endDate = null, RankingSystem? tournamentType = null, int? startPosition = null,
+        public async Task<TournamentSearch> TournamentSearch(double? latitude = null, double? longitude = null, int? radius = null, DistanceType? distanceType = null, string name = null, string country = null, string stateprov = null, DateTime? startDate = null, DateTime? endDate = null, TournamentType? tournamentType = null, int? startPosition = null,
             int? totalReturn = null, TournamentSearchSortMode? tournamentSearchSortMode = null, TournamentSearchSortOrder? tournamentSearchSortOrder = null, string directorName = null,
             bool? preRegistration = null, bool? onlyWithResults = null, double? minimumPoints = null, double? maximumPoints = null, bool? pointFilter = null, TournamentEventType? tournamentEventType = null)
         {
@@ -71,7 +71,13 @@ namespace PinballApi
                 request = request.SetQueryParam("end_date", endDate.Value.ToString("yyyy-MM-dd"));
 
             if (tournamentType.HasValue)
+            {
+                //Tournament type must be MAIN or WOMEN
+                if (tournamentType != TournamentType.Main && tournamentType != TournamentType.Women)
+                    throw new ArgumentException("Tournament Type must be MAIN or WOMEN");
+
                 request = request.SetQueryParam("rank_type", tournamentType.Value.ToString().ToUpper());
+            }
 
             if (radius.HasValue)
                 request = request.SetQueryParam("radius", radius);
