@@ -38,7 +38,7 @@ namespace PinballApi
 
         public async Task<TournamentSearch> TournamentSearch(double? latitude = null, double? longitude = null, int? radius = null, DistanceType? distanceType = null, string name = null, string country = null, string stateprov = null, DateTime? startDate = null, DateTime? endDate = null, RankingSystem? rankingSystem = null, int? startPosition = null,
             int? totalReturn = null, TournamentSearchSortMode? tournamentSearchSortMode = null, TournamentSearchSortOrder? tournamentSearchSortOrder = null, string directorName = null,
-            bool? preRegistration = null, bool? onlyWithResults = null, double? minimumPoints = null, double? maximumPoints = null, bool? pointFilter = null)
+            bool? preRegistration = null, bool? onlyWithResults = null, double? minimumPoints = null, double? maximumPoints = null, bool? pointFilter = null, TournamentEventType? tournamentEventType = null)
         {
 
             var request = BaseRequest
@@ -125,6 +125,9 @@ namespace PinballApi
 
             if (!string.IsNullOrEmpty(directorName))
                 request = request.SetQueryParam("director_name", directorName);
+
+            if (tournamentEventType.HasValue)
+                request = request.SetQueryParam("event_type", tournamentEventType.Value.ToString().ToUpper());
 
             return await request.GetJsonAsync<TournamentSearch>();
         }
