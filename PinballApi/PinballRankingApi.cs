@@ -38,7 +38,7 @@ namespace PinballApi
 
         public async Task<TournamentSearch> TournamentSearch(double? latitude = null, double? longitude = null, int? radius = null, DistanceType? distanceType = null, string name = null, string country = null, string stateprov = null, DateTime? startDate = null, DateTime? endDate = null, TournamentType? tournamentType = null, int? startPosition = null,
             int? totalReturn = null, TournamentSearchSortMode? tournamentSearchSortMode = null, TournamentSearchSortOrder? tournamentSearchSortOrder = null, string directorName = null,
-            bool? preRegistration = null, bool? onlyWithResults = null, double? minimumPoints = null, double? maximumPoints = null, bool? pointFilter = null)
+            bool? preRegistration = null, bool? onlyWithResults = null, double? minimumPoints = null, double? maximumPoints = null, bool? pointFilter = null, TournamentEventType? tournamentEventType = null)
         {
 
             var request = BaseRequest
@@ -71,7 +71,13 @@ namespace PinballApi
                 request = request.SetQueryParam("end_date", endDate.Value.ToString("yyyy-MM-dd"));
 
             if (tournamentType.HasValue)
+            {
+                //Tournament type must be MAIN or WOMEN
+                if (tournamentType != TournamentType.Main && tournamentType != TournamentType.Women)
+                    throw new ArgumentException("Tournament Type must be MAIN or WOMEN");
+
                 request = request.SetQueryParam("rank_type", tournamentType.Value.ToString().ToUpper());
+            }
 
             if (radius.HasValue)
                 request = request.SetQueryParam("radius", radius);
@@ -125,6 +131,9 @@ namespace PinballApi
 
             if (!string.IsNullOrEmpty(directorName))
                 request = request.SetQueryParam("director_name", directorName);
+
+            if (tournamentEventType.HasValue)
+                request = request.SetQueryParam("event_type", tournamentEventType.Value.ToString().ToUpper());
 
             return await request.GetJsonAsync<TournamentSearch>();
         }

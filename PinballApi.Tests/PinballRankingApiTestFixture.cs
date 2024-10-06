@@ -45,7 +45,16 @@ namespace PinballApi.Tests
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.TournamentId, Is.EqualTo(tourneyId));
+        }
 
+        [Test]
+        public async Task PinballRankingApi_TournamentSearch_GetSearchByEventType()
+        {
+            var result = await rankingApi.TournamentSearch(tournamentEventType: Models.WPPR.Universal.Tournaments.Search.TournamentEventType.League);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TotalResults, Is.GreaterThan(0));
+            Assert.That(result.SearchFilter.EventType, Is.EqualTo(Models.WPPR.Universal.Tournaments.Search.TournamentEventType.League));
         }
 
         [Test]

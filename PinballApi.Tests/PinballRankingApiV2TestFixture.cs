@@ -44,6 +44,18 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("This test is failing due to a bug in the API")]
+        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnCorrectPlayer2()
+        {
+            var lname = "Lapping";
+
+            var player = await rankingApi.GetPlayersBySearch(new PlayerSearchFilter { Name = lname });
+
+            Assert.That(player.Results.First().LastName == lname);
+            //For some reason my
+        }
+
+        [Test]
         public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWithWomensFlag()
         {
             var playerId = 61534;
@@ -263,7 +275,7 @@ namespace PinballApi.Tests
             Assert.That(ranking.Rankings, Is.Not.Null);
             Assert.That(ranking.Rankings.First().CurrentRank, Is.EqualTo(startRank));
             Assert.That(ranking.Rankings.First().WpprPoints, Is.Positive);
-            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);            
+            Assert.That(ranking.Rankings.First().CurrentWpprRank, Is.Positive);
             Assert.That(ranking.Rankings.First().EventCount, Is.Positive);
         }
 
@@ -420,7 +432,7 @@ namespace PinballApi.Tests
 
         [Test]
         public async Task PinballRankingApiV2_GetNacsDirectors_ShouldReturnDirectors()
-        {          
+        {
             var directors = await rankingApi.GetNacsDirectors();
 
             Assert.That(directors.Count, Is.Positive);
@@ -444,7 +456,7 @@ namespace PinballApi.Tests
             Assert.That(stats.TournamentCountLastMonth, Is.Positive);
             Assert.That(stats.TournamentCountThisYear, Is.Positive);
             Assert.That(stats.TournamentPlayerCount, Is.Positive);
-            Assert.That(stats.TournamentPlayerCountAverage, Is.Positive);           
+            Assert.That(stats.TournamentPlayerCountAverage, Is.Positive);
         }
 
         [Test]
