@@ -89,14 +89,14 @@ namespace PinballApi
                 request = request.SetQueryParam("total", totalReturn);
 
             if (tournamentSearchSortMode.HasValue)
-                request = request.SetQueryParam("sort", tournamentSearchSortMode.Value.ToString().ToUpper());
+                request = request.SetQueryParam("sort_mode", tournamentSearchSortMode.Value.ToString().ToUpper());
 
             if (tournamentSearchSortOrder.HasValue)
             {
                 if (tournamentSearchSortOrder == TournamentSearchSortOrder.Ascending)
-                    request = request.SetQueryParam("order", "ASC");
+                    request = request.SetQueryParam("sort_order", "ASC");
                 else
-                    request = request.SetQueryParam("order", "DESC");
+                    request = request.SetQueryParam("sort_order", "DESC");
             }
 
             if (minimumPoints.HasValue)

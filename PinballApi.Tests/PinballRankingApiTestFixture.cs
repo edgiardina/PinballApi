@@ -58,6 +58,18 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_TournamentSearch_EnsureSortingWorks()
+        {
+            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortMode.StartDate, tournamentSearchSortOrder: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortOrder.Descending);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TotalResults, Is.GreaterThan(0));
+            Assert.That(result.Tournaments, Is.Not.Null);
+            Assert.That(result.Tournaments.Length, Is.GreaterThan(0));
+            Assert.That(result.Tournaments.First().EventStartDate, Is.GreaterThan(result.Tournaments.Last().EventStartDate));
+        }
+
+        [Test]
         public async Task PinballRankingApi_RankingSearch_GetRankingsByType([Values] RankingType type)
         {
             Assume.That(type, Is.Not.EqualTo(RankingType.Pro));

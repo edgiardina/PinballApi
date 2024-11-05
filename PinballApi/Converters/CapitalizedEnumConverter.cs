@@ -25,6 +25,15 @@ namespace PinballApi.Converters
                 return parsedEnum;
             }
 
+            // in the event that the enum value is not found, see if its a partial match for any of the enum values (like STARTDAT instead of STARTDATE)
+            foreach (var name in Enum.GetNames(typeof(T)))
+            {
+                if (name.StartsWith(pascalCaseValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    return (T)Enum.Parse(typeof(T), name);
+                }
+            }
+
             throw new JsonException($"Unable to convert \"{enumValue}\" to enum {typeof(T)}.");
         }
 
