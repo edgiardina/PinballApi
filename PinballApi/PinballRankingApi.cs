@@ -124,9 +124,9 @@ namespace PinballApi
             if (onlyWithResults.HasValue)
             {
                 if (onlyWithResults == true)
-                    request = request.SetQueryParam("only_results", "Y");
+                    request = request.SetQueryParam("only_with_results", "Y");
                 else
-                    request = request.SetQueryParam("only_results", "N");
+                    request = request.SetQueryParam("only_with_results", "N");
             }
 
             if (!string.IsNullOrEmpty(directorName))

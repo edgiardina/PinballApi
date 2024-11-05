@@ -70,7 +70,6 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        [Ignore("There's a bug with onlyWithResults that needs to be fixed in the API")]
         public async Task PinballRankingApi_TournamentSearch_EnsureOnlyWithResultsWorks()
         {
             var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortMode.StartDate, 
