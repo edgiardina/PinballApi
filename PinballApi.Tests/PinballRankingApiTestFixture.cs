@@ -70,6 +70,21 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("There's a bug with onlyWithResults that needs to be fixed in the API")]
+        public async Task PinballRankingApi_TournamentSearch_EnsureOnlyWithResultsWorks()
+        {
+            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortMode.StartDate, 
+                                                           tournamentSearchSortOrder: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortOrder.Descending, 
+                                                           onlyWithResults: true);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TotalResults, Is.GreaterThan(0));
+            Assert.That(result.Tournaments, Is.Not.Null);
+            Assert.That(result.Tournaments.Length, Is.GreaterThan(0));
+            Assert.That(result.Tournaments.All(t => t.PlayerCount > 0), Is.True);
+        }
+
+        [Test]
         public async Task PinballRankingApi_RankingSearch_GetRankingsByType([Values] RankingType type)
         {
             Assume.That(type, Is.Not.EqualTo(RankingType.Pro));
