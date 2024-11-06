@@ -147,5 +147,18 @@ namespace PinballApi.Tests
             Assert.That(result.Results.First().FirstName, Is.EqualTo("Raymond"));
             Assert.That(result.Results.First().LastName, Is.EqualTo("Davidson"));
         }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerSeriesCard_GetSeriesCard()
+        {
+            int playerId = 16927;
+
+            var result = await rankingApi.GetSeriesPlayerCard(playerId, "NACS", "RI", 2023);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.PlayerCard, Is.Not.Null);
+            Assert.That(result.PlayerCard.Count, Is.GreaterThan(0));
+        }
     }
 }

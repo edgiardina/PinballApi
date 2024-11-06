@@ -1,6 +1,7 @@
 ﻿using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Rankings;
+using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using PinballApi.Models.WPPR.v2.Calendar;
 using System;
@@ -16,5 +17,6 @@ namespace PinballApi.Interfaces
         Task<Player> GetPlayer(int playerId);
         Task<RankingCountries> GetRankingCountries();
         Task<ProRankingSearch> ProRankingSearch(TournamentType rankingSystem);
+        Task<SeriesPlayerCard> GetSeriesPlayerCard(int playerId, string seriesCode, string region, int? year = null);
     }
 }

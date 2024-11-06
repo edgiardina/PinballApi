@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
 using PinballApi.Models.WPPR.Universal.Players.Search;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace PinballApi
 {
@@ -235,6 +236,31 @@ namespace PinballApi
                 .SetQueryParam("country", country);
 
             return await request.GetJsonAsync<PlayerSearch>();
+        }
+
+        /// <summary>
+        /// Get a player's top 20 results for a region within a series
+        /// </summary>
+        /// <param name="playerId">Player's id</param>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<SeriesPlayerCard> GetSeriesPlayerCard(int playerId, string seriesCode, string region, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("player_card")
+                .AppendPathSegment(playerId)
+                .SetQueryParam("region_code", region);
+
+            if (year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<SeriesPlayerCard>();
         }
 
         #endregion
