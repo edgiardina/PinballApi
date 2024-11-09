@@ -238,6 +238,25 @@ namespace PinballApi
             return await request.GetJsonAsync<PlayerSearch>();
         }
 
+        public async Task<PlayerHistory> GetPlayerHistory(int playerId, TournamentType tournamentType = TournamentType.Main, bool activeResultsOnly = false)
+        {
+            var request = BaseRequest
+                            .AppendPathSegment("player")
+                            .AppendPathSegment(playerId)
+                            .AppendPathSegment("rank_history");
+
+            //Tournament type must be MAIN or WOMEN
+            if (tournamentType != TournamentType.Main && tournamentType != TournamentType.Women)
+                throw new ArgumentException("Tournament Type must be MAIN or WOMEN");
+
+            request = request.SetQueryParam("system", tournamentType.ToString().ToUpper());
+
+            if (activeResultsOnly)
+                request = request.SetQueryParam("active_flag", "Y");
+
+            return await request.GetJsonAsync<PlayerHistory>();
+        }
+
         /// <summary>
         /// Get a player's top 20 results for a region within a series
         /// </summary>

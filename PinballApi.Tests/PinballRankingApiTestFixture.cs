@@ -149,6 +149,53 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_PlayerHistory_GetPlayerHistory()
+        {
+            int playerId = 16927;
+
+            var result = await rankingApi.GetPlayerHistory(playerId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.RankHistory, Is.Not.Null);
+            Assert.That(result.RankHistory.Count, Is.GreaterThan(0));
+            Assert.That(result.RatingHistory, Is.Not.Null);
+            Assert.That(result.RatingHistory.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerHistory_EnsureOnlyActiveResultsReturned()
+        {
+            int playerId = 16927;
+
+            var result = await rankingApi.GetPlayerHistory(playerId, activeResultsOnly: true);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.RankHistory, Is.Not.Null);
+            Assert.That(result.RankHistory.Count, Is.GreaterThan(0));
+            // active results are only 36 months / 3 years or less
+            Assert.That(result.RankHistory.Count, Is.LessThanOrEqualTo(36));
+            Assert.That(result.RatingHistory, Is.Not.Null);
+            Assert.That(result.RatingHistory.Count, Is.GreaterThan(0));
+            Assert.That(result.ActiveFlag, Is.True);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerHistory_EnsureCorrectSystemReturned()
+        {
+            int playerId = 16927;
+            var tourneyType = TournamentType.Women;
+
+            var result = await rankingApi.GetPlayerHistory(playerId, tourneyType);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.System, Is.EqualTo(tourneyType));
+        }
+
+
+        [Test]
         public async Task PinballRankingApi_PlayerSeriesCard_GetSeriesCard()
         {
             int playerId = 16927;
