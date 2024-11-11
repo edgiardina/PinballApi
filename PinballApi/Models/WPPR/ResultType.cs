@@ -1,4 +1,4 @@
-﻿namespace PinballApi.Models.WPPR.v2.Players
+﻿namespace PinballApi.Models.WPPR
 {
     public enum ResultType
     {

@@ -5,9 +5,9 @@ using PinballApi.Models.WPPR.v2.Calendar;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
+using PinballApi.Models.WPPR;
 
 namespace PinballApi.Tests
 {

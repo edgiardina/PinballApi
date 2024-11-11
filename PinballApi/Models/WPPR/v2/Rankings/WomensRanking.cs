@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PinballApi.Models.WPPR.v2.Tournaments;
 
 namespace PinballApi.Models.WPPR.v2.Rankings
 {

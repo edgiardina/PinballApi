@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using PinballApi.Models.WPPR.v2.Tournaments;
 
-namespace PinballApi.Models.WPPR.v2.Players
+namespace PinballApi.Models.WPPR.Universal.Players
 {
     public class PlayerResults
     {

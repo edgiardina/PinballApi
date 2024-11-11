@@ -1,4 +1,4 @@
-﻿using PinballApi.Models.WPPR.v2;
+﻿using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.v2.Directors;
 using PinballApi.Models.WPPR.v2.Players;
 using PinballApi.Models.WPPR.v2.Rankings;

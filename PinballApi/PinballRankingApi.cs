@@ -237,6 +237,24 @@ namespace PinballApi
             return await request.GetJsonAsync<PlayerSearch>();
         }
 
+        public async Task<PlayerResults> GetPlayerResults(int playerId, PlayerRankingSystem rankingSystem = PlayerRankingSystem.Main, ResultType resultType = ResultType.Active)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("player")
+                    .AppendPathSegment(playerId)
+                    .AppendPathSegment("results")
+                    .AppendPathSegment(rankingSystem.ToString().ToLower())
+                    .AppendPathSegment(resultType.ToString().ToLower())
+                    .GetJsonAsync<PlayerResults>();
+        }
+
+        /// <summary>
+        /// Get a player's history
+        /// </summary>
+        /// <param name="playerId">Player to examine</param>
+        /// <param name="playerSystem">Player's ranking system</param>
+        /// <param name="activeResultsOnly">Return only active results, or all results</param>
+        /// <returns></returns>
         public async Task<PlayerHistory> GetPlayerHistory(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, bool activeResultsOnly = false)
         {
             var request = BaseRequest
@@ -252,6 +270,12 @@ namespace PinballApi
             return await request.GetJsonAsync<PlayerHistory>();
         }
 
+        /// <summary>
+        /// Get a Player's Versus Player records
+        /// </summary>
+        /// <param name="playerId">Player to examine</param>
+        /// <param name="playerSystem">Player's ranking system</param>
+        /// <returns></returns>
         public async Task<PlayerVersusPlayer> GetPlayerVersusPlayer(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
         {
             var request = BaseRequest
@@ -264,6 +288,12 @@ namespace PinballApi
             return await request.GetJsonAsync<PlayerVersusPlayer>();
         }
 
+        /// <summary>
+        /// Get a Player Versus Player comparison to a specific player
+        /// </summary>
+        /// <param name="playerId">Player One to Compare</param>
+        /// <param name="comparisonPlayerId">Player Two to Compare</param>
+        /// <returns></returns>
         public async Task<PlayerVersusPlayerComparison> GetPlayerVersusPlayerComparison(int playerId, int comparisonPlayerId)
         {
             return await BaseRequest
@@ -272,7 +302,7 @@ namespace PinballApi
                     .AppendPathSegment("pvp")
                     .AppendPathSegment(comparisonPlayerId)
                     .GetJsonAsync<PlayerVersusPlayerComparison>();
-        }        
+        }
 
         #endregion
 
@@ -377,6 +407,27 @@ namespace PinballApi
             }
 
             return await request.GetJsonAsync<SeriesPlayerCard>();
+        }
+
+        /// <summary>
+        /// Retrieve the winners for past series
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Optional abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <returns></returns>
+        public async Task<SeriesWinners> GetSeriesWinners(string seriesCode, string region = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("past_winners");
+
+            if (!string.IsNullOrEmpty(region))
+            {
+                request.SetQueryParam("region_code", region);
+            }
+
+            return await request.GetJsonAsync<SeriesWinners>();
         }
 
         #endregion

@@ -26,5 +26,7 @@ namespace PinballApi.Interfaces
         Task<SeriesOverallResults> GetSeriesOverallStanding(string seriesCode, int? year = null);
         Task<RegionStandings> GetSeriesStandingsForRegion(string seriesCode, string region, int? year = null);
         Task<SeriesTournaments> GetSeriesTournamentsForRegion(string seriesCode, string region, int? year = null);
+        Task<SeriesWinners> GetSeriesWinners(string seriesCode, string region = null);
+        Task<PlayerResults> GetPlayerResults(int playerId, PlayerRankingSystem rankingSystem = PlayerRankingSystem.Main, ResultType resultType = ResultType.Active);
     }
 }

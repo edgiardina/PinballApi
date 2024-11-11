@@ -1,4 +1,4 @@
-﻿namespace PinballApi.Models.WPPR.v2
+﻿namespace PinballApi.Models.WPPR.v2.Tournaments
 {
     public enum RankingType
     {

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Linq;
-using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2.Tournaments;
 using PinballApi.Models.WPPR.v2.Directors;

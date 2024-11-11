@@ -149,6 +149,19 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_PlayerResults_GetPlayerResults()
+        {
+            int playerId = 16927;
+
+            var result = await rankingApi.GetPlayerResults(playerId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.Results, Is.Not.Null);
+            Assert.That(result.Results.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
         public async Task PinballRankingApi_PlayerHistory_GetPlayerHistory()
         {
             int playerId = 16927;
@@ -210,6 +223,9 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_PlayerVersus_GetPlayerVersusBySystem([Values] PlayerRankingSystem system)
         {
+            // This endpoint doesn't work for Youth PVP records.
+            Assume.That(system, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
             int playerId = 16927;
             var result = await rankingApi.GetPlayerVersusPlayer(playerId, system);
 
@@ -293,6 +309,19 @@ namespace PinballApi.Tests
             Assert.That(result, Is.Not.Null);
             Assert.That(result.SeriesCode, Is.EqualTo(seriesCode));
             Assert.That(result.OverallResults, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetSeriesWinners()
+        {
+            var seriesCode = "NACS";
+            var regionCode = "RI";
+            var result = await rankingApi.GetSeriesWinners(seriesCode, regionCode);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.SeriesCode, Is.EqualTo(seriesCode));
+            Assert.That(result.RegionCode, Is.EqualTo(regionCode));
+            Assert.That(result.Results, Is.Not.Empty);
         }
     }
 }

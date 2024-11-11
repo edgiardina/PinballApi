@@ -22,6 +22,7 @@ namespace PinballApi.Converters
             {
                 PlayerRankingSystem.Main => "MAIN",
                 PlayerRankingSystem.Women => "WOMEN",
+                PlayerRankingSystem.Youth => "YOUTH",
                 _ => throw new JsonException($"Unknown system type: {value}")
             };
 
