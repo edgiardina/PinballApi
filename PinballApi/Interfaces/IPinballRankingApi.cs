@@ -1,10 +1,11 @@
-﻿using PinballApi.Models.WPPR.Universal;
+﻿using PinballApi.Models.WPPR;
+using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Rankings;
 using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
-using PinballApi.Models.WPPR.v2.Calendar;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PinballApi.Interfaces
@@ -18,5 +19,12 @@ namespace PinballApi.Interfaces
         Task<RankingCountries> GetRankingCountries();
         Task<ProRankingSearch> ProRankingSearch(TournamentType rankingSystem);
         Task<SeriesPlayerCard> GetSeriesPlayerCard(int playerId, string seriesCode, string region, int? year = null);
+        Task<PlayerHistory> GetPlayerHistory(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, bool activeResultsOnly = false);
+        Task<PlayerVersusPlayer> GetPlayerVersusPlayer(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
+        Task<PlayerVersusPlayerComparison> GetPlayerVersusPlayerComparison(int playerId, int comparisonPlayerId);
+        Task<List<Series>> GetSeries();
+        Task<SeriesOverallResults> GetSeriesOverallStanding(string seriesCode, int? year = null);
+        Task<RegionStandings> GetSeriesStandingsForRegion(string seriesCode, string region, int? year = null);
+        Task<SeriesTournaments> GetSeriesTournamentsForRegion(string seriesCode, string region, int? year = null);
     }
 }

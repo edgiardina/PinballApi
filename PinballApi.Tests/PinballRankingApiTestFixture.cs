@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Rankings;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PinballApi.Tests
@@ -28,7 +27,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_TournamentSearch_GetSearchByLatLong()
         {
-            var result = await rankingApi.TournamentSearch(41.8240, -71.4128, 150, Models.WPPR.v2.Calendar.DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1));
+            var result = await rankingApi.TournamentSearch(41.8240, -71.4128, 150, DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1));
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.TotalResults, Is.GreaterThan(0));
@@ -246,6 +245,54 @@ namespace PinballApi.Tests
             Assert.That(result.PlayerId, Is.EqualTo(playerId));
             Assert.That(result.PlayerCard, Is.Not.Null);
             Assert.That(result.PlayerCard.Count, Is.GreaterThan(0));
+        }
+
+
+        [Test]
+        public async Task PinballRankingApi_GetSeries()
+        {
+            var result = await rankingApi.GetSeries();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.First().Years, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetSeriesTournamentsForRegion()
+        {
+            var seriesCode = "NACS";
+            var regionCode = "RI";
+            var result = await rankingApi.GetSeriesTournamentsForRegion(seriesCode, regionCode, 2023);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.SeriesCode, Is.EqualTo(seriesCode));
+            Assert.That(result.RegionCode, Is.EqualTo(regionCode));
+            Assert.That(result.SubmittedTournaments, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetSeriesStandingsForRegion()
+        {
+            var seriesCode = "NACS";
+            var regionCode = "RI";
+            var result = await rankingApi.GetSeriesStandingsForRegion(seriesCode, regionCode, 2023);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.SeriesCode, Is.EqualTo(seriesCode));
+            Assert.That(result.RegionCode, Is.EqualTo(regionCode));
+            Assert.That(result.Standings, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetSeriesOverallStanding()
+        {
+            var seriesCode = "NACS";
+            var result = await rankingApi.GetSeriesOverallStanding(seriesCode, 2023);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.SeriesCode, Is.EqualTo(seriesCode));
+            Assert.That(result.OverallResults, Is.Not.Empty);
         }
     }
 }

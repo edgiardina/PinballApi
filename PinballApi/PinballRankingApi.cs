@@ -5,7 +5,6 @@ using System;
 using System.Threading.Tasks;
 using Flurl.Http.Configuration;
 using PinballApi.Interfaces;
-using PinballApi.Models.WPPR.v2.Calendar;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using PinballApi.Models.WPPR.Universal.Rankings;
@@ -273,6 +272,86 @@ namespace PinballApi
                     .AppendPathSegment("pvp")
                     .AppendPathSegment(comparisonPlayerId)
                     .GetJsonAsync<PlayerVersusPlayerComparison>();
+        }        
+
+        #endregion
+
+        #region Series
+
+        public async Task<List<Series>> GetSeries()
+        {
+            var json = await BaseRequest
+                  .AppendPathSegment("series/list")
+                  .GetStringAsync();
+
+            return JsonNode.Parse(json)["series"].Deserialize<List<Series>>(JsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Retrieve overall standings for a Series
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<SeriesOverallResults> GetSeriesOverallStanding(string seriesCode, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("overall_standings");
+
+            if (year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<SeriesOverallResults>();
+        }
+
+        /// <summary>
+        /// Get Series Standings for Region
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<RegionStandings> GetSeriesStandingsForRegion(string seriesCode, string region, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("standings")
+                .SetQueryParam("region_code", region);
+
+            if (year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<RegionStandings>();
+        }
+
+        /// <summary>
+        /// Get Tournaments in Series for Region
+        /// </summary>
+        /// <param name="seriesCode">Series abbreviation (e.g. NACS)</param>
+        /// <param name="region">Abbreviation for region (e.g. MA for Massachusetts)</param>
+        /// <param name="year">Optional year (current year is default)</param>
+        /// <returns></returns>
+        public async Task<SeriesTournaments> GetSeriesTournamentsForRegion(string seriesCode, string region, int? year = null)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("tournaments")
+                .SetQueryParam("region_code", region);
+
+            if (year.HasValue)
+            {
+                request.SetQueryParam("year", year.Value);
+            }
+
+            return await request.GetJsonAsync<SeriesTournaments>();
         }
 
         /// <summary>

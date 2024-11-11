@@ -21,10 +21,4 @@ namespace PinballApi.Models.WPPR.v2.Calendar
         [JsonConverter(typeof(DistanceTypeConverter))]
         public DistanceType DistanceType { get; set; }
     }
-
-    public enum DistanceType
-    {
-        Miles,
-        Kilometers
-    }
 }

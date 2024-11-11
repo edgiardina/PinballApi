@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using PinballApi.Models.WPPR.v2.Calendar;
 using System;
 using System.Text.Json;
+using PinballApi.Models.WPPR;
 
 namespace PinballApi.Converters
 {

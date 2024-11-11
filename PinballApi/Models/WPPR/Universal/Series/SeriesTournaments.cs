@@ -1,7 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace PinballApi.Models.WPPR.v2.Series
+namespace PinballApi.Models.WPPR.Universal.Series
 {
     public class SeriesTournaments
     {
