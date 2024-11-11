@@ -265,6 +265,16 @@ namespace PinballApi
             return await request.GetJsonAsync<PlayerVersusPlayer>();
         }
 
+        public async Task<PlayerVersusPlayerComparison> GetPlayerVersusPlayerComparison(int playerId, int comparisonPlayerId)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("player")
+                    .AppendPathSegment(playerId)
+                    .AppendPathSegment("pvp")
+                    .AppendPathSegment(comparisonPlayerId)
+                    .GetJsonAsync<PlayerVersusPlayerComparison>();
+        }
+
         /// <summary>
         /// Get a player's top 20 results for a region within a series
         /// </summary>

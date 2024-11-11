@@ -219,6 +219,21 @@ namespace PinballApi.Tests
             Assert.That(result.System, Is.EqualTo(system));
         }
 
+        [Test]
+        public async Task PinballRankingApi_PlayerVersusComparison_GetComparison()
+        {
+            int playerId = 16927;
+            int playerId2 = 5363;
+
+            var result = await rankingApi.GetPlayerVersusPlayerComparison(playerId, playerId2);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerOne.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.PlayerTwo.PlayerId, Is.EqualTo(playerId2));
+            Assert.That(result.ComparisonRecords, Is.Not.Null);
+            Assert.That(result.ComparisonRecords.Count, Is.GreaterThan(0));
+        }
+
 
         [Test]
         public async Task PinballRankingApi_PlayerSeriesCard_GetSeriesCard()
