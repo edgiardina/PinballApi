@@ -29,11 +29,12 @@ namespace PinballApi.Converters
                     throw new JsonException("Expected PropertyName token");
                 }
 
-                string propertyName = reader.GetString();
+                string propertyName = reader.GetString().ToUpper();
                 PlayerRankingSystem systemType = propertyName switch
                 {
                     "MAIN" => PlayerRankingSystem.Main,
-                    "WOMEN" => PlayerRankingSystem.Women,
+                    "OPEN" => PlayerRankingSystem.Main, // "OPEN" is a synonym for "MAIN"
+                    "WOMENS" => PlayerRankingSystem.Women,
                     _ => throw new JsonException($"Unknown system type: {propertyName}")
                 };
 
@@ -59,8 +60,8 @@ namespace PinballApi.Converters
             {
                 string propertyName = system.System switch
                 {
-                    PlayerRankingSystem.Main => "MAIN",
-                    PlayerRankingSystem.Women => "WOMEN",
+                    PlayerRankingSystem.Main => "MAIN",                    
+                    PlayerRankingSystem.Women => "WOMENS",
                     _ => throw new JsonException($"Unknown system type: {system.System}")
                 };
 

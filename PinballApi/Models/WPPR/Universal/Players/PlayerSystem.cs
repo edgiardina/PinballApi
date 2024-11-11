@@ -10,6 +10,8 @@ namespace PinballApi.Models.WPPR.Universal.Players
 {
     public class PlayerSystem
     {
+        [JsonPropertyName("system")]
+        [JsonConverter(typeof(PlayerRankingSystemConverter))]
         public PlayerRankingSystem System { get; set; }
 
         [JsonPropertyName("current_rank")]
