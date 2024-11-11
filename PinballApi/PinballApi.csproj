@@ -6,7 +6,7 @@
     <Description>PinballApi - .NET API for pinball data. Includes API Client wrappers in .NET for the IFPA, OPDB, IPDB and MatchPlay.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <Copyright>Copyright 2023</Copyright>
+    <Copyright>Copyright 2024 Ed Giardina</Copyright>
     <PackageTags>pinball pinballapi ifpa ipdb opdb matchplay.events</PackageTags>
     <PackageProjectUrl>https://github.com/edgiardina/PinballApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/edgiardina/PinballApi</RepositoryUrl>

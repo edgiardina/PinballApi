@@ -238,23 +238,31 @@ namespace PinballApi
             return await request.GetJsonAsync<PlayerSearch>();
         }
 
-        public async Task<PlayerHistory> GetPlayerHistory(int playerId, TournamentType tournamentType = TournamentType.Main, bool activeResultsOnly = false)
+        public async Task<PlayerHistory> GetPlayerHistory(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, bool activeResultsOnly = false)
         {
             var request = BaseRequest
                             .AppendPathSegment("player")
                             .AppendPathSegment(playerId)
                             .AppendPathSegment("rank_history");
 
-            //Tournament type must be MAIN or WOMEN
-            if (tournamentType != TournamentType.Main && tournamentType != TournamentType.Women)
-                throw new ArgumentException("Tournament Type must be MAIN or WOMEN");
-
-            request = request.SetQueryParam("system", tournamentType.ToString().ToUpper());
+            request = request.SetQueryParam("system", playerSystem.ToString().ToUpper());
 
             if (activeResultsOnly)
                 request = request.SetQueryParam("active_flag", "Y");
 
             return await request.GetJsonAsync<PlayerHistory>();
+        }
+
+        public async Task<PlayerVersusPlayer> GetPlayerVersusPlayer(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
+        {
+            var request = BaseRequest
+                            .AppendPathSegment("player")
+                            .AppendPathSegment(playerId)
+                            .AppendPathSegment("pvp");
+
+            request = request.SetQueryParam("system", playerSystem.ToString().ToUpper());
+
+            return await request.GetJsonAsync<PlayerVersusPlayer>();
         }
 
         /// <summary>

@@ -10,8 +10,8 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public int PlayerId { get; set; }
 
         [JsonPropertyName("system")]
-        [JsonConverter(typeof(RankingSystemConverter))]
-        public TournamentType System { get; set; }
+        [JsonConverter(typeof(PlayerRankingSystemConverter))]
+        public PlayerSystem System { get; set; }
 
         [JsonPropertyName("active_flag")]
         [JsonConverter(typeof(YesNoConverter))]

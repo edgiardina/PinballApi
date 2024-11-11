@@ -8,7 +8,7 @@ namespace PinballApi.Models.WPPR.Universal.Players
 {
     public enum PlayerRankingSystem
     {
-        Open,
+        Main,
         Women
     }
 }

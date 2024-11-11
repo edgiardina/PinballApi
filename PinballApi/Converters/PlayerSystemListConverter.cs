@@ -1,15 +1,12 @@
 ﻿using PinballApi.Models.WPPR.Universal.Players;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace PinballApi.Converters
 {
-    public class PlayerSystemConverter : JsonConverter<List<PlayerSystem>>
+    public class PlayerSystemListConverter : JsonConverter<List<PlayerSystem>>
     {
         public override List<PlayerSystem> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -35,8 +32,8 @@ namespace PinballApi.Converters
                 string propertyName = reader.GetString();
                 PlayerRankingSystem systemType = propertyName switch
                 {
-                    "open" => PlayerRankingSystem.Open,
-                    "womens" => PlayerRankingSystem.Women,
+                    "MAIN" => PlayerRankingSystem.Main,
+                    "WOMEN" => PlayerRankingSystem.Women,
                     _ => throw new JsonException($"Unknown system type: {propertyName}")
                 };
 
@@ -62,8 +59,8 @@ namespace PinballApi.Converters
             {
                 string propertyName = system.System switch
                 {
-                    PlayerRankingSystem.Open => "open",
-                    PlayerRankingSystem.Women => "womens",
+                    PlayerRankingSystem.Main => "MAIN",
+                    PlayerRankingSystem.Women => "WOMEN",
                     _ => throw new JsonException($"Unknown system type: {system.System}")
                 };
 

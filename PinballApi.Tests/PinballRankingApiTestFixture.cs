@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Rankings;
 using System;
 using System.Collections.Generic;
@@ -185,13 +186,37 @@ namespace PinballApi.Tests
         public async Task PinballRankingApi_PlayerHistory_EnsureCorrectSystemReturned()
         {
             int playerId = 16927;
-            var tourneyType = TournamentType.Women;
+            var tourneyType = PlayerRankingSystem.Women;
 
             var result = await rankingApi.GetPlayerHistory(playerId, tourneyType);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.PlayerId, Is.EqualTo(playerId));
             Assert.That(result.System, Is.EqualTo(tourneyType));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerVersus_GetPlayerVersus()
+        {
+            int playerId = 16927;
+
+            var result = await rankingApi.GetPlayerVersusPlayer(playerId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.PlayerVersusPlayerRecords, Is.Not.Null);
+            Assert.That(result.PlayerVersusPlayerRecords.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerVersus_GetPlayerVersusBySystem([Values] PlayerRankingSystem system)
+        {
+            int playerId = 16927;
+            var result = await rankingApi.GetPlayerVersusPlayer(playerId, system);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.System, Is.EqualTo(system));
         }
 
 

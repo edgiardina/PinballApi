@@ -7,7 +7,7 @@ namespace PinballApi.Models.WPPR.Universal.Players
     public class PlayerStats
     {
         [JsonPropertyName("system")]
-        [JsonConverter(typeof(PlayerSystemConverter))]
+        [JsonConverter(typeof(PlayerSystemListConverter))]
         public List<PlayerSystem> System { get; set; }
 
         [JsonPropertyName("years_active")]
