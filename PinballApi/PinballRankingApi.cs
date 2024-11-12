@@ -1,20 +1,22 @@
-﻿using Flurl.Http;
-using Flurl;
-using PinballApi.Models.WPPR;
-using System;
-using System.Threading.Tasks;
+﻿using Flurl;
+using Flurl.Http;
 using Flurl.Http.Configuration;
 using PinballApi.Interfaces;
+using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
-using PinballApi.Models.WPPR.Universal.Tournaments.Search;
-using PinballApi.Models.WPPR.Universal.Rankings;
+using PinballApi.Models.WPPR.Universal.Directors;
 using PinballApi.Models.WPPR.Universal.Players;
-using System.Text.Json.Nodes;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Linq;
 using PinballApi.Models.WPPR.Universal.Players.Search;
+using PinballApi.Models.WPPR.Universal.Rankings;
 using PinballApi.Models.WPPR.Universal.Series;
+using PinballApi.Models.WPPR.Universal.Stats;
+using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 namespace PinballApi
 {
@@ -208,6 +210,11 @@ namespace PinballApi
 
         #region Players
 
+        /// <summary>
+        /// Get individual player record
+        /// </summary>
+        /// <param name="playerId">Player to examine</param>
+        /// <returns></returns>
         public async Task<Player> GetPlayer(int playerId)
         {
             var json = await BaseRequest
@@ -218,6 +225,34 @@ namespace PinballApi
             return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions).First();
         }
 
+        /// <summary>
+        /// Get Multiple player records
+        /// </summary>
+        /// <param name="playerIds">list of Player Ids to return</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task<List<Player>> GetPlayers(List<int> playerIds)
+        {
+            if (playerIds.Count > 50)
+                throw new ArgumentException("GetPlayers can only process 50 or less player IDs at a time due to limitations in the IFPA API.");
+
+            var request = BaseRequest
+                .AppendPathSegment("player");
+
+            request = request.SetQueryParam("players", string.Join(",", playerIds));
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Find player by name and / or country
+        /// </summary>
+        /// <param name="name">Name to search for</param>
+        /// <param name="country">Country to search in</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<PlayerSearch> PlayerSearch(string name = null, string country = null)
         {
             if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(country))
@@ -237,6 +272,13 @@ namespace PinballApi
             return await request.GetJsonAsync<PlayerSearch>();
         }
 
+        /// <summary>
+        /// Get a player's tournament results
+        /// </summary>
+        /// <param name="playerId">Player to examine</param>
+        /// <param name="rankingSystem">Player's Ranking System</param>
+        /// <param name="resultType">Active, Noactive or Inactive classification of results</param>
+        /// <returns></returns>
         public async Task<PlayerResults> GetPlayerResults(int playerId, PlayerRankingSystem rankingSystem = PlayerRankingSystem.Main, ResultType resultType = ResultType.Active)
         {
             return await BaseRequest
@@ -428,6 +470,173 @@ namespace PinballApi
             }
 
             return await request.GetJsonAsync<SeriesWinners>();
+        }
+
+        #endregion
+
+        #region Directors
+        public async Task<List<Director>> GetCountryDirectors()
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("director/country")
+                    .GetStringAsync();
+
+            return JsonNode.Parse(json)["country_directors"].Deserialize<List<Director>>(JsonSerializerOptions);
+        }
+
+        #endregion
+
+        #region Stats
+        public async Task<OverallStatistics> GetOverallStatistics()
+        {
+            var json = await BaseRequest
+                    .AppendPathSegment("stats/overall")
+                    .GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<OverallStatistics>();
+        }
+
+        public async Task<List<EventsByYearStatistics>> GetEventsByYearStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest
+                .AppendPathSegment("stats/events_by_year");
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<EventsByYearStatistics>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<LargestTournamentStatistics>> GetLargestTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest.AppendPathSegment("stats/largest_tournaments");
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<LargestTournamentStatistics>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<LucrativeTournamentStatistics>> GetLucrativeTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest.AppendPathSegment("stats/lucrative_tournaments");
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<LucrativeTournamentStatistics>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<PlayersByYearStatistics>> GetPlayersByYearStatistics()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("stats/players_by_year")
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByYearStatistics>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<PlayersByStateStatistics>> GetPlayersByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest
+                .AppendPathSegment("stats/state_players");
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByStateStatistics>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<TournamentsByStateStatistics>> GetTournamentsByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest
+                .AppendPathSegment("stats/state_tournaments");
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<TournamentsByStateStatistics>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<PlayersByCountryStatistics>> GetPlayersByCountryStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest
+                .AppendPathSegment("stats/country_players");
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByCountryStatistics>>(JsonSerializerOptions);
+        }
+
+        ///stats/points_given_period
+        public async Task<List<PlayersPointsByGivenPeriodStatistics>> GetPlayersPointsByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest
+                .AppendPathSegment("stats/points_given_period")
+                .SetQueryParam("start_date", startDate.ToString("yyyy-MM-dd"))
+                .SetQueryParam("end_date", endDate.ToString("yyyy-MM-dd"))
+                .SetQueryParam("limit", limit);
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersPointsByGivenPeriodStatistics>>(JsonSerializerOptions);
+        }
+
+        ////stats/events_attended_period
+        public async Task<List<PlayersEventsAttendedByGivenPeriodStatistics>> GetPlayersEventsAttendedByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25)
+        {
+            if (playerSystem == PlayerRankingSystem.Youth)
+                throw new ArgumentException("Youth Rankings are not supported");
+
+            var request = BaseRequest
+                .AppendPathSegment("stats/events_attended_period")
+                .SetQueryParam("start_date", startDate.ToString("yyyy-MM-dd"))
+                .SetQueryParam("end_date", endDate.ToString("yyyy-MM-dd"))
+                .SetQueryParam("limit", limit);
+
+            if (playerSystem != PlayerRankingSystem.Main)
+                request = request.SetQueryParam("rank_type", playerSystem.ToString().ToUpper());
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersEventsAttendedByGivenPeriodStatistics>>(JsonSerializerOptions);
         }
 
         #endregion

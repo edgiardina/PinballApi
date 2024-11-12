@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Players;
@@ -13,7 +14,7 @@ namespace PinballApi.Tests
     internal class PinballRankingApiTestFixture
     {
 
-        private PinballRankingApi rankingApi;
+        private IPinballRankingApi rankingApi;
 
         [SetUp]
         public void SetUp()
@@ -72,8 +73,8 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_TournamentSearch_EnsureOnlyWithResultsWorks()
         {
-            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortMode.StartDate, 
-                                                           tournamentSearchSortOrder: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortOrder.Descending, 
+            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortMode.StartDate,
+                                                           tournamentSearchSortOrder: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortOrder.Descending,
                                                            onlyWithResults: true);
 
             Assert.That(result, Is.Not.Null);
@@ -134,6 +135,18 @@ namespace PinballApi.Tests
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.PlayerId, Is.EqualTo(5363));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetPlayers_GetPlayersByIds()
+        {
+            var playerIds = new[] { 5363, 16927 };
+
+            var result = await rankingApi.GetPlayers(playerIds.ToList());
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.Count, Is.EqualTo(playerIds.Length));
         }
 
         [Test]
@@ -322,6 +335,130 @@ namespace PinballApi.Tests
             Assert.That(result.SeriesCode, Is.EqualTo(seriesCode));
             Assert.That(result.RegionCode, Is.EqualTo(regionCode));
             Assert.That(result.Results, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_Directors_GetCountryDirectors()
+        {
+            var result = await rankingApi.GetCountryDirectors();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_OverallStatistics_GetOverallStatistics()
+        {
+            var result = await rankingApi.GetOverallStatistics();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TournamentCount, Is.Positive);
+            Assert.That(result.TournamentPlayerCount, Is.Positive);
+            Assert.That(result.ActivePlayerCount, Is.Positive);
+            Assert.That(result.TournamentCountThisYear, Is.Positive);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_EventsByYearStatistics_GetEventsByYearStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var result = await rankingApi.GetEventsByYearStatistics(playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_LargestTournamentStatistics_GetLargestTournamentStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var result = await rankingApi.GetLargestTournamentStatistics(playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_LucrativeTournamentStatistics_GetLucrativeTournamentStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var result = await rankingApi.GetLucrativeTournamentStatistics(playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayersByYearStatistics_GetPlayersByYearStatistics()
+        {
+            var result = await rankingApi.GetPlayersByYearStatistics();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayersByStateStatistics_GetPlayersByStateStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var result = await rankingApi.GetPlayersByStateStatistics(playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_TournamentsByStateStatistics_GetTournamentsByStateStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var result = await rankingApi.GetTournamentsByStateStatistics(playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayersByCountryStatistics_GetPlayersByCountryStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var result = await rankingApi.GetPlayersByCountryStatistics(playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayersEventsAttendedByGivenPeriodStatistics_GetPlayersEventsAttendedByGivenPeriodStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var startDate = new DateOnly(2023, 1, 1);
+            var endDate = new DateOnly(2023, 12, 31);
+
+            var result = await rankingApi.GetPlayersEventsAttendedByGivenPeriod(startDate, endDate, playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayersPointsByGivenPeriodStatistics_GetPlayersPointsByGivenPeriodStatistics([Values] PlayerRankingSystem playerSystem)
+        {
+            Assume.That(playerSystem, Is.Not.EqualTo(PlayerRankingSystem.Youth));
+
+            var startDate = new DateOnly(2023, 1, 1);
+            var endDate = new DateOnly(2023, 12, 31);
+
+            var result = await rankingApi.GetPlayersPointsByGivenPeriod(startDate, endDate, playerSystem);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
         }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Directors;
 using PinballApi.Models.WPPR.Universal.Players;
+using PinballApi.Models.WPPR.Universal.Players.Search;
 using PinballApi.Models.WPPR.Universal.Rankings;
 using PinballApi.Models.WPPR.Universal.Series;
+using PinballApi.Models.WPPR.Universal.Stats;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using System;
 using System.Collections.Generic;
@@ -28,5 +31,18 @@ namespace PinballApi.Interfaces
         Task<SeriesTournaments> GetSeriesTournamentsForRegion(string seriesCode, string region, int? year = null);
         Task<SeriesWinners> GetSeriesWinners(string seriesCode, string region = null);
         Task<PlayerResults> GetPlayerResults(int playerId, PlayerRankingSystem rankingSystem = PlayerRankingSystem.Main, ResultType resultType = ResultType.Active);
+        Task<List<Player>> GetPlayers(List<int> playerIds);
+        Task<List<Director>> GetCountryDirectors();
+        Task<PlayerSearch> PlayerSearch(string name = null, string country = null);
+        Task<OverallStatistics> GetOverallStatistics();
+        Task<List<EventsByYearStatistics>> GetEventsByYearStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
+        Task<List<LargestTournamentStatistics>> GetLargestTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
+        Task<List<LucrativeTournamentStatistics>> GetLucrativeTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
+        Task<List<PlayersByYearStatistics>> GetPlayersByYearStatistics();
+        Task<List<PlayersByStateStatistics>> GetPlayersByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
+        Task<List<TournamentsByStateStatistics>> GetTournamentsByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
+        Task<List<PlayersByCountryStatistics>> GetPlayersByCountryStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
+        Task<List<PlayersEventsAttendedByGivenPeriodStatistics>> GetPlayersEventsAttendedByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25);
+        Task<List<PlayersPointsByGivenPeriodStatistics>> GetPlayersPointsByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25);
     }
 }

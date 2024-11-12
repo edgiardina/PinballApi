@@ -26,7 +26,8 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public bool ExcludedFlag { get; set; }
 
         [JsonPropertyName("age")]
-        public int Age { get; set; }
+        [JsonConverter(typeof(EmptyStringNullableIntDescriptiveConverter))]
+        public int? Age { get; set; }
 
         [JsonPropertyName("city")]
         public string City { get; set; }
