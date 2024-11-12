@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net7.0;net6.0;</TargetFrameworks>
     <PackageId>PinballApi</PackageId>
     <Authors>Ed Giardina</Authors>
     <Description>PinballApi - .NET API for pinball data. Includes API Client wrappers in .NET for the IFPA, OPDB, IPDB and MatchPlay.</Description>
