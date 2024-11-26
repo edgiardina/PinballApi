@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using System;
 using System.Text.Json;
+using System.Globalization;
 
 namespace PinballApi.Converters
 {
@@ -28,7 +29,7 @@ namespace PinballApi.Converters
                 }
                 else
                 {
-                    return double.Parse(integerOrNullDescriptiveTerm);
+                    return double.Parse(integerOrNullDescriptiveTerm, CultureInfo.InvariantCulture);
                 }
             }
             else if (reader.TokenType == JsonTokenType.Number)

@@ -1,20 +1,19 @@
-﻿using Flurl.Http;
+﻿using Flurl;
+using Flurl.Http;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR;
+using PinballApi.Models.WPPR.v2.Directors;
+using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Models.WPPR.v2.Rankings;
+using PinballApi.Models.WPPR.v2.Series;
+using PinballApi.Models.WPPR.v2.Stats;
+using PinballApi.Models.WPPR.v2.Tournaments;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using PinballApi.Models.WPPR;
-using PinballApi.Models.WPPR.v2.Players;
 using System.Linq;
-using PinballApi.Models.WPPR.v2.Rankings;
-using PinballApi.Models.WPPR.v2.Tournaments;
-using PinballApi.Models.WPPR.v2.Directors;
-using PinballApi.Models.WPPR.v2.Stats;
-using PinballApi.Models.WPPR.v2.Series;
-using PinballApi.Interfaces;
-using System.Runtime.Serialization;
-using System.Text.Json.Nodes;
 using System.Text.Json;
-using Flurl;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 namespace PinballApi
 {

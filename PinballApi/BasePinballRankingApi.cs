@@ -21,7 +21,6 @@ namespace PinballApi
             {
                 new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false)
             }
-
         };
 
         protected virtual IFlurlRequest BaseRequest => $"https://api.ifpapinball.com/{ApiVersion}/"

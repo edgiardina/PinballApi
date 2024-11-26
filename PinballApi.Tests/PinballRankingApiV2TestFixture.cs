@@ -44,6 +44,21 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApiV2_GetPlayer_ShouldReturnPlayerWhenCultureIsSweden()
+        {
+            // set system culture to swedish
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("sv-SE");
+
+
+            var player = await rankingApi.GetPlayer(EdGiardinaPlayerId);
+
+            Assert.That(player.FirstName == "Ed");
+
+            // set system culture back to default
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        }
+
+        [Test]
         [Ignore("This test is failing due to a bug in the API")]
         public async Task PinballRankingApiV2_GetPlayer_ShouldReturnCorrectPlayer2()
         {
@@ -51,8 +66,7 @@ namespace PinballApi.Tests
 
             var player = await rankingApi.GetPlayersBySearch(new PlayerSearchFilter { Name = lname });
 
-            Assert.That(player.Results.First().LastName == lname);
-            //For some reason my
+            Assert.That(player.Results.First().LastName == lname);            
         }
 
         [Test]
