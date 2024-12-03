@@ -397,6 +397,16 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_GetRegionReps()
+        {
+            var seriesCode = "NACS";
+            var result = await rankingApi.GetRegionReps(seriesCode);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
         public async Task PinballRankingApi_Directors_GetCountryDirectors()
         {
             var result = await rankingApi.GetCountryDirectors();

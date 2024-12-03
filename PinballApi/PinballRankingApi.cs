@@ -572,6 +572,18 @@ namespace PinballApi
             return await request.GetJsonAsync<SeriesWinners>();
         }
 
+        // Region reps
+        public async Task<List<RegionRepresentative>> GetRegionReps(string seriesCode)
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("region_reps")
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["representative"].Deserialize<List<RegionRepresentative>>(JsonSerializerOptions);
+        }
+
         #endregion
 
         #region Directors
