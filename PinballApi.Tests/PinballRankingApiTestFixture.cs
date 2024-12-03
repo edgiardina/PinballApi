@@ -85,6 +85,31 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_GetTournamentFormats_ReturnsTournamentFormats()
+        {
+            var result = await rankingApi.GetTournamentFormats();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.QualifyingFormats, Is.Not.Null);
+            Assert.That(result.QualifyingFormats.Count, Is.GreaterThan(0));
+            Assert.That(result.FinalsFormats, Is.Not.Null);
+            Assert.That(result.FinalsFormats.Count, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetTournamentResults_ReturnsTournamentResults()
+        {
+            int tournamentId = 1235;
+
+            var result = await rankingApi.GetTournamentResults(tournamentId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Results, Is.Not.Empty);
+            Assert.That(result.Results.Count, Is.GreaterThan(0));
+            Assert.That(result.TournamentId, Is.EqualTo(tournamentId));
+        }
+
+        [Test]
         public async Task PinballRankingApi_RankingSearch_GetRankingsByType([Values] RankingType type)
         {
             Assume.That(type, Is.Not.EqualTo(RankingType.Pro));
@@ -126,6 +151,28 @@ namespace PinballApi.Tests
         public async Task PinballRankingApi_GetRankingByCountry_ShouldThrowIfCountryCodeIsNullOrEmpty()
         {
             Assert.ThrowsAsync<ArgumentException>(async () => await rankingApi.RankingSearch(RankingType.Country));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetCustomRankings_ShouldGetCustomRankings()
+        {
+            var result = await rankingApi.GetCustomRankings();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.All(n => n.ViewId > 0), Is.True);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetCustomRankingViewResult_ShouldGetCustomRankingViewResult()
+        {
+            int viewId = 68;
+
+            var result = await rankingApi.GetCustomRankingViewResult(viewId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.ViewId, Is.EqualTo(viewId));
+            Assert.That(result.ViewResults, Is.Not.Empty);
         }
 
         [Test]
@@ -344,6 +391,30 @@ namespace PinballApi.Tests
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_Directors_GetDirectorById()
+        {
+            var directorId = 1;
+
+            var result2 = await rankingApi.GetDirector(directorId);
+
+            Assert.That(result2, Is.Not.Null);
+            Assert.That(result2.DirectorId, Is.EqualTo(directorId));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_Directors_GetDirectorsBySearch()
+        {
+            var name = "Josh";
+
+            var result = await rankingApi.GetDirectorsBySearch(name);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+
+            Assert.That(result.All(d => d.Name.Contains(name, StringComparison.OrdinalIgnoreCase)), Is.True);
         }
 
         [Test]

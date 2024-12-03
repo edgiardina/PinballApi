@@ -4,12 +4,15 @@ using Flurl.Http.Configuration;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Director;
 using PinballApi.Models.WPPR.Universal.Directors;
 using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Players.Search;
 using PinballApi.Models.WPPR.Universal.Rankings;
+using PinballApi.Models.WPPR.Universal.Rankings.Custom;
 using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
+using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using System;
 using System.Collections.Generic;
@@ -24,7 +27,8 @@ namespace PinballApi
     {
         public PinballRankingApi(string apiKey) : base(apiKey)
         {
-
+            if (string.IsNullOrWhiteSpace(apiKey))
+                throw new ArgumentException("API Key must be provided");
         }
 
         protected override IFlurlRequest BaseRequest => $"https://api.ifpapinball.com/"
@@ -149,6 +153,50 @@ namespace PinballApi
             return await request.GetJsonAsync<Models.WPPR.Universal.Tournaments.Tournament>();
         }
 
+        public async Task<TournamentFormats> GetTournamentFormats()
+        {
+            return await BaseRequest
+                .AppendPathSegment("tournament/formats")
+                .GetJsonAsync<TournamentFormats>();
+        }
+
+        public async Task<TournamentResults> GetTournamentResults(int tournamentId)
+        {
+            return await BaseRequest
+                .AppendPathSegment("tournament")
+                .AppendPathSegment(tournamentId)
+                .AppendPathSegment("results")
+                .GetJsonAsync<TournamentResults>();
+        }
+
+        // Get Related Tournaments
+        public async Task<List<TournamentResult>> GetRelatedResults(int tournamentId)
+        {
+            throw new NotImplementedException("Endpoint currently returns 404");
+
+            var request = BaseRequest
+                .AppendPathSegment("tournament")
+                .AppendPathSegment(tournamentId)
+                .AppendPathSegment("related");
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["results"].Deserialize<List<TournamentResult>>(JsonSerializerOptions);
+        }
+
+        // Get Leagues
+        public async Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod)
+        {
+            throw new NotImplementedException("Endpoint currently returns 404");
+
+            var json = await BaseRequest
+                .AppendPathSegment("tournament/leagues")
+                .AppendPathSegment(timePeriod.ToString().ToLower())
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["results"].Deserialize<List<League>>(JsonSerializerOptions);
+        }
+
         #endregion
 
         #region Rankings
@@ -206,6 +254,30 @@ namespace PinballApi
             return await request.GetJsonAsync<ProRankingSearch>();
         }
 
+        public async Task<List<CustomRankingView>> GetCustomRankings()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("rankings/custom/list")
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["custom_view"].Deserialize<List<CustomRankingView>>(JsonSerializerOptions);
+        }
+
+        public async Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50)
+        {
+            if(count > 500)
+                throw new ArgumentException("Count must be 500 or less");
+
+            if (count < 1)
+                throw new ArgumentException("Count must be 1 or more");
+
+            return await BaseRequest
+                .AppendPathSegment("rankings/custom")
+                .AppendPathSegment(viewId)
+                .SetQueryParam("count", count)
+                .GetJsonAsync<CustomRankingViewResult>();
+        }
+
         #endregion
 
         #region Players
@@ -249,14 +321,16 @@ namespace PinballApi
         /// <summary>
         /// Find player by name and / or country
         /// </summary>
-        /// <param name="name">Name to search for</param>
-        /// <param name="country">Country to search in</param>
+        /// <param name="name">Name of the player (not case sensitive)</param>
+        /// <param name="country">Country Name or 2-digit code</param>
+        /// <param name="stateProv">2 digit State or Providence Code</param>
+        /// <param name="tournamentName">Name of tournament that a player may have played in. Partial Strings are accepted</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<PlayerSearch> PlayerSearch(string name = null, string country = null)
+        public async Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null)
         {
-            if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(country))
-                throw new ArgumentException("Name or Country must be provided");
+            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(country) && string.IsNullOrWhiteSpace(stateProv) && string.IsNullOrWhiteSpace(tournamentName))
+                throw new ArgumentException("Name or Country or State/Province or Tournament Name must be provided");
 
             var request = BaseRequest
                 .AppendPathSegment("player/search");
@@ -268,6 +342,14 @@ namespace PinballApi
             if (!string.IsNullOrEmpty(country))
                 request = request
                 .SetQueryParam("country", country);
+
+            if (!string.IsNullOrEmpty(stateProv))
+                request = request
+                    .SetQueryParam("stateprov", stateProv);
+
+            if (!string.IsNullOrEmpty(tournamentName))
+                request = request
+                    .SetQueryParam("tournament", tournamentName);
 
             return await request.GetJsonAsync<PlayerSearch>();
         }
@@ -475,13 +557,58 @@ namespace PinballApi
         #endregion
 
         #region Directors
-        public async Task<List<Director>> GetCountryDirectors()
+
+        public async Task<Director> GetDirector(long directorId)
+        {
+            return await BaseRequest
+                    .AppendPathSegment("director")
+                    .AppendPathSegment(directorId)
+                    .GetJsonAsync<Director>();
+        }
+
+        public async Task<List<CountryDirector>> GetCountryDirectors()
         {
             var json = await BaseRequest
                     .AppendPathSegment("director/country")
                     .GetStringAsync();
 
-            return JsonNode.Parse(json)["country_directors"].Deserialize<List<Director>>(JsonSerializerOptions);
+            return JsonNode.Parse(json)["country_directors"].Deserialize<List<CountryDirector>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<Director>> GetDirectorsBySearch(string name, int count = 50)
+        {
+            if(string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Name must be provided");
+
+            var json =  await BaseRequest
+                    .AppendPathSegment("director/search")
+                    .SetQueryParam("name", name)
+                    .SetQueryParam("count", count)
+                    .GetStringAsync();
+
+            return JsonNode.Parse(json)["directors"].Deserialize<List<Director>>(JsonSerializerOptions);
+        }
+
+
+        public async Task<Models.WPPR.Universal.Tournaments.Tournament> GetDirectorTournaments(long directorId, TimePeriod timePeriod)
+        {
+            throw new NotImplementedException();
+
+            // TODO: Implement - Currently throws 404
+            /*
+             curl -X 'GET' \
+                  'https://api.ifpapinball.com/director/3357/tournaments/FUTURE' \
+                  -H 'accept: application/json' \
+                  -H 'X-API-Key: *****'
+             */
+
+            //var request = BaseRequest
+            //    .AppendPathSegment("director")
+            //    .AppendPathSegment(directorId)
+            //    .AppendPathSegment("tournaments")
+            //    .AppendPathSegment(eventType.ToString().ToUpper());
+
+            //return await request.GetJsonAsync<List<DirectorTournament>>();
         }
 
         #endregion

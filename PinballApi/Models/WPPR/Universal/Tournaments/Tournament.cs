@@ -72,10 +72,10 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments
         public string EventName { get; set; }
 
         [JsonPropertyName("event_start_date")]
-        public DateTimeOffset EventStartDate { get; set; }
+        public DateOnly EventStartDate { get; set; }
 
         [JsonPropertyName("event_end_date")]
-        public DateTimeOffset EventEndDate { get; set; }
+        public DateOnly EventEndDate { get; set; }
 
         [JsonPropertyName("event_weight")]
         public double EventWeight { get; set; }
