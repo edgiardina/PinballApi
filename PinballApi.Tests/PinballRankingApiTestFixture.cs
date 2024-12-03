@@ -407,6 +407,22 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_GetSeriesStats()
+        {
+            var seriesCode = "NACS";
+            var regionCode = "RI";
+            var result = await rankingApi.GetSeriesStats(seriesCode, regionCode, 2023);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.SeriesCode, Is.EqualTo(seriesCode));
+            Assert.That(result.RegionCode, Is.EqualTo(regionCode));
+            Assert.That(result.Year, Is.EqualTo(2023));
+            Assert.That(result.MonthlyStats, Is.Not.Null);
+            Assert.That(result.MonthlyStats.Count, Is.GreaterThan(0));
+            Assert.That(result.MonthlyStats.All(s => s.Month > 0), Is.True);
+        }
+
+        [Test]
         public async Task PinballRankingApi_Directors_GetCountryDirectors()
         {
             var result = await rankingApi.GetCountryDirectors();
