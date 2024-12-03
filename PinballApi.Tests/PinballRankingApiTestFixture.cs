@@ -335,6 +335,18 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_GetRegions()
+        {
+            var seriesCode = "NACS";
+            var year = 2023;
+
+            var result = await rankingApi.GetRegions(seriesCode, year);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
         public async Task PinballRankingApi_GetSeriesTournamentsForRegion()
         {
             var seriesCode = "NACS";

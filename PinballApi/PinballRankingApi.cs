@@ -265,7 +265,7 @@ namespace PinballApi
 
         public async Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50)
         {
-            if(count > 500)
+            if (count > 500)
                 throw new ArgumentException("Count must be 500 or less");
 
             if (count < 1)
@@ -441,6 +441,24 @@ namespace PinballApi
             return JsonNode.Parse(json)["series"].Deserialize<List<Series>>(JsonSerializerOptions);
         }
 
+        public async Task<List<Region>> GetRegions(string seriesCode, int year)
+        {
+            // Note: API throws SQL error if year is not provided
+
+            // validate that year is a valid year
+            if (year < 2000 || year > DateTime.Now.Year)
+                throw new ArgumentException("Year must be a valid year");
+
+            var json = await BaseRequest
+                .AppendPathSegment("series")
+                .AppendPathSegment(seriesCode.ToUpper())
+                .AppendPathSegment("regions")
+                .SetQueryParam("year", year)
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["active_regions"].Deserialize<List<Region>>(JsonSerializerOptions);
+        }
+
         /// <summary>
         /// Retrieve overall standings for a Series
         /// </summary>
@@ -577,10 +595,10 @@ namespace PinballApi
 
         public async Task<List<Director>> GetDirectorsBySearch(string name, int count = 50)
         {
-            if(string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Name must be provided");
 
-            var json =  await BaseRequest
+            var json = await BaseRequest
                     .AppendPathSegment("director/search")
                     .SetQueryParam("name", name)
                     .SetQueryParam("count", count)

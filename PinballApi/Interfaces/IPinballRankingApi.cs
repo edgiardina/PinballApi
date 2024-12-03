@@ -56,5 +56,6 @@ namespace PinballApi.Interfaces
         Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod);
         Task<List<CustomRankingView>> GetCustomRankings();
         Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50);
+        Task<List<Region>> GetRegions(string seriesCode, int year);
     }
 }
