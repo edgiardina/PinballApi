@@ -97,10 +97,11 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public double RatingsValue { get; set; }
 
         [JsonPropertyName("efficiency_rank")]
-        [JsonConverter(typeof(LongIntegerFromStringConverter))]
-        public long EfficiencyRank { get; set; }
+        [JsonConverter(typeof(NullableLongIntegerFromStringConverter))]
+        public long? EfficiencyRank { get; set; }
 
         [JsonPropertyName("efficiency_value")]
-        public double EfficiencyValue { get; set; }
+        [JsonConverter(typeof(EmptyStringNullableDoubleDescriptiveConverter))]
+        public double? EfficiencyValue { get; set; }
     }
 }

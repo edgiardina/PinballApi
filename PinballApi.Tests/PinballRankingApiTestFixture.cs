@@ -197,6 +197,15 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_GetPlayers_GetPlayerWithNoRanking()
+        {
+            var epstein = 32;
+
+            var result = await rankingApi.GetPlayer(epstein);
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
         public async Task PinballRankingApi_PlayerSearch_GetPlayerByName()
         {
             var result = await rankingApi.PlayerSearch("Raymond Davidson");

@@ -15,10 +15,10 @@ namespace PinballApi.Models.WPPR.Universal.Director
         public int LeagueCount { get; set; }
 
         [JsonPropertyName("highest_value")]
-        public int HighestValue { get; set; }
+        public double HighestValue { get; set; }
 
         [JsonPropertyName("average_value")]
-        public int AverageValue { get; set; }
+        public double AverageValue { get; set; }
 
         [JsonPropertyName("total_player_count")]
         public int TotalPlayerCount { get; set; }
