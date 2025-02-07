@@ -7,10 +7,10 @@ namespace PinballApi.Models.MatchPlay.Tournaments
 {
     public class BestGameStats
     {
-        [JsonPropertyName("arenaData")]
-        public List<ArenaStats> ArenaData { get; set; }
+        [JsonPropertyName("gameCount")]
+        public int GameCount { get; set; }
 
-        [JsonPropertyName("singlePlayerGameData")]
-        public List<SinglePlayerGameData> SinglePlayerGameData { get; set; }
+        [JsonPropertyName("voidedCount")]
+        public int VoidedCount { get; set; }
     }
 }

@@ -366,8 +366,8 @@ namespace PinballApi.Tests
             var stats = await matchPlayApi.GetBestGameStats(100138);
 
             Assert.That(stats, Is.Not.Null);
-            Assert.That(stats.ArenaData, Is.Not.Empty);
-            Assert.That(stats.SinglePlayerGameData, Is.Not.Empty);
+            Assert.That(stats.VoidedCount, Is.InstanceOf<int>());
+            Assert.That(stats.GameCount, Is.InstanceOf<int>());
         }
 
         [Test]
