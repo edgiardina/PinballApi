@@ -206,15 +206,15 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task PinballRankingApi_GetPlayer_GetPlayerChelseaBone()
+        public async Task PinballRankingApi_GetPlayer_GetPlayerChelseaCampbell()
         {
-            var playerId = 64785;
+            var playerId = 122816;
 
             var result = await rankingApi.GetPlayer(playerId);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.PlayerId, Is.EqualTo(playerId));
             Assert.That(result.FirstName, Is.EqualTo("Chelsea"));
-            Assert.That(result.LastName, Is.EqualTo("Bone"));
+            Assert.That(result.LastName, Is.EqualTo("Campbell"));
         }
 
         [Test]

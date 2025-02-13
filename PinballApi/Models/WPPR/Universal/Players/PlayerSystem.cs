@@ -31,7 +31,8 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public long HighestRank { get; set; }
 
         [JsonPropertyName("highest_rank_date")]
-        public DateTime HighestRankDate { get; set; }
+        [JsonConverter(typeof(NullableDateConverter))]
+        public DateTimeOffset? HighestRankDate { get; set; }
 
         [JsonPropertyName("pro_rank")]
         [JsonConverter(typeof(EmptyStringNullableIntDescriptiveConverter))]
