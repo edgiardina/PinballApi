@@ -206,6 +206,18 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_GetPlayer_GetPlayerChelseaBone()
+        {
+            var playerId = 64785;
+
+            var result = await rankingApi.GetPlayer(playerId);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.FirstName, Is.EqualTo("Chelsea"));
+            Assert.That(result.LastName, Is.EqualTo("Bone"));
+        }
+
+        [Test]
         public async Task PinballRankingApi_PlayerSearch_GetPlayerByName()
         {
             var result = await rankingApi.PlayerSearch("Raymond Davidson");

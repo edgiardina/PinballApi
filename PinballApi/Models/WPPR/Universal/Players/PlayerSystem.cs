@@ -90,11 +90,12 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public long Top10_Last3_Years { get; set; }
 
         [JsonPropertyName("ratings_rank")]
-        [JsonConverter(typeof(LongIntegerFromStringConverter))]
-        public long RatingsRank { get; set; }
+        [JsonConverter(typeof(NullableLongIntegerFromStringConverter))]
+        public long? RatingsRank { get; set; }
 
         [JsonPropertyName("ratings_value")]
-        public double RatingsValue { get; set; }
+        [JsonConverter(typeof(EmptyStringNullableDoubleDescriptiveConverter))]
+        public double? RatingsValue { get; set; }
 
         [JsonPropertyName("efficiency_rank")]
         [JsonConverter(typeof(NullableLongIntegerFromStringConverter))]
