@@ -11,7 +11,7 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public List<PlayerSystem> System { get; set; }
 
         [JsonPropertyName("years_active")]
-        [JsonConverter(typeof(LongIntegerFromStringConverter))]
-        public long YearsActive { get; set; }
+        [JsonConverter(typeof(NullableLongIntegerFromStringConverter))]
+        public long? YearsActive { get; set; }
     }
 }
