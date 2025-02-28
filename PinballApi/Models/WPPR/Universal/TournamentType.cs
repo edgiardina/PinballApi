@@ -11,6 +11,7 @@ namespace PinballApi.Models.WPPR.Universal
         Main,
         Open,
         Women,
-        Youth
+        Youth,
+        Virtual
     }
 }

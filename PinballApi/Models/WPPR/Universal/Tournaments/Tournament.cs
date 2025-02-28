@@ -141,7 +141,7 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments
         public DateTimeOffset? RegistrationDate { get; set; }
 
         [JsonPropertyName("matchplay_id")]
-        [JsonConverter(typeof(LongIntegerFromStringConverter))]
-        public long MatchplayId { get; set; }
+        [JsonConverter(typeof(NullableLongIntegerFromStringConverter))]
+        public long? MatchplayId { get; set; }
     }
 }

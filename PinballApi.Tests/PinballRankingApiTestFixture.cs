@@ -49,6 +49,16 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_TournamentSearch_GetSearchForVirtualTourneyType()
+        {
+            int tourneyId = 93382;
+            var result = await rankingApi.GetTournament(tourneyId);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TournamentId, Is.EqualTo(tourneyId));
+        }
+
+        [Test]
         public async Task PinballRankingApi_TournamentSearch_GetSearchByEventType()
         {
             var result = await rankingApi.TournamentSearch(tournamentEventType: Models.WPPR.Universal.Tournaments.Search.TournamentEventType.League);
