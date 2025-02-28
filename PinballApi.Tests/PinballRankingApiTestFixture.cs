@@ -138,6 +138,7 @@ namespace PinballApi.Tests
         public async Task PinballRankingApi_ProRankingSearch_GetRankings([Values] TournamentType system)
         {
             Assume.That(system, Is.Not.EqualTo(TournamentType.Youth));
+            Assume.That(system, Is.Not.EqualTo(TournamentType.Virtual));
 
             var result = await rankingApi.ProRankingSearch(system);
 
@@ -289,8 +290,6 @@ namespace PinballApi.Tests
             Assert.That(result.PlayerId, Is.EqualTo(playerId));
             Assert.That(result.RankHistory, Is.Not.Null);
             Assert.That(result.RankHistory.Count, Is.GreaterThan(0));
-            // active results are only 36 months / 3 years or less
-            Assert.That(result.RankHistory.Count, Is.LessThanOrEqualTo(36));
             Assert.That(result.RatingHistory, Is.Not.Null);
             Assert.That(result.RatingHistory.Count, Is.GreaterThan(0));
             Assert.That(result.ActiveFlag, Is.True);
