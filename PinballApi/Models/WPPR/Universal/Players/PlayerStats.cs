@@ -13,5 +13,13 @@ namespace PinballApi.Models.WPPR.Universal.Players
         [JsonPropertyName("years_active")]
         [JsonConverter(typeof(NullableLongIntegerFromStringConverter))]
         public long? YearsActive { get; set; }
+
+        public PlayerSystem Open
+        {
+            get
+            {
+                return System.Find(x => x.System == PlayerRankingSystem.Main);
+            }
+        }
     }
 }
