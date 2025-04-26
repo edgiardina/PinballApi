@@ -44,7 +44,14 @@ namespace PinballApi.Converters
 
         public override void Write(Utf8JsonWriter writer, double? value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            if (value == null)
+            {
+                writer.WriteStringValue(string.Empty);
+            }
+            else
+            {
+                writer.WriteNumberValue(value.Value);
+            }
         }
     }
 }
