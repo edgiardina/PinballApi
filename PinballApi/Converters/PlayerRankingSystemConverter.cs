@@ -16,9 +16,7 @@ namespace PinballApi.Converters
 
         public override void Write(Utf8JsonWriter writer, PlayerRankingSystem value, JsonSerializerOptions options)
         {
-            writer.WriteStartObject();
-
-            string propertyName = value switch
+            string enumString = value switch
             {
                 PlayerRankingSystem.Main => "MAIN",
                 PlayerRankingSystem.Women => "WOMEN",
@@ -26,11 +24,7 @@ namespace PinballApi.Converters
                 _ => throw new JsonException($"Unknown system type: {value}")
             };
 
-            writer.WritePropertyName(propertyName);
-            JsonSerializer.Serialize(writer, value, options);
-
-
-            writer.WriteEndObject();
+            writer.WriteStringValue(enumString);
         }
     }
 }

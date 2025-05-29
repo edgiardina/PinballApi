@@ -54,7 +54,22 @@ namespace PinballApi.Converters
 
         public override void Write(Utf8JsonWriter writer, List<PlayerSystem> value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(value.ToString().ToUpper());
+            writer.WriteStartObject();
+
+            foreach (var system in value)
+            {
+                string propertyName = system.System switch
+                {
+                    PlayerRankingSystem.Main => "MAIN",                    
+                    PlayerRankingSystem.Women => "WOMENS",
+                    _ => throw new JsonException($"Unknown system type: {system.System}")
+                };
+
+                writer.WritePropertyName(propertyName);
+                JsonSerializer.Serialize(writer, system, options);
+            }
+
+            writer.WriteEndObject();
         }
     }
 }
