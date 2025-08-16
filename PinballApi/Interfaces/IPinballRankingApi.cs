@@ -52,7 +52,7 @@ namespace PinballApi.Interfaces
         Task<Models.WPPR.Universal.Tournaments.Tournament> GetDirectorTournaments(long directorId, TimePeriod timePeriod);
         Task<TournamentFormats> GetTournamentFormats();
         Task<TournamentResults> GetTournamentResults(int tournamentId);
-        Task<List<TournamentResult>> GetRelatedResults(int tournamentId);
+        Task<List<Models.WPPR.Universal.Tournaments.Search.Tournament>> GetRelatedTournaments(int tournamentId);
         Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod);
         Task<List<CustomRankingView>> GetCustomRankings();
         Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50);

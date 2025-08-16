@@ -120,6 +120,17 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_Tournament_GetRelatedResults()
+        {
+            // Use a known tournament ID already fetched elsewhere in tests
+            int tournamentId = 90690;
+
+            var related = await rankingApi.GetRelatedTournaments(tournamentId);
+
+            Assert.That(related, Is.Not.Null);
+        }
+
+        [Test]
         public async Task PinballRankingApi_RankingSearch_GetRankingsByType([Values] RankingType type)
         {
             Assume.That(type, Is.Not.EqualTo(RankingType.Pro));

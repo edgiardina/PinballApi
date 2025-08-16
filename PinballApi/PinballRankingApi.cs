@@ -170,10 +170,8 @@ namespace PinballApi
         }
 
         // Get Related Tournaments
-        public async Task<List<TournamentResult>> GetRelatedResults(int tournamentId)
+        public async Task<List<Models.WPPR.Universal.Tournaments.Search.Tournament>> GetRelatedTournaments(int tournamentId)
         {
-            throw new NotImplementedException("Endpoint currently returns 404");
-
             var request = BaseRequest
                 .AppendPathSegment("tournament")
                 .AppendPathSegment(tournamentId)
@@ -181,7 +179,10 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JsonNode.Parse(json)["results"].Deserialize<List<TournamentResult>>(JsonSerializerOptions);
+            if(string.IsNullOrWhiteSpace(json) || json == "null")
+                return new List<Models.WPPR.Universal.Tournaments.Search.Tournament>();
+
+            return JsonNode.Parse(json)["tournament"].Deserialize<List<Models.WPPR.Universal.Tournaments.Search.Tournament>>(JsonSerializerOptions);
         }
 
         // Get Leagues

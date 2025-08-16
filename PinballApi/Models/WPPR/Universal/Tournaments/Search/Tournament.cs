@@ -49,7 +49,8 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments.Search
         public DateTimeOffset EventStartDate { get; set; }
 
         [JsonPropertyName("event_end_date")]
-        public DateTimeOffset EventEndDate { get; set; }
+        [JsonConverter(typeof(NullableDateConverter))]
+        public DateTimeOffset? EventEndDate { get; set; }
 
         [JsonPropertyName("latitude")]
         public double Latitude { get; set; }
