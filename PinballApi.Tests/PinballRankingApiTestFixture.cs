@@ -52,7 +52,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_Directors_GetDirectorTournaments()
         {
-            var directorId = 412;
+            var directorId = 3;
 
             var result = await rankingApi.GetDirectorTournaments(directorId, TimePeriod.Past);
 
@@ -546,7 +546,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_Directors_GetDirectorById()
         {
-            var directorId = 1;
+            var directorId = 3;
 
             var result2 = await rankingApi.GetDirector(directorId);
 
