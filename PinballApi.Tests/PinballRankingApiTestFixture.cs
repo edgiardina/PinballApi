@@ -26,6 +26,17 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_RankingSearch_Virtual_ReturnsRankings()
+        {
+            var result = await rankingApi.RankingSearch(RankingType.Virtual);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Rankings, Is.Not.Null);
+            Assert.That(result.Rankings.Count, Is.GreaterThan(0));
+            Assert.That(result.RankingType, Is.EqualTo(RankingType.Virtual));
+        }
+
+        [Test]
         public async Task PinballRankingApi_TournamentSearch_GetSearchByLatLong()
         {
             var result = await rankingApi.TournamentSearch(41.8240, -71.4128, 150, DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1));
@@ -53,7 +64,7 @@ namespace PinballApi.Tests
             }
         }
 
-        [Test, Ignore("Returns 404")]
+        [Test]
         public async Task PinballRankingApi_Tournament_GetLeagues_ReturnsActiveLeagues()
         {
             var result = await rankingApi.GetLeagues(PinballApi.Models.WPPR.Universal.Tournaments.LeagueTimePeriod.Active);
