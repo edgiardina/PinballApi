@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.WPPR.Universal.Director
@@ -48,6 +49,6 @@ namespace PinballApi.Models.WPPR.Universal.Director
         public DateOnly LastEventDate { get; set; }
 
         [JsonPropertyName("formats")]
-        public Formats Formats { get; set; }
+        public List<Formats> Formats { get; set; }
     }
 }
