@@ -14,6 +14,7 @@ using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using PinballApi.Models.WPPR.Universal.Tournaments.Related;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -170,7 +171,7 @@ namespace PinballApi
         }
 
         // Get Related Tournaments
-        public async Task<List<Models.WPPR.Universal.Tournaments.Search.Tournament>> GetRelatedTournaments(int tournamentId)
+        public async Task<List<RelatedTournament>> GetRelatedTournaments(int tournamentId)
         {
             var request = BaseRequest
                 .AppendPathSegment("tournament")
@@ -179,10 +180,10 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            if(string.IsNullOrWhiteSpace(json) || json == "null")
-                return new List<Models.WPPR.Universal.Tournaments.Search.Tournament>();
+            if (string.IsNullOrWhiteSpace(json) || json == "null")
+                return new List<RelatedTournament>();
 
-            return JsonNode.Parse(json)["tournament"].Deserialize<List<Models.WPPR.Universal.Tournaments.Search.Tournament>>(JsonSerializerOptions);
+            return JsonNode.Parse(json)["tournament"].Deserialize<List<RelatedTournament>>(JsonSerializerOptions);
         }
 
         // Get Leagues

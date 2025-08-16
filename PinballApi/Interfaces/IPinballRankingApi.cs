@@ -10,6 +10,7 @@ using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using PinballApi.Models.WPPR.Universal.Tournaments.Related;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace PinballApi.Interfaces
         Task<Models.WPPR.Universal.Tournaments.Tournament> GetDirectorTournaments(long directorId, TimePeriod timePeriod);
         Task<TournamentFormats> GetTournamentFormats();
         Task<TournamentResults> GetTournamentResults(int tournamentId);
-        Task<List<Models.WPPR.Universal.Tournaments.Search.Tournament>> GetRelatedTournaments(int tournamentId);
+        Task<List<RelatedTournament>> GetRelatedTournaments(int tournamentId);
         Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod);
         Task<List<CustomRankingView>> GetCustomRankings();
         Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50);
