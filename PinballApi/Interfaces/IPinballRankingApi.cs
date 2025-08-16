@@ -50,7 +50,7 @@ namespace PinballApi.Interfaces
         Task<List<PlayersPointsByGivenPeriodStatistics>> GetPlayersPointsByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25);
         Task<Director> GetDirector(long directorId);
         Task<List<Director>> GetDirectorsBySearch(string name, int count = 50);
-        Task<Models.WPPR.Universal.Tournaments.Tournament> GetDirectorTournaments(long directorId, TimePeriod timePeriod);
+        Task<List<Models.WPPR.Universal.Tournaments.Tournament>> GetDirectorTournaments(long directorId, TimePeriod timePeriod);
         Task<TournamentFormats> GetTournamentFormats();
         Task<TournamentResults> GetTournamentResults(int tournamentId);
         Task<List<RelatedTournament>> GetRelatedTournaments(int tournamentId);

@@ -638,26 +638,33 @@ namespace PinballApi
             return JsonNode.Parse(json)["directors"].Deserialize<List<Director>>(JsonSerializerOptions);
         }
 
-
-        public async Task<Models.WPPR.Universal.Tournaments.Tournament> GetDirectorTournaments(long directorId, TimePeriod timePeriod)
+        public async Task<List<Models.WPPR.Universal.Tournaments.Tournament>> GetDirectorTournaments(long directorId, TimePeriod timePeriod)
         {
-            throw new NotImplementedException();
+            var request = BaseRequest
+                .AppendPathSegment("director")
+                .AppendPathSegment(directorId)
+                .AppendPathSegment("tournaments")
+                .AppendPathSegment(timePeriod.ToString().ToUpper());
 
-            // TODO: Implement - Currently throws 404
-            /*
-             curl -X 'GET' \
-                  'https://api.ifpapinball.com/director/3357/tournaments/FUTURE' \
-                  -H 'accept: application/json' \
-                  -H 'X-API-Key: *****'
-             */
+            var json = await request.GetStringAsync();
 
-            //var request = BaseRequest
-            //    .AppendPathSegment("director")
-            //    .AppendPathSegment(directorId)
-            //    .AppendPathSegment("tournaments")
-            //    .AppendPathSegment(eventType.ToString().ToUpper());
+            if (string.IsNullOrWhiteSpace(json) || json == "null")
+                return new List<Models.WPPR.Universal.Tournaments.Tournament>();
 
-            //return await request.GetJsonAsync<List<DirectorTournament>>();
+            var root = JsonNode.Parse(json);
+            var tournamentsNode = root?["tournaments"];
+            if (tournamentsNode == null)
+                return new List<Models.WPPR.Universal.Tournaments.Tournament>();
+
+            var tournaments = tournamentsNode.Deserialize<List<Models.WPPR.Universal.Tournaments.Tournament>>(JsonSerializerOptions);
+
+            // set all tournament IDs to the director's ID
+            foreach (var tournament in tournaments)
+            {
+                tournament.DirectorId = directorId;
+            }
+
+            return tournaments;
         }
 
         #endregion

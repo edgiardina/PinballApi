@@ -39,6 +39,30 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_Directors_GetDirectorTournaments()
+        {
+            var directorId = 412;
+
+            var result = await rankingApi.GetDirectorTournaments(directorId, TimePeriod.Past);
+
+            Assert.That(result, Is.Not.Null);
+            if (result.Count > 0)
+            {
+                Assert.That(result.All(t => t.TournamentId > 0 && !string.IsNullOrWhiteSpace(t.TournamentName)), Is.True);
+                Assert.That(result.All(t => t.DirectorId == directorId || t.DirectorId > 0), Is.True);
+            }
+        }
+
+        [Test, Ignore("Returns 404")]
+        public async Task PinballRankingApi_Tournament_GetLeagues_ReturnsActiveLeagues()
+        {
+            var result = await rankingApi.GetLeagues(PinballApi.Models.WPPR.Universal.Tournaments.LeagueTimePeriod.Active);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+        }
+
+        [Test]
         public async Task PinballRankingApi_TournamentSearch_GetSearchById()
         {
             int tourneyId = 78504;
@@ -123,11 +147,16 @@ namespace PinballApi.Tests
         public async Task PinballRankingApi_Tournament_GetRelatedResults()
         {
             // Use a known tournament ID already fetched elsewhere in tests
-            int tournamentId = 90690;
+            int tournamentId = 78504;
 
             var related = await rankingApi.GetRelatedTournaments(tournamentId);
 
             Assert.That(related, Is.Not.Null);
+            // Some tournaments may not have related events; only assert type/non-null
+            if (related.Count > 0)
+            {
+                Assert.That(related.All(r => r.TournamentId > 0 && !string.IsNullOrWhiteSpace(r.TournamentName)), Is.True);
+            }
         }
 
         [Test]
