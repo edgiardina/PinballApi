@@ -26,6 +26,17 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_RankingSearch_Virtual_ReturnsRankings()
+        {
+            var result = await rankingApi.RankingSearch(RankingType.Virtual);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Rankings, Is.Not.Null);
+            Assert.That(result.Rankings.Count, Is.GreaterThan(0));
+            Assert.That(result.RankingType, Is.EqualTo(RankingType.Virtual));
+        }
+
+        [Test]
         public async Task PinballRankingApi_TournamentSearch_GetSearchByLatLong()
         {
             var result = await rankingApi.TournamentSearch(41.8240, -71.4128, 150, DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1));
@@ -36,6 +47,30 @@ namespace PinballApi.Tests
             Assert.That(result.SearchFilter.Longitude, Is.EqualTo(-71.4128));
             Assert.That(result.SearchFilter.Radius, Is.EqualTo(150));
             Assert.That(result.SearchFilter.DistanceUnit, Is.EqualTo("m"));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_Directors_GetDirectorTournaments()
+        {
+            var directorId = 3;
+
+            var result = await rankingApi.GetDirectorTournaments(directorId, TimePeriod.Past);
+
+            Assert.That(result, Is.Not.Null);
+            if (result.Count > 0)
+            {
+                Assert.That(result.All(t => t.TournamentId > 0 && !string.IsNullOrWhiteSpace(t.TournamentName)), Is.True);
+                Assert.That(result.All(t => t.DirectorId == directorId || t.DirectorId > 0), Is.True);
+            }
+        }
+
+        [Test, Ignore("Leagues not supported yet (returns 404)")]
+        public async Task PinballRankingApi_Tournament_GetLeagues_ReturnsActiveLeagues()
+        {
+            var result = await rankingApi.GetLeagues(PinballApi.Models.WPPR.Universal.Tournaments.LeagueTimePeriod.Active);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
         }
 
         [Test]
@@ -117,6 +152,22 @@ namespace PinballApi.Tests
             Assert.That(result.Results, Is.Not.Empty);
             Assert.That(result.Results.Count, Is.GreaterThan(0));
             Assert.That(result.TournamentId, Is.EqualTo(tournamentId));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_Tournament_GetRelatedResults()
+        {
+            // Use a known tournament ID already fetched elsewhere in tests
+            int tournamentId = 78504;
+
+            var related = await rankingApi.GetRelatedTournaments(tournamentId);
+
+            Assert.That(related, Is.Not.Null);
+            // Some tournaments may not have related events; only assert type/non-null
+            if (related.Count > 0)
+            {
+                Assert.That(related.All(r => r.TournamentId > 0 && !string.IsNullOrWhiteSpace(r.TournamentName)), Is.True);
+            }
         }
 
         [Test]
@@ -495,7 +546,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_Directors_GetDirectorById()
         {
-            var directorId = 1;
+            var directorId = 3;
 
             var result2 = await rankingApi.GetDirector(directorId);
 

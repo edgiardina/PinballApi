@@ -6,6 +6,7 @@
         Wppr,
         Youth,
         Women,
-        Country
+        Country,
+        Virtual
     }
 }

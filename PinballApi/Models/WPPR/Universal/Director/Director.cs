@@ -7,16 +7,16 @@ namespace PinballApi.Models.WPPR.Universal.Director
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("player_id")]
+        public long PlayerId { get; set; }
+
         [JsonPropertyName("director_id")]
         public long DirectorId { get; set; }
 
-        [JsonPropertyName("facebook_url")]
-        public string FacebookUrl { get; set; }
+        [JsonPropertyName("twitch_username")]
+        public string TwitchUsername { get; set; }
 
-        [JsonPropertyName("twitch_url")]
-        public string TwitchUrl { get; set; }
-
-        [JsonPropertyName("profile_photo_url")]
+        [JsonPropertyName("profile_photo")]
         public string ProfilePhotoUrl { get; set; }
 
         [JsonPropertyName("stats")]

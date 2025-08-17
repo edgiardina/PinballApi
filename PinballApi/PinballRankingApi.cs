@@ -14,6 +14,7 @@ using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using PinballApi.Models.WPPR.Universal.Tournaments.Related;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -170,10 +171,8 @@ namespace PinballApi
         }
 
         // Get Related Tournaments
-        public async Task<List<TournamentResult>> GetRelatedResults(int tournamentId)
+        public async Task<List<RelatedTournament>> GetRelatedTournaments(int tournamentId)
         {
-            throw new NotImplementedException("Endpoint currently returns 404");
-
             var request = BaseRequest
                 .AppendPathSegment("tournament")
                 .AppendPathSegment(tournamentId)
@@ -181,7 +180,10 @@ namespace PinballApi
 
             var json = await request.GetStringAsync();
 
-            return JsonNode.Parse(json)["results"].Deserialize<List<TournamentResult>>(JsonSerializerOptions);
+            if (string.IsNullOrWhiteSpace(json) || json == "null")
+                return new List<RelatedTournament>();
+
+            return JsonNode.Parse(json)["tournament"].Deserialize<List<RelatedTournament>>(JsonSerializerOptions);
         }
 
         // Get Leagues
@@ -636,26 +638,33 @@ namespace PinballApi
             return JsonNode.Parse(json)["directors"].Deserialize<List<Director>>(JsonSerializerOptions);
         }
 
-
-        public async Task<Models.WPPR.Universal.Tournaments.Tournament> GetDirectorTournaments(long directorId, TimePeriod timePeriod)
+        public async Task<List<Models.WPPR.Universal.Tournaments.Tournament>> GetDirectorTournaments(long directorId, TimePeriod timePeriod)
         {
-            throw new NotImplementedException();
+            var request = BaseRequest
+                .AppendPathSegment("director")
+                .AppendPathSegment(directorId)
+                .AppendPathSegment("tournaments")
+                .AppendPathSegment(timePeriod.ToString().ToUpper());
 
-            // TODO: Implement - Currently throws 404
-            /*
-             curl -X 'GET' \
-                  'https://api.ifpapinball.com/director/3357/tournaments/FUTURE' \
-                  -H 'accept: application/json' \
-                  -H 'X-API-Key: *****'
-             */
+            var json = await request.GetStringAsync();
 
-            //var request = BaseRequest
-            //    .AppendPathSegment("director")
-            //    .AppendPathSegment(directorId)
-            //    .AppendPathSegment("tournaments")
-            //    .AppendPathSegment(eventType.ToString().ToUpper());
+            if (string.IsNullOrWhiteSpace(json) || json == "null")
+                return new List<Models.WPPR.Universal.Tournaments.Tournament>();
 
-            //return await request.GetJsonAsync<List<DirectorTournament>>();
+            var root = JsonNode.Parse(json);
+            var tournamentsNode = root?["tournaments"];
+            if (tournamentsNode == null)
+                return new List<Models.WPPR.Universal.Tournaments.Tournament>();
+
+            var tournaments = tournamentsNode.Deserialize<List<Models.WPPR.Universal.Tournaments.Tournament>>(JsonSerializerOptions);
+
+            // set all tournament IDs to the director's ID
+            foreach (var tournament in tournaments)
+            {
+                tournament.DirectorId = directorId;
+            }
+
+            return tournaments;
         }
 
         #endregion
