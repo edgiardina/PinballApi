@@ -30,6 +30,7 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments.Related
         public TournamentType RankingSystem { get; set; }
 
         [JsonPropertyName("winner")]
+        [JsonConverter(typeof(EmptyStringToNullConverter<RelatedTournamentWinner>))]
         public RelatedTournamentWinner Winner { get; set; }
     }
 }
