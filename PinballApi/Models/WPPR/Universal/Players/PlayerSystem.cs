@@ -24,7 +24,7 @@ namespace PinballApi.Models.WPPR.Universal.Players
 
         [JsonPropertyName("last_year_rank")]
         [JsonConverter(typeof(LongIntegerFromStringConverter))]
-        public long LastYearRank { get; set; }
+        public long? LastYearRank { get; set; }
 
         [JsonPropertyName("highest_rank")]
         [JsonConverter(typeof(LongIntegerFromStringConverter))]
@@ -48,7 +48,7 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public double ActivePoints { get; set; }
 
         [JsonPropertyName("inactive_points")]
-        public double InactivePoints { get; set; }
+        public double? InactivePoints { get; set; }
 
         [JsonPropertyName("best_finish")]
         [JsonConverter(typeof(LongIntegerFromStringConverter))]
@@ -64,7 +64,7 @@ namespace PinballApi.Models.WPPR.Universal.Players
 
         [JsonPropertyName("average_finish_last_year")]
         [JsonConverter(typeof(LongIntegerFromStringConverter))]
-        public long AverageFinishLastYear { get; set; }
+        public long? AverageFinishLastYear { get; set; }
 
         [JsonPropertyName("total_events_all_time")]
         [JsonConverter(typeof(LongIntegerFromStringConverter))]

@@ -11,7 +11,10 @@ namespace PinballApi.Models.WPPR.Universal.Players.Search
         [JsonPropertyName("count")]
         public long Count { get; set; }
 
+        [JsonPropertyName("total_results")]
+        public string TotalResults { get; set; }
+
         [JsonPropertyName("results")]
-        public List<Player> Results { get; set; }
+        public List<PlayerSearchResult> Results { get; set; }
     }
 }
