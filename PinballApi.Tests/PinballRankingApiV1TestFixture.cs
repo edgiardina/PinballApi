@@ -251,6 +251,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("Calendar Endpoint no longer takes searchable string, you have to provide lat/long")]
         public async Task PinballRankingApiV1_GetCalendarSearch_ShouldReturnCalendar()
         {
             var address = "346 Rochambeau Ave, Providence, RI";
