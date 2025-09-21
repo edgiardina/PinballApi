@@ -6,9 +6,11 @@ namespace PinballApi.Models.WPPR.Universal.Players.Search
     public class PlayerSearchResult : PlayerBase
     {
         [JsonPropertyName("wppr_rank")]
-        public string WpprRank { get; set; }
+        [JsonConverter(typeof(NullableLongIntegerFromStringConverter))]
+        public long? WpprRank { get; set; }
 
         [JsonPropertyName("rating_value")]
-        public string RatingValue { get; set; }
+        [JsonConverter(typeof(EmptyStringNullableDoubleDescriptiveConverter))]
+        public double? RatingValue { get; set; }
     }
 }
