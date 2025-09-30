@@ -1,10 +1,6 @@
 ﻿using PinballApi.Converters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace PinballApi.Models.WPPR.Universal.Players
 {
@@ -39,13 +35,13 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public int? ProRank { get; set; }
 
         [JsonPropertyName("current_points")]
-        public double CurrentPoints { get; set; }
+        public double? CurrentPoints { get; set; }
 
         [JsonPropertyName("all_time_points")]
         public double AllTimePoints { get; set; }
 
         [JsonPropertyName("active_points")]
-        public double ActivePoints { get; set; }
+        public double? ActivePoints { get; set; }
 
         [JsonPropertyName("inactive_points")]
         public double? InactivePoints { get; set; }

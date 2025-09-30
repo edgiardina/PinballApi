@@ -30,6 +30,6 @@ namespace PinballApi.Models.WPPR.Universal.Players
         public double OriginalPoints { get; set; }
 
         [JsonPropertyName("current_points")]
-        public double CurrentPoints { get; set; }
+        public double? CurrentPoints { get; set; }
     }
 }
