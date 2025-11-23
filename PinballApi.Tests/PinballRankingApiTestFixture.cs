@@ -267,6 +267,16 @@ namespace PinballApi.Tests
             Assert.That(result, Is.Not.Null);
         }
 
+
+        [Test]
+        public async Task PinballRankingApi_GetPlayers_GetPlayerWithOldRanking()
+        {
+            var epstein = 66417;
+
+            var result = await rankingApi.GetPlayer(epstein);
+            Assert.That(result, Is.Not.Null);
+        }
+
         [Test]
         public async Task PinballRankingApi_GetPlayer_GetPlayerChelseaCampbell()
         {
@@ -310,6 +320,17 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task PinballRankingApi_GetPlayers_GetMattCaramella()
+        {
+            var playerId = 46546;
+            var result = await rankingApi.GetPlayers([playerId]);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.First().PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.First().FirstName.Trim(), Is.EqualTo("Matt"));
+            Assert.That(result.First().LastName.Trim(), Is.EqualTo("Caramella"));
+        }
+
+        [Test]
         [Ignore("Searching with spaces is broken")]
         public async Task PinballRankingApi_PlayerSearch_GetPlayerByName()
         {
@@ -325,7 +346,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_PlayerResults_GetPlayerResults()
         {
-            int playerId = 16927;
+            int playerId = 46546;
 
             var result = await rankingApi.GetPlayerResults(playerId);
 
@@ -338,7 +359,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_PlayerHistory_GetPlayerHistory()
         {
-            int playerId = 16927;
+            int playerId = 46546;
 
             var result = await rankingApi.GetPlayerHistory(playerId);
 
@@ -410,7 +431,7 @@ namespace PinballApi.Tests
         public async Task PinballRankingApi_PlayerVersusComparison_GetComparison()
         {
             int playerId = 16927;
-            int playerId2 = 5363;
+            int playerId2 = 9976;
 
             var result = await rankingApi.GetPlayerVersusPlayerComparison(playerId, playerId2);
 
