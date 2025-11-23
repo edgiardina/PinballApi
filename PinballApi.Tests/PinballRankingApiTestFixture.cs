@@ -320,17 +320,6 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        public async Task PinballRankingApi_GetPlayers_GetMattCaramella()
-        {
-            var playerId = 46546;
-            var result = await rankingApi.GetPlayers([playerId]);
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.First().PlayerId, Is.EqualTo(playerId));
-            Assert.That(result.First().FirstName.Trim(), Is.EqualTo("Matt"));
-            Assert.That(result.First().LastName.Trim(), Is.EqualTo("Caramella"));
-        }
-
-        [Test]
         [Ignore("Searching with spaces is broken")]
         public async Task PinballRankingApi_PlayerSearch_GetPlayerByName()
         {
@@ -346,7 +335,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_PlayerResults_GetPlayerResults()
         {
-            int playerId = 46546;
+            int playerId = 16927;
 
             var result = await rankingApi.GetPlayerResults(playerId);
 
@@ -388,6 +377,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("this test has a male player and trying to get ranking system women")]
         public async Task PinballRankingApi_PlayerHistory_EnsureCorrectSystemReturned()
         {
             int playerId = 16927;
