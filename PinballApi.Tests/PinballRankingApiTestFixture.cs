@@ -68,7 +68,7 @@ namespace PinballApi.Tests
         [Test, Ignore("Leagues not supported yet (returns 404)")]
         public async Task PinballRankingApi_Tournament_GetLeagues_ReturnsActiveLeagues()
         {
-            var result = await rankingApi.GetLeagues(LeagueTimePeriod.Active);
+            var result = await rankingApi.GetLeagues(PinballApi.Models.WPPR.Universal.Tournaments.LeagueTimePeriod.Active);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.Not.Empty);
