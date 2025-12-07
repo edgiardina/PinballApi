@@ -5,6 +5,7 @@ using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Rankings;
+using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace PinballApi.Tests
         [Test, Ignore("Leagues not supported yet (returns 404)")]
         public async Task PinballRankingApi_Tournament_GetLeagues_ReturnsActiveLeagues()
         {
-            var result = await rankingApi.GetLeagues(PinballApi.Models.WPPR.Universal.Tournaments.LeagueTimePeriod.Active);
+            var result = await rankingApi.GetLeagues(LeagueTimePeriod.Active);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.Not.Empty);
@@ -96,17 +97,17 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_TournamentSearch_GetSearchByEventType()
         {
-            var result = await rankingApi.TournamentSearch(tournamentEventType: Models.WPPR.Universal.Tournaments.Search.TournamentEventType.League);
+            var result = await rankingApi.TournamentSearch(tournamentEventType: TournamentEventType.League);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.TotalResults, Is.GreaterThan(0));
-            Assert.That(result.SearchFilter.EventType, Is.EqualTo(Models.WPPR.Universal.Tournaments.Search.TournamentEventType.League));
+            Assert.That(result.SearchFilter.EventType, Is.EqualTo(TournamentEventType.League));
         }
 
         [Test]
         public async Task PinballRankingApi_TournamentSearch_EnsureSortingWorks()
         {
-            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortMode.StartDate, tournamentSearchSortOrder: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortOrder.Descending);
+            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: TournamentSearchSortMode.StartDate, tournamentSearchSortOrder: TournamentSearchSortOrder.Descending);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.TotalResults, Is.GreaterThan(0));
@@ -118,8 +119,8 @@ namespace PinballApi.Tests
         [Test]
         public async Task PinballRankingApi_TournamentSearch_EnsureOnlyWithResultsWorks()
         {
-            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortMode.StartDate,
-                                                           tournamentSearchSortOrder: Models.WPPR.Universal.Tournaments.Search.TournamentSearchSortOrder.Descending,
+            var result = await rankingApi.TournamentSearch(tournamentSearchSortMode: TournamentSearchSortMode.StartDate,
+                                                           tournamentSearchSortOrder: TournamentSearchSortOrder.Descending,
                                                            onlyWithResults: true);
 
             Assert.That(result, Is.Not.Null);
@@ -127,6 +128,21 @@ namespace PinballApi.Tests
             Assert.That(result.Tournaments, Is.Not.Null);
             Assert.That(result.Tournaments.Length, Is.GreaterThan(0));
             Assert.That(result.Tournaments.All(t => t.PlayerCount > 0), Is.True);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_TournamentSearch_GetSearchByName()
+        {
+            var name = "Pittsburgh";
+            var result = await rankingApi.TournamentSearch(name: name,
+                                                           tournamentSearchSortMode: TournamentSearchSortMode.StartDate,
+                                                           tournamentSearchSortOrder: TournamentSearchSortOrder.Descending,
+                                                           onlyWithResults: true);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.TotalResults, Is.GreaterThan(0));
+            Assert.That(result.Tournaments, Is.Not.Null);
+            Assert.That(result.Tournaments.Length, Is.GreaterThan(0));
+            Assert.That(result.Tournaments.All(t => t.TournamentName.Contains(name, StringComparison.OrdinalIgnoreCase)), Is.True);
         }
 
         [Test]
@@ -317,6 +333,17 @@ namespace PinballApi.Tests
             Assert.That(result.PlayerId, Is.EqualTo(playerId));
             Assert.That(result.FirstName.Trim(), Is.EqualTo("Matt"));
             Assert.That(result.LastName.Trim(), Is.EqualTo("Caramella"));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetPlayer_GetLewisBevans()
+        {
+            var playerId = 37655;
+            var result = await rankingApi.GetPlayer(playerId);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.PlayerId, Is.EqualTo(playerId));
+            Assert.That(result.FirstName.Trim(), Is.EqualTo("Suppressed"));
+            Assert.That(result.LastName.Trim(), Is.EqualTo("Player"));
         }
 
         [Test]

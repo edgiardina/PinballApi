@@ -12,8 +12,7 @@ namespace PinballApi.Converters
         {
             var value = reader.GetString();
 
-            // TODO: 
-            if (value == null || value == "Not Ranked")
+            if (value == null || value == "Not Ranked" || string.IsNullOrWhiteSpace(value))
                 return null;
 
             long l;
