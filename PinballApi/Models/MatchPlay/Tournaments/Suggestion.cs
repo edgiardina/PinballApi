@@ -32,6 +32,6 @@ namespace PinballApi.Models.MatchPlay.Tournaments
         public int? ArenaId { get; set; }
 
         [JsonPropertyName("scores")]
-        public List<ulong?> Scores { get; set; }
+        public Dictionary<string, ulong?> Scores { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        [Ignore("Dashboard endpoint 404s as of 2025-12-06")]
         public async Task MatchPlayApi_GetDashboard_ShouldReturnDashboard()
         {
             var dashboard = await matchPlayApi.GetDashboard();
