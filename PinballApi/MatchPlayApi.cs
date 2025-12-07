@@ -40,6 +40,7 @@ namespace PinballApi
             this.ApiToken = apiToken;
         }
 
+        [Obsolete("Dashboard method has been removed")]
         public async Task<Dashboard> GetDashboard()
         {
             return await BaseRequest
