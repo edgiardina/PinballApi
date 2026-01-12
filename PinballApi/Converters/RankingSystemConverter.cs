@@ -11,7 +11,18 @@ namespace PinballApi.Converters
         {
             var enumString = reader.GetString().ToLower();
             enumString = UppercaseFirst(enumString);
-            return (TournamentType)Enum.Parse(typeToConvert, enumString, ignoreCase: true);
+
+            try
+            {
+                enumString = char.ToUpper(enumString[0]) + enumString.Substring(1).ToLower();
+                return (TournamentType)Enum.Parse(typeof(TournamentType), enumString, ignoreCase: true);
+            }
+            catch
+            {
+                // Catch malformed tournamenttypes
+                // specifically, there's a "virtua" type in the wild
+                return TournamentType.Main;
+            }
         }
 
         public override void Write(Utf8JsonWriter writer, TournamentType value, JsonSerializerOptions options)

@@ -13,6 +13,10 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments.Search
         [JsonPropertyName("tournament_name")]
         public string TournamentName { get; set; }
 
+        [JsonPropertyName("details")]
+        public string Details { get; set; }
+
+
         [JsonPropertyName("event_name")]
         public string EventName { get; set; }
 

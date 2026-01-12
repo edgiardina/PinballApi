@@ -146,6 +146,33 @@ namespace PinballApi.Tests
         }
 
         [Test]
+        public async Task TournamentSearch_ParsesVirtuRankingSystemCorrectly()
+        {
+            // Arrange
+            var latitude = 41.410337;
+            var longitude = -75.6610675;
+            var startDate = new DateTime(2026, 1, 10);
+            var endDate = new DateTime(2027, 1, 10);
+            var radius = 253;
+            var total = 500;
+
+            // Act
+            var result = await rankingApi.TournamentSearch(
+                latitude: latitude,
+                longitude: longitude,
+                startDate: startDate,
+                endDate: endDate,
+                radius: radius,
+                totalReturn: total
+            );
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Tournaments, Is.Not.Empty);
+        }
+
+
+        [Test]
         public async Task PinballRankingApi_GetTournamentFormats_ReturnsTournamentFormats()
         {
             var result = await rankingApi.GetTournamentFormats();
