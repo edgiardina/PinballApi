@@ -10,6 +10,7 @@ using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using PinballApi.Models.WPPR.Universal.Other;
 using PinballApi.Models.WPPR.Universal.Tournaments.Related;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace PinballApi.Interfaces
         Task<PlayerResults> GetPlayerResults(int playerId, PlayerRankingSystem rankingSystem = PlayerRankingSystem.Main, ResultType resultType = ResultType.Active);
         Task<List<Player>> GetPlayers(List<int> playerIds);
         Task<List<CountryDirector>> GetCountryDirectors();
-        Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null);
+        Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null, int? tournamentPosition = null);
         Task<OverallStatistics> GetOverallStatistics();
         Task<List<EventsByYearStatistics>> GetEventsByYearStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
         Task<List<LargestTournamentStatistics>> GetLargestTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main);
@@ -56,9 +57,11 @@ namespace PinballApi.Interfaces
         Task<List<RelatedTournament>> GetRelatedTournaments(int tournamentId);
         Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod);
         Task<List<CustomRankingView>> GetCustomRankings();
-        Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50);
+        Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50, int startPosition = 1);
         Task<List<Region>> GetRegions(string seriesCode, int year);
         Task<List<RegionRepresentative>> GetRegionReps(string seriesCode);
         Task<SeriesStats> GetSeriesStats(string seriesCode, string region, int? year = null);
+        Task<List<CountryDetail>> GetCountriesList();
+        Task<List<StateProvCountry>> GetStateProvList();
     }
 }

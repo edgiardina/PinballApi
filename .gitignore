@@ -128,3 +128,6 @@ _NCrunch_All
 .vs
 /Delivery/Apps/Delivery.Apps.Api/App_Data/Documentation.XML
 /EmailAnalytics.Tasks/EmailAnalytics.Tasks.Monitoring/WinSCP.exe
+
+# Playwright MCP browser session state
+.playwright-mcp/

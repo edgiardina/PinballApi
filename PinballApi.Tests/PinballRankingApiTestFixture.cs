@@ -747,5 +747,51 @@ namespace PinballApi.Tests
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.Not.Empty);
         }
+
+        [Test]
+        public async Task PinballRankingApi_GetCountriesList_ReturnsCountries()
+        {
+            var result = await rankingApi.GetCountriesList();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.All(c => !string.IsNullOrWhiteSpace(c.CountryName) && !string.IsNullOrWhiteSpace(c.CountryCode)), Is.True);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetStateProvList_ReturnsStateProvs()
+        {
+            var result = await rankingApi.GetStateProvList();
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.Not.Empty);
+            Assert.That(result.All(c => !string.IsNullOrWhiteSpace(c.CountryName)), Is.True);
+        }
+
+        [Test]
+        public async Task PinballRankingApi_GetCustomRankingViewResult_SupportsPagination()
+        {
+            int viewId = 68;
+
+            var page1 = await rankingApi.GetCustomRankingViewResult(viewId, count: 5, startPosition: 1);
+            var page2 = await rankingApi.GetCustomRankingViewResult(viewId, count: 5, startPosition: 6);
+
+            Assert.That(page1, Is.Not.Null);
+            Assert.That(page2, Is.Not.Null);
+            Assert.That(page1.ViewResults, Is.Not.Empty);
+            Assert.That(page2.ViewResults, Is.Not.Empty);
+            Assert.That(page1.ViewResults.First().PlayerId, Is.Not.EqualTo(page2.ViewResults.First().PlayerId));
+        }
+
+        [Test]
+        public async Task PinballRankingApi_PlayerSearch_GetPlayerByTournamentPosition()
+        {
+            // Players who finished 1st in a specific tournament
+            var result = await rankingApi.PlayerSearch(tournamentName: "Texas", tournamentPosition: 1);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Results, Is.Not.Null);
+            Assert.That(result.Results.Count, Is.GreaterThan(0));
+        }
     }
 }

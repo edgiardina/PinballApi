@@ -14,6 +14,7 @@ using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using PinballApi.Models.WPPR.Universal.Other;
 using PinballApi.Models.WPPR.Universal.Tournaments.Related;
 using System;
 using System.Collections.Generic;
@@ -123,9 +124,9 @@ namespace PinballApi
             if (preRegistration.HasValue)
             {
                 if (preRegistration == true)
-                    request = request.SetQueryParam("preregistration", "Y");
+                    request = request.SetQueryParam("pre_registration", "Y");
                 else
-                    request = request.SetQueryParam("preregistration", "N");
+                    request = request.SetQueryParam("pre_registration", "N");
             }
 
             if (onlyWithResults.HasValue)
@@ -265,7 +266,7 @@ namespace PinballApi
             return JsonNode.Parse(json)["custom_view"].Deserialize<List<CustomRankingView>>(JsonSerializerOptions);
         }
 
-        public async Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50)
+        public async Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50, int startPosition = 1)
         {
             if (count > 500)
                 throw new ArgumentException("Count must be 500 or less");
@@ -277,6 +278,7 @@ namespace PinballApi
                 .AppendPathSegment("rankings/custom")
                 .AppendPathSegment(viewId)
                 .SetQueryParam("count", count)
+                .SetQueryParam("start_pos", startPosition)
                 .GetJsonAsync<CustomRankingViewResult>();
         }
 
@@ -329,7 +331,7 @@ namespace PinballApi
         /// <param name="tournamentName">Name of tournament that a player may have played in. Partial Strings are accepted</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null)
+        public async Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null, int? tournamentPosition = null)
         {
             if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(country) && string.IsNullOrWhiteSpace(stateProv) && string.IsNullOrWhiteSpace(tournamentName))
                 throw new ArgumentException("Name or Country or State/Province or Tournament Name must be provided");
@@ -352,6 +354,10 @@ namespace PinballApi
             if (!string.IsNullOrEmpty(tournamentName))
                 request = request
                     .SetQueryParam("tournament", tournamentName);
+
+            if (tournamentPosition.HasValue)
+                request = request
+                    .SetQueryParam("tourpos", tournamentPosition.Value);
 
             return await request.GetJsonAsync<PlayerSearch>();
         }
@@ -665,6 +671,28 @@ namespace PinballApi
             }
 
             return tournaments;
+        }
+
+        #endregion
+
+        #region Other
+
+        public async Task<List<CountryDetail>> GetCountriesList()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("other/countries")
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["country"].Deserialize<List<CountryDetail>>(JsonSerializerOptions);
+        }
+
+        public async Task<List<StateProvCountry>> GetStateProvList()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("other/stateprovs")
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["stateprov"].Deserialize<List<StateProvCountry>>(JsonSerializerOptions);
         }
 
         #endregion
