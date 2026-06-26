@@ -80,17 +80,20 @@ namespace PinballApi.Models.WPPR.Universal.Tournaments
         [JsonPropertyName("event_weight")]
         public double EventWeight { get; set; }
 
+        // Computed metrics below are null for unrated events (e.g. newly-created or future
+        // tournaments). The IFPA API returns JSON null, so these must be nullable or
+        // deserialization of the entire Tournament fails. See TournamentDeserializationTests.
         [JsonPropertyName("ratings_strength")]
-        public double RatingsStrength { get; set; }
+        public double? RatingsStrength { get; set; }
 
         [JsonPropertyName("rankings_strength")]
-        public double RankingsStrength { get; set; }
+        public double? RankingsStrength { get; set; }
 
         [JsonPropertyName("base_value")]
-        public double BaseValue { get; set; }
+        public double? BaseValue { get; set; }
 
         [JsonPropertyName("tournament_percentage_grade")]
-        public double TournamentPercentageGrade { get; set; }
+        public double? TournamentPercentageGrade { get; set; }
 
         [JsonPropertyName("tournament_value")]
         public double? TournamentValue { get; set; }
