@@ -314,6 +314,7 @@ namespace PinballApi
 
             // The batch endpoint (player?players=id,id,...) now returns a non-JSON body, so fetch
             // each record via the single-player endpoint (player/{id}) and aggregate.
+            //TODO: when the IFPA batch player endpoint is fixed, revert this to a single URL call.
             var players = new List<Player>();
 
             foreach (var playerId in playerIds)
