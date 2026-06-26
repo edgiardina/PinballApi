@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<UserSecretsId>9a2da6bc-f4ff-4c74-94e6-6aedffefd976</UserSecretsId>
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>

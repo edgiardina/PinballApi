@@ -2,7 +2,7 @@ name: publish to nuget
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"  
+      - "v[0-9]+.[0-9]+.[0-9]+"
 jobs:
   publish:
     name: build, pack & publish
@@ -13,18 +13,18 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: | 
-            6.0.x
-            7.0.x
+          dotnet-version: |
             8.0.x
-            9.0.x
-      
+            10.0.x
+
       - name: Set VERSION variable from tag
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      # Build & pack the library project directly — the publish job only produces the
+      # PinballApi NuGet package and does not need the test project.
       - name: Build
-        run: dotnet build --configuration Release /p:Version=${VERSION}
+        run: dotnet build PinballApi/PinballApi.csproj --configuration Release /p:Version=${VERSION}
       - name: Pack
-        run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
+        run: dotnet pack PinballApi/PinballApi.csproj --configuration Release /p:Version=${VERSION} --no-build --output .
       - name: Push
         run: dotnet nuget push PinballApi.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.NUGET_TOKEN}}
         env:

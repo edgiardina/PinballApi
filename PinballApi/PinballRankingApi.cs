@@ -312,14 +312,15 @@ namespace PinballApi
             if (playerIds.Count > 50)
                 throw new ArgumentException("GetPlayers can only process 50 or less player IDs at a time due to limitations in the IFPA API.");
 
-            var request = BaseRequest
-                .AppendPathSegment("player");
+            // The batch endpoint (player?players=id,id,...) now returns a non-JSON body, so fetch
+            // each record via the single-player endpoint (player/{id}) and aggregate.
+            //TODO: when the IFPA batch player endpoint is fixed, revert this to a single URL call.
+            var players = new List<Player>();
 
-            request = request.SetQueryParam("players", string.Join(",", playerIds));
+            foreach (var playerId in playerIds)
+                players.Add(await GetPlayer(playerId));
 
-            var json = await request.GetStringAsync();
-
-            return JsonNode.Parse(json)["player"].Deserialize<List<Player>>(JsonSerializerOptions);
+            return players;
         }
 
         /// <summary>
