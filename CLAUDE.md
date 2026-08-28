@@ -93,10 +93,13 @@ MatchPlay limits several endpoints to **6 requests per minute**, far below the d
 Confirmed on `/api/search` and on `/api/tournaments/{id}/summary/*`. Check the response headers:
 `x-ratelimit-limit`, `x-ratelimit-remaining` and `x-ratelimit-reset`.
 
-Running the suite two or three times in a row makes the tests over those endpoints fail with 429.
-`SearchForUser`, `SearchForTournament`, `GetIfpaEstimate`, `GetRatingHistoryByIfpaId` and the
-three summary tests are the usual casualties. Wait a minute and re-run the failures on their own
-before you look for a bug. A suite run that finishes much faster than usual is the tell.
+Search and the summaries share **one** bucket. A single suite run spends about 7 calls in it, so
+the suite used to fail against itself. The MatchPlay test fixtures now build the client with
+`rateLimitRetryCount: 2`, and `RateLimitRetryHandler` waits out the window. A full run therefore
+takes about 75 seconds instead of 30.
+
+If a rate limit failure does appear, wait a minute and re-run the failures on their own before you
+look for a bug. A suite run that finishes much faster than usual is the tell.
 
 `GetRatingPeriods` and `GetRatingPeriod` fail with `401 Not allowed (token)`. That is a token
 permission on the MatchPlay side, not a code fault. It reproduces with raw curl.

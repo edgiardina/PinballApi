@@ -38,7 +38,7 @@ namespace PinballApi.Tests
         {
             var t = new ConfigurationBuilder().AddUserSecrets<Settings>().Build();
 
-            matchPlayApi = new MatchPlayApi(t["MatchPlayApiToken"]);
+            matchPlayApi = new MatchPlayApi(t["MatchPlayApiToken"], rateLimitRetryCount: 2);
         }
 
         #region resolve unknown

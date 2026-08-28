@@ -2,6 +2,7 @@
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using PinballApi.Converters;
+using PinballApi.Http;
 using PinballApi.Interfaces;
 using PinballApi.Models.MatchPlay;
 using PinballApi.Models.MatchPlay.Opdb;
@@ -28,7 +29,11 @@ namespace PinballApi
     /// </remarks>
     public class MatchPlayApi : IMatchPlayApi
     {
+        private const string BaseUrl = "https://app.matchplay.events/api/";
+
         protected readonly string ApiToken;
+
+        private readonly IFlurlClient client;
 
         protected readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
         {
@@ -36,18 +41,34 @@ namespace PinballApi
             NumberHandling = JsonNumberHandling.AllowReadingFromString
         };
 
-        protected IFlurlRequest BaseRequest => $"https://app.matchplay.events/api/"
+        protected IFlurlRequest BaseRequest => client.Request()
                                                     .WithOAuthBearerToken(ApiToken)
                                                     .WithHeader("Content-Type", "application/json")
-                                                    .WithHeader("Accept", "application/json")
-                                                    .WithSettings(settings =>
-                                                    {
-                                                        settings.JsonSerializer = new DefaultJsonSerializer(JsonSerializerOptions);
-                                                    });
+                                                    .WithHeader("Accept", "application/json");
 
-        public MatchPlayApi(string apiToken)
+        /// <param name="apiToken">A token from https://app.matchplay.events/account/tokens.</param>
+        /// <param name="rateLimitRetryCount">
+        /// How many times to wait and try again when MatchPlay answers HTTP 429. The default of
+        /// zero raises the error to the caller at once. Set it to 1 or more to let the client wait
+        /// out the window. A wait can last a full minute, so leave it at zero when the caller
+        /// cannot afford to block.
+        /// </param>
+        public MatchPlayApi(string apiToken, int rateLimitRetryCount = 0)
         {
             this.ApiToken = apiToken;
+
+            var builder = new FlurlClientBuilder(BaseUrl);
+
+            if (rateLimitRetryCount > 0)
+            {
+                builder.AddMiddleware(() => new RateLimitRetryHandler(rateLimitRetryCount));
+            }
+
+            client = builder.Build();
+            client.WithSettings(settings =>
+            {
+                settings.JsonSerializer = new DefaultJsonSerializer(JsonSerializerOptions);
+            });
         }
 
         public async Task<List<Arena>> GetArenas(Status status = Status.Active, List<string> arenaIds = null, int page = 1)

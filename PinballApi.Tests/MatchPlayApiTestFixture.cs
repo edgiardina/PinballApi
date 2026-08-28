@@ -19,7 +19,7 @@ namespace PinballApi.Tests
             var t = new ConfigurationBuilder().AddUserSecrets<Settings>().Build();
 
             var apiToken = t["MatchPlayApiToken"];
-            matchPlayApi = new MatchPlayApi(apiToken);
+            matchPlayApi = new MatchPlayApi(apiToken, rateLimitRetryCount: 2);
         }
 
         [Test]

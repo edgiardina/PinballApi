@@ -100,6 +100,10 @@ using PinballApi;
 
 var matchPlay = new MatchPlayApi("YOUR_MATCHPLAY_TOKEN");
 var profile = await matchPlay.GetProfile(12345);
+
+// Let the client wait out a rate limit window instead of throwing on HTTP 429.
+// A wait can last a full minute, so leave this off when you cannot block.
+var patient = new MatchPlayApi("YOUR_MATCHPLAY_TOKEN", rateLimitRetryCount: 2);
 ```
 
 ## IFPA API Coverage
