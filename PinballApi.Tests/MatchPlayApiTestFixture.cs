@@ -23,15 +23,6 @@ namespace PinballApi.Tests
         }
 
         [Test]
-        [Ignore("Dashboard endpoint 404s as of 2025-12-06")]
-        public async Task MatchPlayApi_GetDashboard_ShouldReturnDashboard()
-        {
-            var dashboard = await matchPlayApi.GetDashboard();
-
-            Assert.That(dashboard.TournamentsOrganizing, Is.Not.Empty); 
-        }
-
-        [Test]
         public async Task MatchPlayApi_GetArenas_ShouldReturnArenas()
         {
             var arenas = await matchPlayApi.GetArenas();
@@ -162,7 +153,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetIfpaEstimate_ShouldReturnEstimate()
         {
-            var estimate = await matchPlayApi.GetIfpaEstimate(touramentId: 80395);
+            var estimate = await matchPlayApi.GetIfpaEstimate(tournamentId: 80395);
             Assert.That(estimate, Is.Not.Null); 
         }
 

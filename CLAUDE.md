@@ -150,9 +150,15 @@ The rate-limit docs say to prefer exports over per-entry calls for anything beyo
 ### Known broken / undocumented behaviors
 
 - **Boolean query params are read by presence, not by value.** `?includePeople=false` still
-  returns people. `GetOpdbEntry` therefore appends `includePeople=1` / `includeImages=1` only when
-  the caller asks for them. `GetTournament` still sends its `include*` flags unconditionally, so
-  it always returns the extra data. Do not "fix" that without checking downstream callers.
+  returns people. Use the private `SetIncludeFlag` helper, which adds the param only when the
+  value is true. `GetOpdbEntry` and `GetTournament` both go through it.
+- **Never call `SetQueryParams(name, value)`.** With two string arguments it binds to Flurl's
+  `SetQueryParams(params string[] names)` overload, which adds parameters *without values*. The
+  filter then silently does nothing. Use the singular `SetQueryParam(name, value)`. This bug hid
+  in `GetArenas`, `GetLocations` and `GetPlayers` until 4.0.0.
+- **`/api/players` and `/api/arenas` are scoped to the organizer who owns the token.** Filtering
+  by another organizer's ids returns an empty list, not an error. Tests must use owned ids.
+- **`GET /api/tournaments/{id}/queues` returns 403** unless the token has scorekeeper scope.
 - **`GET /api/pintips` with no query param returns HTTP 400.** Pass either `opdbId` or `arenaId`.
 - `GET /api/opdb/changelog` is not paginated. A `page` param is accepted and ignored.
 - The PinTips *export* sends dates as `2015-08-05 20:28:10`, not ISO 8601. `PinTip` uses

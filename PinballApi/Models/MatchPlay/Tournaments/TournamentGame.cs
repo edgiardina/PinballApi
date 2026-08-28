@@ -5,24 +5,12 @@ using System.Text;
 
 namespace PinballApi.Models.MatchPlay.Tournaments
 {
+    /// <summary>
+    /// A game with the player objects attached. Every other member comes from <see cref="Game"/>.
+    /// </summary>
     public class TournamentGame : Game
     {
         [JsonPropertyName("players")]
         public List<Player> Players { get; set; }
-
-        [JsonPropertyName("playerIds")]
-        public List<int> PlayerIds { get; set; }
-
-        [JsonPropertyName("userIds")]
-        public List<int?> UserIds { get; set; }
-
-        [JsonPropertyName("resultPositions")]
-        public List<int?> ResultPositions { get; set; }
-
-        [JsonPropertyName("resultPoints")]
-        public List<float?> ResultPoints { get; set; }
-
-        [JsonPropertyName("resultScores")]
-        public List<ulong?> ResultScores { get; set; }
     }
 }

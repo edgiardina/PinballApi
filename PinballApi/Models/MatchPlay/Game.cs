@@ -56,11 +56,19 @@ namespace PinballApi.Models.MatchPlay
         [JsonPropertyName("resultPositions")]
         public List<int?> ResultPositions { get; set; }
 
+        /// <summary>
+        /// The points each player earned, in the same order as <see cref="PlayerIds"/>.
+        /// </summary>
+        /// <remarks>The API sends these as strings, for example <c>"5.00"</c>.</remarks>
         [JsonPropertyName("resultPoints")]
-        public List<string> ResultPoints { get; set; }
+        public List<float?> ResultPoints { get; set; }
 
+        /// <summary>
+        /// The score each player put up, in the same order as <see cref="PlayerIds"/>.
+        /// Null when the tournament does not record scores.
+        /// </summary>
         [JsonPropertyName("resultScores")]
-        public List<object> ResultScores { get; set; }
+        public List<ulong?> ResultScores { get; set; }
 
         [JsonPropertyName("arena")]
         public Arena Arena { get; set; }

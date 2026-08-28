@@ -75,7 +75,7 @@ namespace PinballApi
                     .SetQueryParam("q", name)
                     .GetJsonAsync<PlayerSearch>();
             }
-            catch (FlurlParsingException ex)
+            catch (FlurlParsingException)
             {
                 //admittedly this is a bit hacky. Might be better to have a custom converted on PlayerSearch's Search list but that gets tricky.
                 return new PlayerSearch
@@ -110,7 +110,7 @@ namespace PinballApi
                     };
                 }
 
-                throw ex;
+                throw;
             }
         }
 

@@ -176,6 +176,46 @@ The `PinballRankingApi` class implements `IPinballRankingApi` and covers these e
 | `GetCountriesList()` | `GET /other/countries` |
 | `GetStateProvList()` | `GET /other/stateprovs` |
 
+## MatchPlay API Coverage
+
+`MatchPlayApi` implements `IMatchPlayApi`, so you can inject it and replace it in tests.
+
+### Tournaments & games
+| Method | MatchPlay Endpoint |
+|--------|--------------------|
+| `GetTournaments(...)` | `GET /api/tournaments` |
+| `GetTournament(id, include...)` | `GET /api/tournaments/{id}` |
+| `GetStandings(id)` | `GET /api/tournaments/{id}/standings` |
+| `GetRounds(id)` | `GET /api/tournaments/{id}/rounds` |
+| `GetGames(...)` | `GET /api/games` |
+| `GetSinglePlayerGames(...)` | `GET /api/tournaments/{id}/single-player-games` |
+| `GetCards(...)` | `GET /api/tournaments/{id}/cards` |
+| `GetIfpaEstimate(...)` | `POST /api/ifpa/wppr-estimator` |
+
+### Resolving ids
+MatchPlay returns bare `playerId` and `arenaId` values to keep responses small. Ask for the
+tournament players and arenas with the include flags first, then resolve whatever ids are left.
+Each call takes up to 25 ids (`MatchPlayApi.MaxResolveIds`).
+
+| Method | MatchPlay Endpoint |
+|--------|--------------------|
+| `ResolveUnknownPlayers(ids)` | `GET /api/players/resolve-unknown` |
+| `ResolveUnknownArenas(ids)` | `GET /api/arenas/resolve-unknown` |
+| `ResolveUnknownUsers(ids)` | `GET /api/users/resolve-unknown` |
+| `ResolveUnknownTournamentPlayers(id, ids)` | `GET /api/tournaments/{id}/players/resolve-unknown` |
+| `ResolveUnknownTournamentArenas(id, ids)` | `GET /api/tournaments/{id}/arenas/resolve-unknown` |
+
+The tournament variants also fill in the pivot data, such as the player seed and the arena label.
+
+### Summaries
+These need a completed tournament. MatchPlay returns an empty list for one that is still open.
+
+| Method | MatchPlay Endpoint |
+|--------|--------------------|
+| `GetTournamentArenaSummary(id)` | `GET /api/tournaments/{id}/summary/arenas` |
+| `GetTournamentPlayerArenaSummary(id)` | `GET /api/tournaments/{id}/summary/player-arenas` |
+| `GetTournamentMatchSummary(id)` | `GET /api/tournaments/{id}/summary/matches` |
+
 ## OPDB & PinTips (via MatchPlay)
 
 `MatchPlayApi` covers the [OPDB and PinTips endpoints](https://docs.matchplay.events/opdb-and-pintips-api)
@@ -246,6 +286,10 @@ The model shape also changed. `PinballApi.Models.OPDB.PinballMachine` became
 - `GetLeagues()` — the endpoint (`GET /tournament/leagues/{period}`) is documented but was returning 404 at last check; method throws `NotImplementedException`.
 - `GET /series/{code}/past_winners` — used by `GetSeriesWinners()` but not in the official OpenAPI spec; works in practice.
 - Player search with multi-word names (e.g. `"Julia Randall"`) may not work correctly — IFPA API limitation.
+- MatchPlay `GET /api/rating-periods` returns `401 Not allowed (token)` for some tokens. This is a permission on the MatchPlay side.
+- MatchPlay `GET /api/tournaments/{id}/queues` returns 403 unless the token has scorekeeper scope.
+- MatchPlay rate limits `/api/search` to 6 requests per minute, well under the documented 120.
+- MatchPlay reads boolean query params by presence. Sending `flag=false` turns the flag **on**. The wrapper sends a flag only when you set it.
 - Director search by name is currently broken on the API side.
 
 ## Legacy API Versions

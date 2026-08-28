@@ -190,14 +190,12 @@ namespace PinballApi
         // Get Leagues
         public async Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod)
         {
+            // GET /tournament/leagues/{period} is in the OpenAPI spec but returns 404 in practice.
+            // The call shape is:
+            //   BaseRequest.AppendPathSegment("tournament/leagues")
+            //              .AppendPathSegment(timePeriod.ToString().ToLower())
+            // and the response wraps the list under a "results" root key.
             throw new NotImplementedException("Endpoint currently returns 404");
-
-            var json = await BaseRequest
-                .AppendPathSegment("tournament/leagues")
-                .AppendPathSegment(timePeriod.ToString().ToLower())
-                .GetStringAsync();
-
-            return JsonNode.Parse(json)["results"].Deserialize<List<League>>(JsonSerializerOptions);
         }
 
         #endregion

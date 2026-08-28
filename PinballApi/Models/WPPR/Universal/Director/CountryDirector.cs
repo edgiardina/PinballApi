@@ -8,6 +8,6 @@ namespace PinballApi.Models.WPPR.Universal.Directors
         public PlayerProfile PlayerProfile { get; set; }
 
         [JsonPropertyName("director_profile")]
-        public DirectorProfile? DirectorProfile { get; set; }
+        public DirectorProfile DirectorProfile { get; set; }
     }
 }

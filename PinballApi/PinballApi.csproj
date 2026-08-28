@@ -7,12 +7,29 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>BREAKING: OPDB data moved to MatchPlay. opdb.org shut its API endpoints down on 2026-10-01.
 
+OPDB
 - Removed OPDBApi, IOpdbApi and every model under PinballApi.Models.OPDB. Those endpoints no longer exist.
 - Added OPDB and PinTips support to MatchPlayApi: GetOpdbEntry, GetOpdbChangelog, GetPinTipsByOpdbId and GetPinTipsByArenaId.
 - Added the MatchPlay bulk data exports: GetOpdbExport, GetOpdbSlimExport and GetPinTipsExport. They need no API token.
 - Added models under PinballApi.Models.MatchPlay.Opdb, including OpdbIdParts to split an OPDB id into its group, machine and alias parts.
 
-To migrate: replace OPDBApi with MatchPlayApi and a MatchPlay API token. GetMachineInfo becomes GetOpdbEntry and Export becomes GetOpdbExport. Search, TypeAheadSearch and GetMachineInfoByIpdbId have no endpoint. Download an export and query your own store.</PackageReleaseNotes>
+Fixes
+- GetArenas, GetLocations and GetPlayers dropped their id filters. They called a Flurl overload that adds parameters without values, so the API returned every record. The filters now work.
+- GetTournament sent every include flag whether or not you asked for it, because the API reads the flags by presence. It now sends only the flags you set. Responses get smaller and callers that relied on always-on includes must now ask for them.
+- Game.ResultPoints is List&lt;float?&gt; and Game.ResultScores is List&lt;ulong?&gt;. They were List&lt;string&gt; and List&lt;object&gt;. TournamentGame no longer hides them.
+
+New endpoints
+- ResolveUnknownPlayers, ResolveUnknownArenas, ResolveUnknownUsers, ResolveUnknownTournamentPlayers and ResolveUnknownTournamentArenas turn bare ids into full objects.
+- GetTournamentArenaSummary, GetTournamentPlayerArenaSummary and GetTournamentMatchSummary.
+- GetGames accepts series ids, game ids and a page. GetSinglePlayerGames and GetCards accept the full documented filter set. GetTournaments accepts a limit. GetTournament accepts includeEntryConfiguration, includeLinkedTournaments and includeEvent.
+
+Other
+- Added IMatchPlayApi so the client can be injected and replaced in tests.
+- GetQueues returns List&lt;Queue&gt; instead of always throwing. GetMatchplayMatchesStats calls the API instead of always throwing.
+- Renamed the GetIfpaEstimate parameter touramentId to tournamentId.
+- Removed GetDashboard and GetAmazingRace. The first is a dead endpoint, the second never had an implementation.
+
+To migrate off OPDBApi: replace it with MatchPlayApi and a MatchPlay API token. GetMachineInfo becomes GetOpdbEntry and Export becomes GetOpdbExport. Search, TypeAheadSearch and GetMachineInfoByIpdbId have no endpoint. Download an export and query your own store.</PackageReleaseNotes>
     <Copyright>Copyright 2025 Ed Giardina</Copyright>
     <PackageTags>pinball pinballapi ifpa ipdb opdb pintips matchplay.events</PackageTags>
     <PackageProjectUrl>https://github.com/edgiardina/PinballApi</PackageProjectUrl>
