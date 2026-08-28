@@ -89,11 +89,14 @@ dotnet test PinballApi.Tests/PinballApi.Tests.csproj
 
 ### Rate limits bite repeated runs
 
-MatchPlay limits some endpoints far below the documented 120 requests/min. `/api/search` reports
-`x-ratelimit-limit: 6`. Running the suite two or three times in a row makes `SearchForUser`,
-`SearchForTournament`, `GetIfpaEstimate` and `GetRatingHistoryByIfpaId` fail with 429. Wait a
-minute and re-run the failures on their own before you look for a bug. A run that finishes much
-faster than usual is the tell.
+MatchPlay limits several endpoints to **6 requests per minute**, far below the documented 120.
+Confirmed on `/api/search` and on `/api/tournaments/{id}/summary/*`. Check the response headers:
+`x-ratelimit-limit`, `x-ratelimit-remaining` and `x-ratelimit-reset`.
+
+Running the suite two or three times in a row makes the tests over those endpoints fail with 429.
+`SearchForUser`, `SearchForTournament`, `GetIfpaEstimate`, `GetRatingHistoryByIfpaId` and the
+three summary tests are the usual casualties. Wait a minute and re-run the failures on their own
+before you look for a bug. A suite run that finishes much faster than usual is the tell.
 
 `GetRatingPeriods` and `GetRatingPeriod` fail with `401 Not allowed (token)`. That is a token
 permission on the MatchPlay side, not a code fault. It reproduces with raw curl.

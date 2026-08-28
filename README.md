@@ -288,7 +288,7 @@ The model shape also changed. `PinballApi.Models.OPDB.PinballMachine` became
 - Player search with multi-word names (e.g. `"Julia Randall"`) may not work correctly — IFPA API limitation.
 - MatchPlay `GET /api/rating-periods` returns `401 Not allowed (token)` for some tokens. This is a permission on the MatchPlay side.
 - MatchPlay `GET /api/tournaments/{id}/queues` returns 403 unless the token has scorekeeper scope.
-- MatchPlay rate limits `/api/search` to 6 requests per minute, well under the documented 120.
+- MatchPlay rate limits several endpoints to 6 requests per minute, well under the documented 120. Confirmed on `/api/search` and `/api/tournaments/{id}/summary/*`. Read the `x-ratelimit-*` response headers.
 - MatchPlay reads boolean query params by presence. Sending `flag=false` turns the flag **on**. The wrapper sends a flag only when you set it.
 - Director search by name is currently broken on the API side.
 
