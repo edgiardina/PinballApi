@@ -3,6 +3,7 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using PinballApi.Converters;
 using PinballApi.Models.MatchPlay;
+using PinballApi.Models.MatchPlay.Opdb;
 using PinballApi.Models.MatchPlay.SeriesStats;
 using PinballApi.Models.MatchPlay.Tournaments;
 using System;
@@ -405,6 +406,159 @@ namespace PinballApi
             }
             public readonly string ifpaIds;
             public readonly string userIds;
+        }
+
+        #endregion
+
+        #region opdb & pintips
+
+        /// <summary>
+        /// The full OPDB data set in the current (v2) format. It matches <see cref="OpdbEntry"/>.
+        /// </summary>
+        public const string OpdbExportUrl = "https://mp-data.sfo3.cdn.digitaloceanspaces.com/opdb-v2.json";
+
+        /// <summary>
+        /// The cut down OPDB data set. It holds the machine name, the manufacturer name and the
+        /// backglass image only, and it matches <see cref="OpdbSlimEntry"/>.
+        /// </summary>
+        public const string OpdbSlimExportUrl = "https://mp-data.sfo3.cdn.digitaloceanspaces.com/opdb-slim.json";
+
+        /// <summary>
+        /// The full OPDB data set in the legacy (v1) format. Kept for older consumers only.
+        /// This library does not model it. Use <see cref="OpdbExportUrl"/> instead.
+        /// </summary>
+        public const string OpdbLegacyExportUrl = "https://mp-data.sfo3.cdn.digitaloceanspaces.com/latest-opdb.json";
+
+        /// <summary>
+        /// The full PinTips data set. It matches <see cref="PinTip"/>.
+        /// </summary>
+        public const string PinTipsExportUrl = "https://mp-data.sfo3.cdn.digitaloceanspaces.com/latest-pintips.json";
+
+        /// <summary>
+        /// Get a single entry from the Open Pinball Database.
+        /// </summary>
+        /// <param name="opdbId">The OPDB id of a machine group, a machine or an alias.</param>
+        /// <param name="includePeople">Include the people credited on the entry.</param>
+        /// <param name="includeImages">Include the images for the entry.</param>
+        /// <remarks>
+        /// Do not call this in a loop to build a local catalog. Download <see cref="GetOpdbExport"/>
+        /// once instead, and store the result.
+        /// </remarks>
+        public async Task<OpdbEntry> GetOpdbEntry(string opdbId, bool includePeople = false, bool includeImages = false)
+        {
+            var request = BaseRequest
+                .AppendPathSegment("opdb")
+                .AppendPathSegment("entry")
+                .AppendPathSegment(opdbId);
+
+            // The endpoint reads these flags by presence, so "includePeople=false" still returns
+            // people. Send each flag only when the caller wants the data.
+            if (includePeople)
+            {
+                request = request.SetQueryParam("includePeople", 1);
+            }
+
+            if (includeImages)
+            {
+                request = request.SetQueryParam("includeImages", 1);
+            }
+
+            var json = await request.GetStringAsync();
+
+            return JsonNode.Parse(json)["data"].Deserialize<OpdbEntry>(JsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Get every OPDB id that was moved or removed. Use it to repair ids you stored earlier.
+        /// </summary>
+        public async Task<List<OpdbChangelogEntry>> GetOpdbChangelog()
+        {
+            var json = await BaseRequest
+                .AppendPathSegment("opdb")
+                .AppendPathSegment("changelog")
+                .GetStringAsync();
+
+            return JsonNode.Parse(json)["data"].Deserialize<List<OpdbChangelogEntry>>(JsonSerializerOptions);
+        }
+
+        /// <summary>
+        /// Get the PinTips for one OPDB entry.
+        /// </summary>
+        /// <param name="opdbId">The OPDB id to get tips for.</param>
+        public async Task<PinTipsResult> GetPinTipsByOpdbId(string opdbId)
+        {
+            return await BaseRequest
+                .AppendPathSegment("pintips")
+                .SetQueryParam("opdbId", opdbId)
+                .GetJsonAsync<PinTipsResult>();
+        }
+
+        /// <summary>
+        /// Get the PinTips for the machine behind a Match Play arena.
+        /// </summary>
+        /// <param name="arenaId">The Match Play arena to get tips for.</param>
+        public async Task<PinTipsResult> GetPinTipsByArenaId(int arenaId)
+        {
+            return await BaseRequest
+                .AppendPathSegment("pintips")
+                .SetQueryParam("arenaId", arenaId)
+                .GetJsonAsync<PinTipsResult>();
+        }
+
+        /// <summary>
+        /// Download the full OPDB data set from the Match Play CDN.
+        /// </summary>
+        /// <remarks>
+        /// The download is several megabytes and needs no API token. Fetch it on a schedule,
+        /// store the result, and serve searches and typeaheads from your own store.
+        /// </remarks>
+        public async Task<List<OpdbEntry>> GetOpdbExport()
+        {
+            var export = await GetExport<OpdbExport>(OpdbExportUrl);
+
+            return export?.Entries;
+        }
+
+        /// <summary>
+        /// Download the cut down OPDB data set from the Match Play CDN.
+        /// </summary>
+        /// <remarks>
+        /// Use this when you only need names and backglass images, for example to build a
+        /// machine picker. It needs no API token.
+        /// </remarks>
+        public async Task<List<OpdbSlimEntry>> GetOpdbSlimExport()
+        {
+            var export = await GetExport<OpdbSlimExport>(OpdbSlimExportUrl);
+
+            return export?.Entries;
+        }
+
+        /// <summary>
+        /// Download the full PinTips data set from the Match Play CDN. It needs no API token.
+        /// </summary>
+        public async Task<List<PinTip>> GetPinTipsExport()
+        {
+            return await GetExport<List<PinTip>>(PinTipsExportUrl);
+        }
+
+        private async Task<T> GetExport<T>(string url)
+        {
+            using (var stream = await url.GetStreamAsync())
+            {
+                return await JsonSerializer.DeserializeAsync<T>(stream, JsonSerializerOptions);
+            }
+        }
+
+        private class OpdbExport
+        {
+            [JsonPropertyName("entries")]
+            public List<OpdbEntry> Entries { get; set; }
+        }
+
+        private class OpdbSlimExport
+        {
+            [JsonPropertyName("entries")]
+            public List<OpdbSlimEntry> Entries { get; set; }
         }
 
         #endregion

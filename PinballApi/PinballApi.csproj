@@ -3,14 +3,21 @@
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <PackageId>PinballApi</PackageId>
     <Authors>Ed Giardina</Authors>
-    <Description>PinballApi - .NET API for pinball data. Includes API Client wrappers in .NET for the IFPA, OPDB, IPDB and MatchPlay.</Description>
+    <Description>PinballApi - .NET API for pinball data. Includes API Client wrappers in .NET for the IFPA, OPDB (via MatchPlay), IPDB and MatchPlay.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>BREAKING: OPDB data moved to MatchPlay. opdb.org shut its API endpoints down on 2026-10-01.
+
+- Removed OPDBApi, IOpdbApi and every model under PinballApi.Models.OPDB. Those endpoints no longer exist.
+- Added OPDB and PinTips support to MatchPlayApi: GetOpdbEntry, GetOpdbChangelog, GetPinTipsByOpdbId and GetPinTipsByArenaId.
+- Added the MatchPlay bulk data exports: GetOpdbExport, GetOpdbSlimExport and GetPinTipsExport. They need no API token.
+- Added models under PinballApi.Models.MatchPlay.Opdb, including OpdbIdParts to split an OPDB id into its group, machine and alias parts.
+
+To migrate: replace OPDBApi with MatchPlayApi and a MatchPlay API token. GetMachineInfo becomes GetOpdbEntry and Export becomes GetOpdbExport. Search, TypeAheadSearch and GetMachineInfoByIpdbId have no endpoint. Download an export and query your own store.</PackageReleaseNotes>
     <Copyright>Copyright 2025 Ed Giardina</Copyright>
-    <PackageTags>pinball pinballapi ifpa ipdb opdb matchplay.events</PackageTags>
+    <PackageTags>pinball pinballapi ifpa ipdb opdb pintips matchplay.events</PackageTags>
     <PackageProjectUrl>https://github.com/edgiardina/PinballApi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/edgiardina/PinballApi</RepositoryUrl>
-    <Version>1.0.0</Version>
+    <Version>4.0.0</Version>
     <UserSecretsId>6b0ade4e-d0d7-4f70-bb1a-40974634001d</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>

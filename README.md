@@ -5,14 +5,26 @@
 
 .NET client library wrapping pinball data sources: **IFPA/WPPR**, **OPDB**, **IPDB**, and **MatchPlay**.
 
+> ### Breaking change in 4.0.0: OPDB moved to MatchPlay
+>
+> OPDB shut its own API endpoints down on **1 October 2026**. The database is still alive and
+> still gets weekly updates, but the data now comes from the MatchPlay API.
+>
+> **`OPDBApi`, `IOpdbApi` and every model under `PinballApi.Models.OPDB` were removed in 4.0.0.**
+> Those endpoints no longer answer, so the wrapper could not keep working. Use `MatchPlayApi`
+> instead. See [OPDB & PinTips](#opdb--pintips-via-matchplay) for the replacement calls and
+> [Migrating from `OPDBApi`](#migrating-from-opdbapi) for the mapping.
+
 ## Data Sources
 
 | Source | What it provides | Auth required |
 |--------|-----------------|---------------|
 | [IFPA](https://www.ifpapinball.com/) | Player rankings, tournament results, series standings (WPPR system) | [API key](https://www.ifpapinball.com/api/request_api_key.php) |
-| [OPDB](https://opdb.org/) | Pinball machine database (canonical machine IDs, metadata) | [API token](https://opdb.org/register) |
+| [MatchPlay Events](https://app.matchplay.events) | Tournament software, ratings, OPDB machine data, PinTips | [API token](https://app.matchplay.events/account/tokens) |
 | [IPDB](https://www.ipdb.org/) | Classic pinball machine database | None |
-| [MatchPlay Events](https://next.matchplay.events) | Tournament bracket software, ratings | [API token](https://next.matchplay.events/api-docs/#authenticating-requests) |
+
+[OPDB](https://opdb.org/) machine data is served through MatchPlay. The opdb.org API shut down on
+1 October 2026 and this library no longer wraps it.
 
 ## Installation
 
@@ -53,13 +65,23 @@ var countries = await api.GetCountriesList();
 var stateProvs = await api.GetStateProvList();
 ```
 
-### OPDB
+### OPDB (via MatchPlay)
 
 ```csharp
 using PinballApi;
+using PinballApi.Models.MatchPlay.Opdb;
 
-var opdb = new OPDBApi("YOUR_OPDB_TOKEN");
-var machine = await opdb.GetMachineByOpdbId("G45wn-MQwN3");
+var matchPlay = new MatchPlayApi("YOUR_MATCHPLAY_TOKEN");
+
+// One machine, with credits and images
+var machine = await matchPlay.GetOpdbEntry("G4ODR-MLzY7", includePeople: true, includeImages: true);
+Console.WriteLine($"{machine.Name} ({machine.Manufacturer.Name}, {machine.Year})");
+
+// Playing tips
+var tips = await matchPlay.GetPinTipsByOpdbId("G4ODR");
+
+// Split an OPDB id into its group, machine and alias parts
+var parts = OpdbIdParts.Parse("G0l8P-M85d9-A1ZNY");   // parts.EntryType == OpdbEntryType.Alias
 ```
 
 ### IPDB
@@ -77,7 +99,7 @@ var machine = await ipdb.GetMachineByIpdbId(3648);
 using PinballApi;
 
 var matchPlay = new MatchPlayApi("YOUR_MATCHPLAY_TOKEN");
-var user = await matchPlay.GetUser(12345);
+var profile = await matchPlay.GetProfile(12345);
 ```
 
 ## IFPA API Coverage
@@ -154,6 +176,71 @@ The `PinballRankingApi` class implements `IPinballRankingApi` and covers these e
 | `GetCountriesList()` | `GET /other/countries` |
 | `GetStateProvList()` | `GET /other/stateprovs` |
 
+## OPDB & PinTips (via MatchPlay)
+
+`MatchPlayApi` covers the [OPDB and PinTips endpoints](https://docs.matchplay.events/opdb-and-pintips-api)
+that replaced the opdb.org API.
+
+| Method | MatchPlay Endpoint |
+|--------|--------------------|
+| `GetOpdbEntry(opdbId, includePeople, includeImages)` | `GET /api/opdb/entry/{opdbId}` |
+| `GetOpdbChangelog()` | `GET /api/opdb/changelog` |
+| `GetPinTipsByOpdbId(opdbId)` | `GET /api/pintips?opdbId=` |
+| `GetPinTipsByArenaId(arenaId)` | `GET /api/pintips?arenaId=` |
+
+An OPDB entry is a machine group, a machine or an alias. Read `OpdbEntry.EntryType` to tell them
+apart, or use the `IsMachineGroup`, `IsMachine` and `IsAlias` helpers. `OpdbIdParts.Parse()` and
+`OpdbIdParts.TryParse()` split an OPDB id into its group, machine and alias parts.
+
+### Data exports
+
+MatchPlay asks that you do **not** call the per-entry endpoints in a loop. Download an export
+once, store it, and serve searches and typeaheads from your own store. The exports need no API
+token and are hosted on a CDN.
+
+| Method | Contents |
+|--------|----------|
+| `GetOpdbExport()` | Every OPDB entry, about 5 MB. Returns `List<OpdbEntry>`. |
+| `GetOpdbSlimExport()` | Name, manufacturer and backglass image only, about 2 MB. Returns `List<OpdbSlimEntry>`. |
+| `GetPinTipsExport()` | Every PinTip, about 1 MB. Returns `List<PinTip>`. |
+
+The raw URLs are also public as `MatchPlayApi.OpdbExportUrl`, `MatchPlayApi.OpdbSlimExportUrl`,
+`MatchPlayApi.PinTipsExportUrl` and `MatchPlayApi.OpdbLegacyExportUrl`.
+
+```csharp
+var machines = await matchPlay.GetOpdbSlimExport();
+var backglass = machines
+    .Where(m => m.EntryType == OpdbEntryType.Machine && m.PrimaryBackglassImage != null)
+    .ToDictionary(m => m.OpdbId, m => m.PrimaryBackglassImage.Urls.Medium);
+```
+
+### Migrating from `OPDBApi`
+
+`OPDBApi` and `IOpdbApi` were removed in 4.0.0. Swap the client for `MatchPlayApi` and use a
+[MatchPlay API token](https://app.matchplay.events/account/tokens) in place of the OPDB token.
+
+| Removed call | Replacement |
+|--------------|-------------|
+| `GetMachineInfo(opdbId)` | `MatchPlayApi.GetOpdbEntry(opdbId)` |
+| `Export()` | `MatchPlayApi.GetOpdbExport()` |
+| `GetMachineInfoByIpdbId(ipdbId)` | No endpoint. Index `GetOpdbExport()` by `OpdbEntry.IpdbId`. |
+| `Search(query)` | No endpoint. Search your own copy of `GetOpdbExport()`. |
+| `TypeAheadSearch(query)` | Removed by OPDB on purpose. Serve typeahead from `GetOpdbSlimExport()`. |
+
+The model shape also changed. `PinballApi.Models.OPDB.PinballMachine` became
+`PinballApi.Models.MatchPlay.Opdb.OpdbEntry`:
+
+| Old member | New member |
+|------------|------------|
+| `OpdbId` | `OpdbId`, plus `OpdbGroup` and `OpdbMachine` for the parent ids |
+| `IsMachine` / `IsAlias` | `EntryType`, or the `IsMachine`, `IsMachineGroup` and `IsAlias` helpers |
+| `PhysicalMachine` (`int`) | `PhysicalMachine` (`bool`) |
+| `Shortname` | `ShortName` |
+| `ManufactureDate` (`DateTime`) | `ManufactureDate` (`DateTime?`), plus `Year` |
+| `Features` (`List<string>`) | `Features` (`List<OpdbFeature>`) |
+| `Keywords` | Removed upstream. |
+| — | New: `People`, `NameSort`, `PinballPrimerUrl`, `PinballRulesUrl`, `PinballCardsUrl`, `BobsGuideUrl`, `CompetitionSetupUrl`, `CompetitionNotesUrl` |
+
 ## Known Limitations
 
 - `GetLeagues()` — the endpoint (`GET /tournament/leagues/{period}`) is documented but was returning 404 at last check; method throws `NotImplementedException`.
@@ -161,6 +248,14 @@ The `PinballRankingApi` class implements `IPinballRankingApi` and covers these e
 - Player search with multi-word names (e.g. `"Julia Randall"`) may not work correctly — IFPA API limitation.
 - Director search by name is currently broken on the API side.
 
-## Legacy API Versions (v1, v2)
+## Legacy API Versions
+
+### IFPA v1 and v2
 
 `PinballRankingApiV1` and `PinballRankingApiV2` wrap the older versioned IFPA endpoints. **The IFPA team recommends migrating to the Universal (unversioned) API** — these are no longer updated upstream. Use `PinballRankingApi` (Universal) for all new work.
+
+### opdb.org
+
+`OPDBApi` and `IOpdbApi` wrapped the opdb.org API. OPDB shut those endpoints down on
+1 October 2026, so both types and their models were removed in 4.0.0. See
+[Migrating from `OPDBApi`](#migrating-from-opdbapi).
