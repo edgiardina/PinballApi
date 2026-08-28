@@ -113,11 +113,29 @@ namespace PinballApi.Models.MatchPlay.Tournaments
         [JsonPropertyName("players")]
         public List<Player> Players { get; set; }
 
+        /// <summary>
+        /// The tournament this one hangs off. Set only when the caller asks for the parent.
+        /// </summary>
         [JsonPropertyName("parentTournament")]
         public ParentTournament ParentTournament { get; set; }
 
-        //TODO: include banks
-        //TODO: include rsvp configuration
-        //TODO: include playoffs
+        /// <summary>
+        /// The playoffs or finals that follow this tournament. Set only when the caller asks for
+        /// the playoffs, and null when the tournament has none.
+        /// </summary>
+        [JsonPropertyName("playoffsTournament")]
+        public ParentTournament PlayoffsTournament { get; set; }
+
+        /// <summary>
+        /// The qualifying and playoff tournaments tied to this one. Set only when the caller asks
+        /// for the linked tournaments. The API returns an empty list rather than null.
+        /// </summary>
+        [JsonPropertyName("linkedTournaments")]
+        public List<ParentTournament> LinkedTournaments { get; set; }
+
+        //TODO: include banks. The API returns a "banks" array but it is empty on every tournament
+        //      checked so far, so the item shape is still unknown.
+        //TODO: include rsvp configuration. The API returns no extra key for it on any tournament
+        //      checked so far.
     }
 }

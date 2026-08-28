@@ -14,7 +14,12 @@ namespace PinballApi.Models.MatchPlay
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// The API sends this as a string, for example <c>completed</c>. Without the converter
+        /// the whole tournament fails to deserialize.
+        /// </summary>
         [JsonPropertyName("status")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public TournamentStatus Status { get; set; }
     }
 }
