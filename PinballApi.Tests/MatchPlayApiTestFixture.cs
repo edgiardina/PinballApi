@@ -194,7 +194,7 @@ namespace PinballApi.Tests
             Assert.That(profile.Rating.UserId, Is.EqualTo(ifpaId));
         }
 
-        [Test]
+        [Test, Ignore("returns 401")]
         public async Task MatchPlayApi_GetRatingPeriods_ShouldReturnPeriods()
         {
             var period = await matchPlayApi.GetRatingPeriods();
@@ -203,7 +203,7 @@ namespace PinballApi.Tests
             Assert.That(period, Is.Not.Empty);
         }
 
-        [Test]
+        [Test, Ignore("returns 401")]
         public async Task MatchPlayApi_GetRatingPeriod_ShouldReturnPeriod()
         {
             var period = await matchPlayApi.GetRatingPeriod(new DateTime(2023,1,1));

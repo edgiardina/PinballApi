@@ -8,15 +8,13 @@ PinballApi/                     # Library project (netstandard targets: net6/7/8
   PinballRankingApi.cs          # Universal (current) IFPA API implementation
   PinballRankingApiV1.cs        # Legacy v1 IFPA API (no longer updated)
   PinballRankingApiV2.cs        # Legacy v2 IFPA API (no longer updated)
-  OPDBApi.cs                    # OPDB pinball machine database
   PinballMachineApi.cs          # IPDB scraper
-  MatchPlayApi.cs               # MatchPlay Events API
+  MatchPlayApi.cs               # MatchPlay Events API (also serves OPDB + PinTips)
 
   Interfaces/
     IPinballRankingApi.cs       # Universal IFPA interface (primary)
     IPinballRankingApiV1.cs     # v1 interface (legacy)
     IPinballRankingApiV2.cs     # v2 interface (legacy)
-    IOpdbApi.cs
 
   Models/WPPR/
     Universal/                  # Models for the current IFPA API
@@ -29,6 +27,11 @@ PinballApi/                     # Library project (netstandard targets: net6/7/8
       Other/                    # CountryDetail, StateProvCountry (reference data)
     v1/                         # Legacy v1 models
     v2/                         # Legacy v2 models
+
+  Models/MatchPlay/
+    Opdb/                       # OPDB entries, PinTips, changelog, OpdbIdParts
+    Tournaments/                # Tournament-scoped models
+    SeriesStats/                # Series statistics
 
   Converters/                   # Custom JSON converters (see CONVERTER_STRATEGY.md)
 
@@ -76,7 +79,6 @@ Tests are integration tests against the live IFPA API — **not mocked**. An API
 
 ```bash
 dotnet user-secrets set "WPPRKey" "your-key-here" --project PinballApi.Tests
-dotnet user-secrets set "OPDBToken" "your-token" --project PinballApi.Tests
 dotnet user-secrets set "MatchPlayApiToken" "your-token" --project PinballApi.Tests
 ```
 
@@ -84,6 +86,17 @@ Run all tests:
 ```bash
 dotnet test PinballApi.Tests/PinballApi.Tests.csproj
 ```
+
+### Rate limits bite repeated runs
+
+MatchPlay limits some endpoints far below the documented 120 requests/min. `/api/search` reports
+`x-ratelimit-limit: 6`. Running the suite two or three times in a row makes `SearchForUser`,
+`SearchForTournament`, `GetIfpaEstimate` and `GetRatingHistoryByIfpaId` fail with 429. Wait a
+minute and re-run the failures on their own before you look for a bug. A run that finishes much
+faster than usual is the tell.
+
+`GetRatingPeriods` and `GetRatingPeriod` fail with `401 Not allowed (token)`. That is a token
+permission on the MatchPlay side, not a code fault. It reproduces with raw curl.
 
 Run just the Universal API tests:
 ```bash
@@ -110,6 +123,43 @@ The API uses `pre_registration` (with underscore) and `distance_unit`-style para
 
 ### Response root keys
 Most list responses wrap results under a named key. When the key is wrong, deserialization returns `null` silently. If a new endpoint returns `null` unexpectedly, check the actual JSON root key with a raw HTTP call.
+
+## MatchPlay API Notes
+
+### OPDB moved to MatchPlay (2026-10-01)
+
+OPDB shut its own API endpoints down on 1 October 2026. The database is still alive. The data now
+comes from `https://app.matchplay.events/api/`. Docs: https://docs.matchplay.events/opdb-and-pintips-api
+
+- **`MatchPlayApi` is the only OPDB client.** `OPDBApi`, `IOpdbApi` and `Models/OPDB/` were deleted
+  in 4.0.0. Do not bring them back. If you find a reference to them, it is stale.
+- OPDB models live in `Models/MatchPlay/Opdb/` and use camelCase JSON names, not the snake_case
+  the old opdb.org API used.
+- `is_machine` / `is_alias` became one `entryType` field with the values `machine`,
+  `machineGroup` and `alias`. `OpdbEntry.EntryType` maps it through `TolerantEnumConverter<T>`,
+  which falls back to `Unknown` instead of throwing on a value OPDB adds later.
+- There is no search endpoint and no typeahead endpoint. That is deliberate on MatchPlay's side.
+  Callers must download an export and search their own store.
+
+### Data exports
+
+Bulk data comes from a CDN and needs no token. `GetOpdbExport()`, `GetOpdbSlimExport()` and
+`GetPinTipsExport()` stream and deserialize these. The URLs are public consts on `MatchPlayApi`.
+The rate-limit docs say to prefer exports over per-entry calls for anything beyond a few machines.
+
+### Known broken / undocumented behaviors
+
+- **Boolean query params are read by presence, not by value.** `?includePeople=false` still
+  returns people. `GetOpdbEntry` therefore appends `includePeople=1` / `includeImages=1` only when
+  the caller asks for them. `GetTournament` still sends its `include*` flags unconditionally, so
+  it always returns the extra data. Do not "fix" that without checking downstream callers.
+- **`GET /api/pintips` with no query param returns HTTP 400.** Pass either `opdbId` or `arenaId`.
+- `GET /api/opdb/changelog` is not paginated. A `page` param is accepted and ignored.
+- The PinTips *export* sends dates as `2015-08-05 20:28:10`, not ISO 8601. `PinTip` uses
+  `FlexibleDateTimeConverter` to read both forms.
+- Root keys: `/opdb/entry` and `/opdb/changelog` wrap under `data`. `/pintips` does **not**, it
+  returns `{ pintips, opdbInfo }`. The OPDB exports wrap under `entries`. The PinTips export is a
+  bare array.
 
 ## Adding a New Endpoint
 

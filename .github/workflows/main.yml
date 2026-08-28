@@ -22,8 +22,6 @@ jobs:
         run: dotnet build PinballApi.slnx --configuration Release --no-restore
       - name: Configure WPPR Secret
         run: dotnet user-secrets set "WPPRKey" ${{secrets.WPPRKEY}} --project PinballApi.Tests/PinballApi.Tests.csproj
-      - name: Configure OPDB Secret
-        run: dotnet user-secrets set "OPDBToken" ${{secrets.OPDBTOKEN}} --project PinballApi.Tests/PinballApi.Tests.csproj
       - name: Configure MatchPlayApi Secret
         run: dotnet user-secrets set "MatchPlayApiToken" "${{secrets.MATCHPLAYAPITOKEN}}" --project PinballApi.Tests/PinballApi.Tests.csproj
       - name: Test
