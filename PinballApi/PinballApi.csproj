@@ -23,6 +23,16 @@ New endpoints
 - GetTournamentArenaSummary, GetTournamentPlayerArenaSummary and GetTournamentMatchSummary.
 - GetGames accepts series ids, game ids and a page. GetSinglePlayerGames and GetCards accept the full documented filter set. GetTournaments accepts a limit. GetTournament accepts includeEntryConfiguration, includeLinkedTournaments and includeEvent.
 
+API shape
+- Every async method takes a trailing CancellationToken. A cancelled call raises OperationCanceledException, not an API error.
+- Failed calls raise PinballApiException instead of Flurl's FlurlHttpException. It carries StatusCode, ResponseBody, RequestUrl and the IsNotFound, IsUnauthorized and IsRateLimited helpers. The Flurl exception stays as InnerException.
+- Added Enumerate* methods returning IAsyncEnumerable for every paged endpoint, so callers stop hand-rolling page loops.
+- GetArenas takes List&lt;int&gt; arena ids. It took List&lt;string&gt; while every other id parameter took ints.
+- Renamed for consistency: GetSeries list overload to GetSeriesList, GetMatchplayRoundStats to GetRoundStats, GetMatchplayArenaStats to GetArenaStats, GetMatchplayPlayerStats to GetPlayerStats, GetMatchplayMatchesStats to GetMatchStats, GetMatchplayGames to GetTournamentGames, GetTopFiveScoresByArena to GetTopScoresByArena.
+- Removed GetMatchplayGame. It called the same endpoint as GetGame, which now returns TournamentGame with the players attached.
+- Removed the MatchplayGames model. It duplicated Game with weaker types. Round.Games and the game endpoints use TournamentGame.
+- Typed the remaining object members: User.Avatar and User.Banner are strings, Game.Suggestions is List&lt;Suggestion&gt;, and TournamentArena gained the fields the API actually returns.
+
 Other
 - Added an opt-in rate limit retry. new MatchPlayApi(token, rateLimitRetryCount: 2) waits out an HTTP 429 and sends the request again, honouring Retry-After and x-ratelimit-reset. The default of 0 keeps the old behaviour.
 - MatchPlayApi now reuses one Flurl client instead of building a request from a string on every call.

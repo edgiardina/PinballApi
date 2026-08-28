@@ -130,6 +130,23 @@ The API uses `pre_registration` (with underscore) and `distance_unit`-style para
 ### Response root keys
 Most list responses wrap results under a named key. When the key is wrong, deserialization returns `null` silently. If a new endpoint returns `null` unexpectedly, check the actual JSON root key with a raw HTTP call.
 
+## MatchPlay client conventions
+
+`MatchPlayApi` follows a few rules. Keep new endpoints consistent with them.
+
+- **Never call Flurl terminal methods directly.** Route every call through the private
+  `GetData<T>` (unwraps the `data` root key), `GetJson<T>` (root object maps straight over) or
+  `GetPage<T>` (keeps the paging links) helpers. They centralise cancellation and error handling.
+- **Every public async method ends with `CancellationToken cancellationToken = default`.**
+- **Errors surface as `PinballApiException`, never `FlurlHttpException`.** `ToApiException`
+  handles the conversion, and it unwraps a cancelled call back into `OperationCanceledException`
+  so cancellation is never reported as an API error.
+- **A paged endpoint gets two methods.** `GetX(...)` for one page and `EnumerateX(...)` returning
+  `IAsyncEnumerable<T>` for all of them. Share the query building through a private
+  `XRequest(...)` builder so the two cannot drift.
+- **Auto-paging stops on `links.next`.** MatchPlay sends null there on the last page.
+- Mirror every public method in `IMatchPlayApi`.
+
 ## MatchPlay API Notes
 
 ### OPDB moved to MatchPlay (2026-10-01)

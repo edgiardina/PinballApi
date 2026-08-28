@@ -106,6 +106,30 @@ var profile = await matchPlay.GetProfile(12345);
 var patient = new MatchPlayApi("YOUR_MATCHPLAY_TOKEN", rateLimitRetryCount: 2);
 ```
 
+Every call takes a `CancellationToken`, and every paged endpoint has an `Enumerate` twin that
+walks the pages for you:
+
+```csharp
+await foreach (var tournament in matchPlay.EnumerateTournaments(playedUserId: 12345, cancellationToken: token))
+{
+    Console.WriteLine(tournament.Name);
+}
+```
+
+A failed call raises `PinballApiException`, so the HTTP layer stays out of your code:
+
+```csharp
+try
+{
+    var tournament = await matchPlay.GetTournament(999999999);
+}
+catch (PinballApiException ex) when (ex.IsNotFound)
+{
+    // ex.StatusCode, ex.ResponseBody and ex.RequestUrl are all available.
+    // ex.IsRateLimited and ex.IsUnauthorized cover the other common cases.
+}
+```
+
 ## IFPA API Coverage
 
 The `PinballRankingApi` class implements `IPinballRankingApi` and covers these endpoint groups from the [IFPA API 2.1 spec](https://api.ifpapinball.com/docs/):

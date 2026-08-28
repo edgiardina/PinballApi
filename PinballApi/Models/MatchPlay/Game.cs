@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PinballApi.Models.MatchPlay.Tournaments;
 using System.Text.Json.Serialization;
 
 namespace PinballApi.Models.MatchPlay
@@ -73,8 +74,11 @@ namespace PinballApi.Models.MatchPlay
         [JsonPropertyName("arena")]
         public Arena Arena { get; set; }
 
+        /// <summary>
+        /// The results players submitted for this game but that are not yet confirmed.
+        /// </summary>
         [JsonPropertyName("suggestions")]
-        public List<object> Suggestions { get; set; }
+        public List<Suggestion> Suggestions { get; set; }
     }
 
 }

@@ -100,7 +100,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetSeries_ShouldReturnSeries()
         {
-            var series = await matchPlayApi.GetSeries();
+            var series = await matchPlayApi.GetSeriesList();
 
             Assert.That(series, Is.Not.Empty);
         }
@@ -108,7 +108,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetSeries_ShouldReturnActiveSeries()
         {
-            var series = await matchPlayApi.GetSeries(seriesStatus: Models.MatchPlay.SeriesStatus.Active);
+            var series = await matchPlayApi.GetSeriesList(seriesStatus: Models.MatchPlay.SeriesStatus.Active);
 
             Assert.That(series, Is.Not.Empty);
             Assert.That(series.All(n => n.Status == Models.MatchPlay.SeriesStatus.Active));
@@ -117,7 +117,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetSeries_ShouldReturnCompletedSeries()
         {
-            var series = await matchPlayApi.GetSeries(seriesStatus: Models.MatchPlay.SeriesStatus.Completed);
+            var series = await matchPlayApi.GetSeriesList(seriesStatus: Models.MatchPlay.SeriesStatus.Completed);
 
             Assert.That(series, Is.Not.Empty);
             Assert.That(series.All(n => n.Status == Models.MatchPlay.SeriesStatus.Completed));
@@ -286,7 +286,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetTop5Scores_ShouldReturnGetTop5Scores()
         {
-            var singlePlayerGames = await matchPlayApi.GetTopFiveScoresByArena(97100);
+            var singlePlayerGames = await matchPlayApi.GetTopScoresByArena(97100);
 
             Assert.That(singlePlayerGames, Is.Not.Null);
             Assert.That(singlePlayerGames, Is.Not.Empty);
@@ -321,25 +321,25 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetRoundStats_ShouldReturnRoundStats()
         {
-            var stats = await matchPlayApi.GetMatchplayRoundStats(100074);
+            var stats = await matchPlayApi.GetRoundStats(100074);
 
             Assert.That(stats, Is.Not.Null);
             Assert.That(stats, Is.Not.Empty);
         }
 
         [Test]
-        public async Task MatchPlayApi_GetMatchplayGames_ShouldReturnMatchplayGames()
+        public async Task MatchPlayApi_GetTournamentGames_ShouldReturnMatchplayGames()
         {
-            var stats = await matchPlayApi.GetMatchplayGames(100085);
+            var stats = await matchPlayApi.GetTournamentGames(100085);
 
             Assert.That(stats, Is.Not.Null);
             Assert.That(stats, Is.Not.Empty);
         }
 
         [Test]
-        public async Task MatchPlayApi_GetMatchplayPlayerStats_ShouldReturnMatchplayPlayerStats()
+        public async Task MatchPlayApi_GetPlayerStats_ShouldReturnMatchplayPlayerStats()
         {
-            var stats = await matchPlayApi.GetMatchplayPlayerStats(100085);
+            var stats = await matchPlayApi.GetPlayerStats(100085);
 
             Assert.That(stats, Is.Not.Null);
         }
@@ -347,7 +347,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetMatchplayGame_ShouldReturnMatchplayGame()
         {
-            var stats = await matchPlayApi.GetMatchplayGame(100085, 2978054);
+            var stats = await matchPlayApi.GetGame(100085, 2978054);
 
             Assert.That(stats, Is.Not.Null);
         }

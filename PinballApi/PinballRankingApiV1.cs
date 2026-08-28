@@ -7,6 +7,7 @@ using PinballApi.Models.WPPR.v1.Tournaments;
 using Flurl.Http;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using PinballApi.Models.WPPR;
 using PinballApi.Interfaces;
@@ -27,7 +28,7 @@ namespace PinballApi
 
         #region player
 
-        public async Task<PlayerRecord> GetPlayerRecord(int playerId)
+        public async Task<PlayerRecord> GetPlayerRecord(int playerId, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -35,7 +36,7 @@ namespace PinballApi
                  await BaseRequest
                     .AppendPathSegment("player")
                     .AppendPathSegment(playerId)
-                    .GetJsonAsync<PlayerRecord>();
+                    .GetJsonAsync<PlayerRecord>(cancellationToken: cancellationToken);
             }
             catch (FlurlHttpException ex) when (ex.InnerException is JsonException)
             {
@@ -44,25 +45,25 @@ namespace PinballApi
             }
         }
 
-        public async Task<PlayerResult> GetPlayerResults(int playerId)
+        public async Task<PlayerResult> GetPlayerResults(int playerId, CancellationToken cancellationToken = default)
         {
             return await BaseRequest
                 .AppendPathSegment("player")
                 .AppendPathSegment(playerId)
                 .AppendPathSegment("results")
-                .GetJsonAsync<PlayerResult>();
+                .GetJsonAsync<PlayerResult>(cancellationToken: cancellationToken);
         }
 
-        public async Task<PlayerComparisons> GetPlayerComparisons(int playerId)
+        public async Task<PlayerComparisons> GetPlayerComparisons(int playerId, CancellationToken cancellationToken = default)
         {
             return await BaseRequest
                 .AppendPathSegment("player")
                 .AppendPathSegment(playerId)
                 .AppendPathSegment("pvp")
-                .GetJsonAsync<PlayerComparisons>();
+                .GetJsonAsync<PlayerComparisons>(cancellationToken: cancellationToken);
         }
 
-        public async Task<PlayerSearch> SearchForPlayerByName(string name)
+        public async Task<PlayerSearch> SearchForPlayerByName(string name, CancellationToken cancellationToken = default)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException("Name cannot be null");
@@ -73,7 +74,7 @@ namespace PinballApi
                     .AppendPathSegment("player")
                     .AppendPathSegment("search")
                     .SetQueryParam("q", name)
-                    .GetJsonAsync<PlayerSearch>();
+                    .GetJsonAsync<PlayerSearch>(cancellationToken: cancellationToken);
             }
             catch (FlurlParsingException)
             {
@@ -86,7 +87,7 @@ namespace PinballApi
             }
         }
 
-        public async Task<PlayerSearch> SearchForPlayerByEmail(string email)
+        public async Task<PlayerSearch> SearchForPlayerByEmail(string email, CancellationToken cancellationToken = default)
         {
             if (String.IsNullOrEmpty(email))
                 throw new ArgumentNullException("Email cannot be null");
@@ -96,7 +97,7 @@ namespace PinballApi
                 .AppendPathSegment("player")
                 .AppendPathSegment("search")
                 .SetQueryParam("email", email)
-                .GetJsonAsync<PlayerSearch>();
+                .GetJsonAsync<PlayerSearch>(cancellationToken: cancellationToken);
             }
             catch (FlurlParsingException ex)
             {
@@ -114,38 +115,38 @@ namespace PinballApi
             }
         }
 
-        public async Task<PlayerSearch> GetCountryDirectors()
+        public async Task<PlayerSearch> GetCountryDirectors(CancellationToken cancellationToken = default)
         {
             return await BaseRequest
                 .AppendPathSegment("player")
                 .AppendPathSegment("country_directors")
-                .GetJsonAsync<PlayerSearch>();
+                .GetJsonAsync<PlayerSearch>(cancellationToken: cancellationToken);
         }
 
-        public async Task<PlayerHistory> GetPlayerHistory(int playerId)
+        public async Task<PlayerHistory> GetPlayerHistory(int playerId, CancellationToken cancellationToken = default)
         {
             return await BaseRequest
                 .AppendPathSegment("player")
                 .AppendPathSegment(playerId)
                 .AppendPathSegment("history")
-                .GetJsonAsync<PlayerHistory>();
+                .GetJsonAsync<PlayerHistory>(cancellationToken: cancellationToken);
         }
 
         #endregion
 
         #region tournament
 
-        public async Task<Tournament> GetTournament(int tournamentId)
+        public async Task<Tournament> GetTournament(int tournamentId, CancellationToken cancellationToken = default)
         {
             var json = await BaseRequest
                 .AppendPathSegment("tournament")
                 .AppendPathSegment(tournamentId)
-                .GetStringAsync();
+                .GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["tournament"].Deserialize<Tournament>(JsonSerializerOptions);
         }
 
-        public async Task<TournamentResult> GetTournamentResults(int tournamentId, int? eventId = null, DateTime? tournamentDate = null)
+        public async Task<TournamentResult> GetTournamentResults(int tournamentId, int? eventId = null, DateTime? tournamentDate = null, CancellationToken cancellationToken = default)
         {
             var request = BaseRequest
                 .AppendPathSegment("tournament")
@@ -158,12 +159,12 @@ namespace PinballApi
             if (tournamentDate.HasValue)
                 request = request.SetQueryParam("tour_date", tournamentDate.Value.ToString("yyyy-MM-dd"));
 
-            var json = await request.GetStringAsync();
+            var json = await request.GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["tournament"].Deserialize<TournamentResult>(JsonSerializerOptions);
         }
 
-        public async Task<TournamentList> GetTournamentList(int startPosition = 1, int count = 50)
+        public async Task<TournamentList> GetTournamentList(int startPosition = 1, int count = 50, CancellationToken cancellationToken = default)
         {
             if (count > 250 || count < 1)
                 throw new ArgumentException("Count must be less than or equal to 250", "count");
@@ -181,10 +182,10 @@ namespace PinballApi
             if (count != 50)
                 request.SetQueryParam("count", count);
 
-            return await request.GetJsonAsync<TournamentList>();
+            return await request.GetJsonAsync<TournamentList>(cancellationToken: cancellationToken);
         }
 
-        public async Task<TournamentSearch> TournamentSearch(string tournamentName)
+        public async Task<TournamentSearch> TournamentSearch(string tournamentName, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(tournamentName))
                 throw new ArgumentNullException("Tournament Name cannot be null or empty");
@@ -193,14 +194,14 @@ namespace PinballApi
                 .AppendPathSegment("tournament")
                 .AppendPathSegment("search")
                 .SetQueryParam("q", tournamentName)
-                .GetJsonAsync<TournamentSearch>();
+                .GetJsonAsync<TournamentSearch>(cancellationToken: cancellationToken);
         }
 
         #endregion
 
         #region ranking
 
-        public async Task<RankingList> GetRankings(int startPosition = 1, int count = 50, RankingOrder order = RankingOrder.points, string countryName = null)
+        public async Task<RankingList> GetRankings(int startPosition = 1, int count = 50, RankingOrder order = RankingOrder.points, string countryName = null, CancellationToken cancellationToken = default)
         {
             return await BaseRequest
                 .AppendPathSegment("rankings")
@@ -211,14 +212,14 @@ namespace PinballApi
                     order = order,
                     country = countryName
                 })
-                .GetJsonAsync<RankingList>();
+                .GetJsonAsync<RankingList>(cancellationToken: cancellationToken);
         }
 
         #endregion
 
         #region calendar
 
-        public async Task<CalendarList> GetActiveCalendar(string country = null)
+        public async Task<CalendarList> GetActiveCalendar(string country = null, CancellationToken cancellationToken = default)
         {
             var request = BaseRequest
                 .AppendPathSegment("calendar")
@@ -227,10 +228,10 @@ namespace PinballApi
             if (!string.IsNullOrEmpty(country))
                 request = request.SetQueryParam("country", country);
 
-            return await request.GetJsonAsync<CalendarList>();
+            return await request.GetJsonAsync<CalendarList>(cancellationToken: cancellationToken);
         }
 
-        public async Task<CalendarList> GetCalendarHistory(string country = null)
+        public async Task<CalendarList> GetCalendarHistory(string country = null, CancellationToken cancellationToken = default)
         {
             var request = BaseRequest
                 .AppendPathSegment("calendar")
@@ -239,18 +240,18 @@ namespace PinballApi
             if (!string.IsNullOrEmpty(country))
                 request = request.SetQueryParam("country", country);
 
-            return await request.GetJsonAsync<CalendarList>();
+            return await request.GetJsonAsync<CalendarList>(cancellationToken: cancellationToken);
         }
 
-        public async Task<CalenderItem> GetCalendarById(int calendarId)
+        public async Task<CalenderItem> GetCalendarById(int calendarId, CancellationToken cancellationToken = default)
         {
             return await BaseRequest
                .AppendPathSegment("calendar")
                .AppendPathSegment(calendarId)
-               .GetJsonAsync<CalenderItem>();
+               .GetJsonAsync<CalenderItem>(cancellationToken: cancellationToken);
         }
 
-        public async Task<CalendarSearch> GetCalendarSearch(string address, int distance, DistanceUnit units)
+        public async Task<CalendarSearch> GetCalendarSearch(string address, int distance, DistanceUnit units, CancellationToken cancellationToken = default)
         {
             var request = BaseRequest
                .AppendPathSegment("calendar")
@@ -262,14 +263,14 @@ namespace PinballApi
             else
                 request = request.SetQueryParam("m", distance);
 
-            return await request.GetJsonAsync<CalendarSearch>();
+            return await request.GetJsonAsync<CalendarSearch>(cancellationToken: cancellationToken);
         }
 
         #endregion
 
         #region pvp
 
-        public async Task<PlayerComparison> GetPvp(int playerOneId, int playerTwoId)
+        public async Task<PlayerComparison> GetPvp(int playerOneId, int playerTwoId, CancellationToken cancellationToken = default)
         {
             return await BaseRequest
                .AppendPathSegment("pvp")
@@ -278,69 +279,69 @@ namespace PinballApi
                    p1 = playerOneId,
                    p2 = playerTwoId
                })
-               .GetJsonAsync<PlayerComparison>();
+               .GetJsonAsync<PlayerComparison>(cancellationToken: cancellationToken);
         }
 
         #endregion
 
         #region stats
 
-        public async Task<List<PointsThisYearStat>> GetPointsThisYearStats()
+        public async Task<List<PointsThisYearStat>> GetPointsThisYearStats(CancellationToken cancellationToken = default)
         {
             var json = await BaseRequest
                .AppendPathSegment("stats")
                .AppendPathSegment("points_this_year")
-               .GetStringAsync();
+               .GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["stats"].Deserialize<List<PointsThisYearStat>>(JsonSerializerOptions);
         }
 
-        public async Task<List<MostEventsStat>> GetMostEventsStats()
+        public async Task<List<MostEventsStat>> GetMostEventsStats(CancellationToken cancellationToken = default)
         {
             var json = await BaseRequest
                 .AppendPathSegment("stats")
                 .AppendPathSegment("most_events")
-                .GetStringAsync();
+                .GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["stats"].Deserialize<List<MostEventsStat>>(JsonSerializerOptions);
         }
 
-        public async Task<List<PlayersByCountryStat>> GetPlayersByCountryStat()
+        public async Task<List<PlayersByCountryStat>> GetPlayersByCountryStat(CancellationToken cancellationToken = default)
         {
             var json = await BaseRequest
                 .AppendPathSegment("stats")
                 .AppendPathSegment("country_players")
-                .GetStringAsync();
+                .GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByCountryStat>>(JsonSerializerOptions);
         }
 
-        public async Task<List<EventsByYearStat>> GetEventsPerYearStat()
+        public async Task<List<EventsByYearStat>> GetEventsPerYearStat(CancellationToken cancellationToken = default)
         {
             var json = await BaseRequest
                 .AppendPathSegment("stats")
                 .AppendPathSegment("events_by_year")
-                .GetStringAsync();
+                .GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["stats"].Deserialize<List<EventsByYearStat>>(JsonSerializerOptions);
         }
 
-        public async Task<List<PlayersByYearStat>> GetPlayersPerYearStat()
+        public async Task<List<PlayersByYearStat>> GetPlayersPerYearStat(CancellationToken cancellationToken = default)
         {
             var json = await BaseRequest
                 .AppendPathSegment("stats")
                 .AppendPathSegment("players_by_year")
-                .GetStringAsync();
+                .GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["stats"].Deserialize<List<PlayersByYearStat>>(JsonSerializerOptions);
         }
 
-        public async Task<List<BiggestMoversStat>> GetBiggestMoversStat()
+        public async Task<List<BiggestMoversStat>> GetBiggestMoversStat(CancellationToken cancellationToken = default)
         {
             var json = await BaseRequest
                 .AppendPathSegment("stats")
                 .AppendPathSegment("biggest_movers")
-                .GetStringAsync();
+                .GetStringAsync(cancellationToken: cancellationToken);
 
             return JsonNode.Parse(json)["stats"].Deserialize<List<BiggestMoversStat>>(JsonSerializerOptions);
         }

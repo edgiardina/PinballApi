@@ -168,7 +168,7 @@ namespace PinballApi.Tests
         [Test]
         public async Task MatchPlayApi_GetArenas_ShouldApplyIdFilter()
         {
-            var arenas = await matchPlayApi.GetArenas(arenaIds: new List<string> { OwnedArenaIdOne.ToString(), OwnedArenaIdTwo.ToString() });
+            var arenas = await matchPlayApi.GetArenas(arenaIds: new List<int> { OwnedArenaIdOne, OwnedArenaIdTwo });
 
             Assert.That(arenas, Has.Count.EqualTo(2), "the arenas filter must reach the API");
             Assert.That(arenas.Select(a => a.ArenaId), Is.EquivalentTo(new[] { OwnedArenaIdOne, OwnedArenaIdTwo }));
