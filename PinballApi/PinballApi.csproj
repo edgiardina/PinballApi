@@ -7,12 +7,42 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>BREAKING: OPDB data moved to MatchPlay. opdb.org shut its API endpoints down on 2026-10-01.
 
+OPDB
 - Removed OPDBApi, IOpdbApi and every model under PinballApi.Models.OPDB. Those endpoints no longer exist.
 - Added OPDB and PinTips support to MatchPlayApi: GetOpdbEntry, GetOpdbChangelog, GetPinTipsByOpdbId and GetPinTipsByArenaId.
 - Added the MatchPlay bulk data exports: GetOpdbExport, GetOpdbSlimExport and GetPinTipsExport. They need no API token.
 - Added models under PinballApi.Models.MatchPlay.Opdb, including OpdbIdParts to split an OPDB id into its group, machine and alias parts.
 
-To migrate: replace OPDBApi with MatchPlayApi and a MatchPlay API token. GetMachineInfo becomes GetOpdbEntry and Export becomes GetOpdbExport. Search, TypeAheadSearch and GetMachineInfoByIpdbId have no endpoint. Download an export and query your own store.</PackageReleaseNotes>
+Fixes
+- GetArenas, GetLocations and GetPlayers dropped their id filters. They called a Flurl overload that adds parameters without values, so the API returned every record. The filters now work.
+- GetTournament sent every include flag whether or not you asked for it, because the API reads the flags by presence. It now sends only the flags you set. Responses get smaller and callers that relied on always-on includes must now ask for them.
+- Game.ResultPoints is List&lt;float?&gt; and Game.ResultScores is List&lt;ulong?&gt;. They were List&lt;string&gt; and List&lt;object&gt;. TournamentGame no longer hides them.
+
+New endpoints
+- ResolveUnknownPlayers, ResolveUnknownArenas, ResolveUnknownUsers, ResolveUnknownTournamentPlayers and ResolveUnknownTournamentArenas turn bare ids into full objects.
+- GetTournamentArenaSummary, GetTournamentPlayerArenaSummary and GetTournamentMatchSummary.
+- GetGames accepts series ids, game ids and a page. GetSinglePlayerGames and GetCards accept the full documented filter set. GetTournaments accepts a limit. GetTournament accepts includeEntryConfiguration, includeLinkedTournaments and includeEvent.
+
+API shape
+- Every async method takes a trailing CancellationToken. A cancelled call raises OperationCanceledException, not an API error.
+- Failed calls raise PinballApiException instead of Flurl's FlurlHttpException. It carries StatusCode, ResponseBody, RequestUrl and the IsNotFound, IsUnauthorized and IsRateLimited helpers. The Flurl exception stays as InnerException.
+- Added Enumerate* methods returning IAsyncEnumerable for every paged endpoint, so callers stop hand-rolling page loops.
+- GetArenas takes List&lt;int&gt; arena ids. It took List&lt;string&gt; while every other id parameter took ints.
+- Renamed for consistency: GetSeries list overload to GetSeriesList, GetMatchplayRoundStats to GetRoundStats, GetMatchplayArenaStats to GetArenaStats, GetMatchplayPlayerStats to GetPlayerStats, GetMatchplayMatchesStats to GetMatchStats, GetMatchplayGames to GetTournamentGames, GetTopFiveScoresByArena to GetTopScoresByArena.
+- Removed GetMatchplayGame. It called the same endpoint as GetGame, which now returns TournamentGame with the players attached.
+- Removed the MatchplayGames model. It duplicated Game with weaker types. Round.Games and the game endpoints use TournamentGame.
+- Typed the remaining object members: User.Avatar and User.Banner are strings, Game.Suggestions is List&lt;Suggestion&gt;, and TournamentArena gained the fields the API actually returns.
+
+Other
+- Added an opt-in rate limit retry. new MatchPlayApi(token, rateLimitRetryCount: 2) waits out an HTTP 429 and sends the request again, honouring Retry-After and x-ratelimit-reset. The default of 0 keeps the old behaviour.
+- MatchPlayApi now reuses one Flurl client instead of building a request from a string on every call.
+- Added IMatchPlayApi so the client can be injected and replaced in tests.
+- Upgraded HtmlAgilityPack to 1.13.0 and Humanizer.Core to 3.0.10.
+- GetQueues returns List&lt;Queue&gt; instead of always throwing. GetMatchplayMatchesStats calls the API instead of always throwing.
+- Renamed the GetIfpaEstimate parameter touramentId to tournamentId.
+- Removed GetDashboard and GetAmazingRace. The first is a dead endpoint, the second never had an implementation.
+
+To migrate off OPDBApi: replace it with MatchPlayApi and a MatchPlay API token. GetMachineInfo becomes GetOpdbEntry and Export becomes GetOpdbExport. Search, TypeAheadSearch and GetMachineInfoByIpdbId have no endpoint. Download an export and query your own store.</PackageReleaseNotes>
     <Copyright>Copyright 2025 Ed Giardina</Copyright>
     <PackageTags>pinball pinballapi ifpa ipdb opdb pintips matchplay.events</PackageTags>
     <PackageProjectUrl>https://github.com/edgiardina/PinballApi</PackageProjectUrl>
@@ -23,8 +53,8 @@ To migrate: replace OPDBApi with MatchPlayApi and a MatchPlay API token. GetMach
   <ItemGroup>
     <PackageReference Include="Flurl" Version="4.0.0" />
     <PackageReference Include="Flurl.Http" Version="4.0.2" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.2" />
-    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.13.0" />
+    <PackageReference Include="Humanizer.Core" Version="3.0.10" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

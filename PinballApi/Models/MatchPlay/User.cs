@@ -31,11 +31,23 @@ namespace PinballApi.Models.MatchPlay
         [JsonPropertyName("initials")]
         public string Initials { get; set; }
 
+        /// <summary>
+        /// The absolute url of the profile picture. Null when the user has not set one.
+        /// </summary>
         [JsonPropertyName("avatar")]
-        public object Avatar { get; set; }
+        public string Avatar { get; set; }
 
+        /// <summary>
+        /// The absolute url of the profile banner. Null when the user has not set one.
+        /// </summary>
         [JsonPropertyName("banner")]
-        public object Banner { get; set; }
+        public string Banner { get; set; }
+
+        /// <summary>
+        /// The absolute url of the picture the user shows inside a tournament.
+        /// </summary>
+        [JsonPropertyName("tournamentAvatar")]
+        public string TournamentAvatar { get; set; }
 
         [JsonPropertyName("createdAt")]
         public DateTime CreatedAt { get; set; }

@@ -41,6 +41,6 @@ namespace PinballApi.Models.MatchPlay.Tournaments
         public DateTime? CompletedAt { get; set; }
 
         [JsonPropertyName("games")]
-        public List<MatchplayGames> Games { get; set; }
+        public List<TournamentGame> Games { get; set; }
     }
 }

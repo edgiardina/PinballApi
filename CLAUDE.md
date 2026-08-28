@@ -89,11 +89,17 @@ dotnet test PinballApi.Tests/PinballApi.Tests.csproj
 
 ### Rate limits bite repeated runs
 
-MatchPlay limits some endpoints far below the documented 120 requests/min. `/api/search` reports
-`x-ratelimit-limit: 6`. Running the suite two or three times in a row makes `SearchForUser`,
-`SearchForTournament`, `GetIfpaEstimate` and `GetRatingHistoryByIfpaId` fail with 429. Wait a
-minute and re-run the failures on their own before you look for a bug. A run that finishes much
-faster than usual is the tell.
+MatchPlay limits several endpoints to **6 requests per minute**, far below the documented 120.
+Confirmed on `/api/search` and on `/api/tournaments/{id}/summary/*`. Check the response headers:
+`x-ratelimit-limit`, `x-ratelimit-remaining` and `x-ratelimit-reset`.
+
+Search and the summaries share **one** bucket. A single suite run spends about 7 calls in it, so
+the suite used to fail against itself. The MatchPlay test fixtures now build the client with
+`rateLimitRetryCount: 2`, and `RateLimitRetryHandler` waits out the window. A full run therefore
+takes about 75 seconds instead of 30.
+
+If a rate limit failure does appear, wait a minute and re-run the failures on their own before you
+look for a bug. A suite run that finishes much faster than usual is the tell.
 
 `GetRatingPeriods` and `GetRatingPeriod` fail with `401 Not allowed (token)`. That is a token
 permission on the MatchPlay side, not a code fault. It reproduces with raw curl.
@@ -124,6 +130,23 @@ The API uses `pre_registration` (with underscore) and `distance_unit`-style para
 ### Response root keys
 Most list responses wrap results under a named key. When the key is wrong, deserialization returns `null` silently. If a new endpoint returns `null` unexpectedly, check the actual JSON root key with a raw HTTP call.
 
+## MatchPlay client conventions
+
+`MatchPlayApi` follows a few rules. Keep new endpoints consistent with them.
+
+- **Never call Flurl terminal methods directly.** Route every call through the private
+  `GetData<T>` (unwraps the `data` root key), `GetJson<T>` (root object maps straight over) or
+  `GetPage<T>` (keeps the paging links) helpers. They centralise cancellation and error handling.
+- **Every public async method ends with `CancellationToken cancellationToken = default`.**
+- **Errors surface as `PinballApiException`, never `FlurlHttpException`.** `ToApiException`
+  handles the conversion, and it unwraps a cancelled call back into `OperationCanceledException`
+  so cancellation is never reported as an API error.
+- **A paged endpoint gets two methods.** `GetX(...)` for one page and `EnumerateX(...)` returning
+  `IAsyncEnumerable<T>` for all of them. Share the query building through a private
+  `XRequest(...)` builder so the two cannot drift.
+- **Auto-paging stops on `links.next`.** MatchPlay sends null there on the last page.
+- Mirror every public method in `IMatchPlayApi`.
+
 ## MatchPlay API Notes
 
 ### OPDB moved to MatchPlay (2026-10-01)
@@ -150,9 +173,15 @@ The rate-limit docs say to prefer exports over per-entry calls for anything beyo
 ### Known broken / undocumented behaviors
 
 - **Boolean query params are read by presence, not by value.** `?includePeople=false` still
-  returns people. `GetOpdbEntry` therefore appends `includePeople=1` / `includeImages=1` only when
-  the caller asks for them. `GetTournament` still sends its `include*` flags unconditionally, so
-  it always returns the extra data. Do not "fix" that without checking downstream callers.
+  returns people. Use the private `SetIncludeFlag` helper, which adds the param only when the
+  value is true. `GetOpdbEntry` and `GetTournament` both go through it.
+- **Never call `SetQueryParams(name, value)`.** With two string arguments it binds to Flurl's
+  `SetQueryParams(params string[] names)` overload, which adds parameters *without values*. The
+  filter then silently does nothing. Use the singular `SetQueryParam(name, value)`. This bug hid
+  in `GetArenas`, `GetLocations` and `GetPlayers` until 4.0.0.
+- **`/api/players` and `/api/arenas` are scoped to the organizer who owns the token.** Filtering
+  by another organizer's ids returns an empty list, not an error. Tests must use owned ids.
+- **`GET /api/tournaments/{id}/queues` returns 403** unless the token has scorekeeper scope.
 - **`GET /api/pintips` with no query param returns HTTP 400.** Pass either `opdbId` or `arenaId`.
 - `GET /api/opdb/changelog` is not paginated. A `page` param is accepted and ignored.
 - The PinTips *export* sends dates as `2015-08-05 20:28:10`, not ISO 8601. `PinTip` uses
